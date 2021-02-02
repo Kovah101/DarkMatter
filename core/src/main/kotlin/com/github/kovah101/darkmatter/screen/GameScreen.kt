@@ -33,7 +33,6 @@ class GameScreen(game: DarkMatter) : DarkMatterScreen(game) {
             }
         }
     }
-    private val viewport = FitViewport(9f, 16f) // world units
 
     override fun show() {
         LOG.debug { "First screen shown" }
@@ -41,26 +40,8 @@ class GameScreen(game: DarkMatter) : DarkMatterScreen(game) {
 
     override fun render(delta: Float) {
         engine.update(delta)
-
-        viewport.apply()
-        batch.use(viewport.camera.combined) { batch ->
-            player[GraphicComponent.mapper]?.let { graphic ->
-                player[TransformComponent.mapper]?.let { transform ->
-                    graphic.sprite.run {
-                        rotation = transform.rotationDeg
-                        setBounds(transform.position.x, transform.position.y, transform.size.x, transform.size.y)
-                        draw(batch)
-                    }
-
-
-                }
-            }
-        }
     }
 
-    override fun resize(width: Int, height: Int) {
-        viewport.update(width, height, true)
-    }
 
     override fun dispose() {
         playerTexture.dispose()
