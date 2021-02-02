@@ -18,7 +18,6 @@ class RenderSystem(
     private val batch: Batch,
     private val gameViewport: Viewport
 ) : SortedIteratingSystem(
-
     allOf(TransformComponent::class, GraphicComponent::class).get(),
     // comparing entitys by transform component
     compareBy { entity -> entity[TransformComponent.mapper] }
@@ -38,10 +37,11 @@ class RenderSystem(
         require(transform != null) { "Entity |entity| must have TransformComponent. entity=$entity" }
 
         val graphic = entity[GraphicComponent.mapper]
-        require(graphic != null){"\"Entity |entity| must have GraphicComponent. entity=$entity"}
+        require(graphic != null) { "Entity |entity| must have GraphicComponent. entity=$entity" }
 
-        if(graphic.sprite.texture ==null){
-            LOG.error{"Entity has no texture for rendering. entity=$entity"}
+        if (graphic.sprite.texture == null) {
+            // if texture is null, log the error and skip
+            LOG.error { "Entity has no texture for rendering. entity=$entity" }
             return
         }
 
