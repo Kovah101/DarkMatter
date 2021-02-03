@@ -7,11 +7,10 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.utils.viewport.FitViewport
-import com.github.kovah101.darkmatter.ecs.system.PlayerAnimationSystem
-import com.github.kovah101.darkmatter.ecs.system.PlayerInputSystem
-import com.github.kovah101.darkmatter.ecs.system.RenderSystem
+import com.github.kovah101.darkmatter.ecs.system.*
 import com.github.kovah101.darkmatter.screen.DarkMatterScreen
 import com.github.kovah101.darkmatter.screen.GameScreen
 import ktx.app.KtxGame
@@ -21,27 +20,28 @@ import ktx.log.logger
 
 private val LOG = logger<DarkMatter>()
 const val UNIT_SCALE = 1 / 16f  // 1 world unit = 16 pixels
+const val V_WIDTH = 9
+const val V_HEIGHT = 16
 
 class DarkMatter : KtxGame<DarkMatterScreen>() {
-    val gameViewport = FitViewport(9f, 16f) // world units
+    val gameViewport = FitViewport(V_WIDTH.toFloat(), V_HEIGHT.toFloat()) // world units
     val batch: Batch by lazy { SpriteBatch() }
 
-    private val defaultRegion by lazy { TextureRegion(Texture(Gdx.files.internal("graphics/ship_base.png"))) }
-    private val leftRegion by lazy { TextureRegion(Texture(Gdx.files.internal("graphics/ship_left.png"))) }
-    private val rightRegion by lazy { TextureRegion(Texture(Gdx.files.internal("graphics/ship_right.png"))) }
-
+    val graphicsAtlas by lazy {TextureAtlas(Gdx.files.internal("graphics/graphics.atlas"))}
 
     val engine: Engine by lazy {
         PooledEngine().apply {
             addSystem(PlayerInputSystem(gameViewport))
+            addSystem(MoveSystem())
             addSystem(
                 PlayerAnimationSystem(
-                    defaultRegion,
-                    leftRegion,
-                    rightRegion
+                    graphicsAtlas.findRegion("ship_base"),
+                    graphicsAtlas.findRegion("ship_left"),
+                    graphicsAtlas.findRegion("ship_right")
                 )
             )
             addSystem(RenderSystem(batch, gameViewport))
+            addSystem(RemoveSystem()) // last system to be added
         }
     }
 
@@ -57,9 +57,6 @@ class DarkMatter : KtxGame<DarkMatterScreen>() {
         super.dispose()
         LOG.debug { "Sprites in batch: ${(batch as SpriteBatch).maxSpritesInBatch}" }
         batch.dispose()
-
-        defaultRegion.texture.dispose()
-        leftRegion.texture.dispose()
-        rightRegion.texture.dispose()
+        graphicsAtlas.dispose()
     }
 }
