@@ -56,7 +56,7 @@ class DebugSystem : IntervalIteratingSystem(allOf(PlayerComponent::class).get(),
             }
             Gdx.input.isKeyPressed(Input.Keys.NUM_7) -> {
                 // enable damage
-                engine.getSystem<DamageSystem>().setProcessing(false)
+                engine.getSystem<DamageSystem>().setProcessing(true)
             }
         }
         Gdx.graphics.setTitle("DM Debug - pos:${transform.position}, life:${player.life}, shield:${player.shield}")

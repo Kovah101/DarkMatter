@@ -19,7 +19,7 @@ class RenderSystem(
     private val gameViewport: Viewport
 ) : SortedIteratingSystem(
     allOf(TransformComponent::class, GraphicComponent::class).get(),
-    // comparing entitys by transform component
+    // comparing entities by transform component
     compareBy { entity -> entity[TransformComponent.mapper] }
 ) {
     override fun update(deltaTime: Float) {
