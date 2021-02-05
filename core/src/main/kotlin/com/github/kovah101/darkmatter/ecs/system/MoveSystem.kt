@@ -13,7 +13,6 @@ import kotlin.math.min
 import kotlin.math.max
 
 private const val UPDATE_RATE = 1 / 25f
-
 // supersedes deltaTime in case of lag
 // gives constant movement
 private const val HOR_ACC = 16.5f
@@ -30,7 +29,26 @@ class MoveSystem :
         accumulator += deltaTime
         while (accumulator >= UPDATE_RATE) {
             accumulator -= UPDATE_RATE
+            // save current position before updating to new one
+            //allows for smooth movement
+            entities.forEach {
+                it[TransformComponent.mapper]?.let { transform ->
+                    transform.prevPosition.set(transform.position)
+                }
+            }
+
             super.update(UPDATE_RATE)
+        }
+        
+        val alpha = accumulator / UPDATE_RATE // % between frames
+        entities.forEach { entity ->  
+            entity[TransformComponent.mapper]?.let { transform ->
+                transform.interpolatedPosition.set(
+                    MathUtils.lerp(transform.prevPosition.x, transform.position.x, alpha),
+                    MathUtils.lerp(transform.prevPosition.y, transform.position.y, alpha),
+                    transform.position.z
+                )
+            }
         }
     }
 

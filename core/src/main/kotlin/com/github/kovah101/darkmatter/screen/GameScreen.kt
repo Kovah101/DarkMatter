@@ -1,22 +1,16 @@
 package com.github.kovah101.darkmatter.screen
 
-import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Input
-import com.badlogic.gdx.graphics.Texture
-import com.badlogic.gdx.graphics.g2d.Sprite
-import com.badlogic.gdx.math.MathUtils
-import com.badlogic.gdx.utils.viewport.FitViewport
+
 import com.github.kovah101.darkmatter.DarkMatter
-import com.github.kovah101.darkmatter.UNIT_SCALE
 import com.github.kovah101.darkmatter.ecs.components.*
 import ktx.ashley.entity
-import ktx.ashley.get
 import ktx.ashley.with
-import ktx.graphics.use
 import ktx.log.debug
 import ktx.log.logger
+import java.lang.Float.min
 
 private val LOG = logger<GameScreen>()
+private const val MAX_DELTA_TIME = 1/ 20f //used to stop spiral of death
 
 class GameScreen(game: DarkMatter) : DarkMatterScreen(game) {
 
@@ -27,7 +21,7 @@ class GameScreen(game: DarkMatter) : DarkMatterScreen(game) {
         // 1st ship
         engine.entity {
             with<TransformComponent> {
-                position.set(4.2f, 8f, 0f)
+                setInitialPosition(4.2f, 8f, 0f)
             }
             with<MoveComponent>()
             with<GraphicComponent>()
@@ -40,7 +34,7 @@ class GameScreen(game: DarkMatter) : DarkMatterScreen(game) {
 
 
     override fun render(delta: Float) {
-        engine.update(delta)
+        engine.update(min(MAX_DELTA_TIME, delta))
     }
 
 }
