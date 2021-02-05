@@ -1,6 +1,8 @@
 package com.github.kovah101.darkmatter.screen
 
 
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Input
 import com.github.kovah101.darkmatter.DarkMatter
 import com.github.kovah101.darkmatter.V_WIDTH
 import com.github.kovah101.darkmatter.ecs.components.*
@@ -49,6 +51,20 @@ class GameScreen(game: DarkMatter) : DarkMatterScreen(game) {
 
     override fun render(delta: Float) {
         engine.update(min(MAX_DELTA_TIME, delta))
+        // TODO Remove Debug lines
+        // extra life for debug
+        if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_0)) {
+            // spawn player
+            engine.entity {
+                with<TransformComponent> {
+                    setInitialPosition(4.2f, 8f, 0f)
+                }
+                with<MoveComponent>()
+                with<GraphicComponent>()
+                with<PlayerComponent>()
+                with<FacingComponent>()
+            }
+        }
     }
 
 }
