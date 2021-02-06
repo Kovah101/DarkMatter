@@ -32,7 +32,7 @@ limitMemory=true
 useIndexes=true
 
 scaleFactors=[{suffix:"",factor:1,resampling:bicubic}]
-inputFiles=[{path:graphics/ship_left.png,type:Input,regionName:null},{path:graphics/ship_base.png,type:Input,regionName:null},{path:graphics/ship_right.png,type:Input,regionName:null}]
+inputFiles=[{path:graphics,type:Input,dirFilePrefix:null,recursive:false,flattenPaths:false}]
 
 
 -PROJ-
