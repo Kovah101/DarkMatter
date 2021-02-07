@@ -5,7 +5,10 @@ import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.EntityListener
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.graphics.g2d.TextureRegion
-import com.github.kovah101.darkmatter.ecs.components.*
+import com.github.kovah101.darkmatter.ecs.components.FacingComponent
+import com.github.kovah101.darkmatter.ecs.components.FacingDirection
+import com.github.kovah101.darkmatter.ecs.components.GraphicComponent
+import com.github.kovah101.darkmatter.ecs.components.PlayerComponent
 import ktx.ashley.allOf
 import ktx.ashley.get
 

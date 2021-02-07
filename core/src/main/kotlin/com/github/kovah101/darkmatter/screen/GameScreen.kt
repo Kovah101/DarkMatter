@@ -8,6 +8,10 @@ import com.github.kovah101.darkmatter.UNIT_SCALE
 import com.github.kovah101.darkmatter.V_WIDTH
 import com.github.kovah101.darkmatter.ecs.components.*
 import com.github.kovah101.darkmatter.ecs.system.DAMAGE_AREA_HEIGHT
+import com.github.kovah101.darkmatter.event.GameEvent
+import com.github.kovah101.darkmatter.event.GameEventListener
+import com.github.kovah101.darkmatter.event.GameEventPlayerDeath
+import com.github.kovah101.darkmatter.event.GameEventType
 import ktx.ashley.entity
 import ktx.ashley.with
 import ktx.log.debug
@@ -17,12 +21,34 @@ import java.lang.Float.min
 private val LOG = logger<GameScreen>()
 private const val MAX_DELTA_TIME = 1 / 20f //used to stop spiral of death
 
-class GameScreen(game: DarkMatter) : DarkMatterScreen(game) {
+class GameScreen(game: DarkMatter) : DarkMatterScreen(game), GameEventListener {
 
 
     override fun show() {
         LOG.debug { "First screen shown" }
+        gameEventManager.addListener(GameEventType.PLAYER_DEATH, this)
 
+        spawnPlayer()
+
+        // dark matter
+        engine.entity {
+            with<TransformComponent> {
+                size.set(
+                    V_WIDTH.toFloat(),
+                    DAMAGE_AREA_HEIGHT
+                )
+            }
+            with<AnimationComponent> { type = AnimationType.DARK_MATTER }
+            with<GraphicComponent>()
+        }
+    }
+
+    override fun hide() {
+        super.hide()
+        gameEventManager.removeListener(this)
+    }
+
+    private fun spawnPlayer() {
         // 1st ship
         // TODO Scale ship correctly - see code base if not covered
         val playerShip = engine.entity {
@@ -45,38 +71,21 @@ class GameScreen(game: DarkMatter) : DarkMatterScreen(game) {
             with<GraphicComponent>()
             with<AnimationComponent> { type = AnimationType.FIRE }
         }
-
-        // dark matter
-        engine.entity {
-            with<TransformComponent> {
-                size.set(
-                    V_WIDTH.toFloat(),
-                    DAMAGE_AREA_HEIGHT
-                )
-            }
-            with<AnimationComponent> { type = AnimationType.DARK_MATTER }
-            with<GraphicComponent>()
-        }
-
-
     }
-
 
     override fun render(delta: Float) {
         engine.update(min(MAX_DELTA_TIME, delta))
         // TODO Remove Debug lines
         // extra life for debug
-        if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_0)) {
-            // spawn player
-            engine.entity {
-                with<TransformComponent> {
-                    setInitialPosition(4.2f, 8f, 0f)
-                }
-                with<MoveComponent>()
-                with<GraphicComponent>()
-                with<PlayerComponent>()
-                with<FacingComponent>()
-            }
+//        if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_0)) {
+//            spawnPlayer()
+//        }
+    }
+
+    override fun onEvent(type: GameEventType, data: GameEvent?) {
+        if(type == GameEventType.PLAYER_DEATH){
+            val eventDate = data as GameEventPlayerDeath
+            spawnPlayer()
         }
     }
 

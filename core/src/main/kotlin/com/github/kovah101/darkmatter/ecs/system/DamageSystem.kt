@@ -2,10 +2,12 @@ package com.github.kovah101.darkmatter.ecs.system
 
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.IteratingSystem
-import com.github.kovah101.darkmatter.ecs.components.MoveComponent
 import com.github.kovah101.darkmatter.ecs.components.PlayerComponent
 import com.github.kovah101.darkmatter.ecs.components.RemoveComponent
 import com.github.kovah101.darkmatter.ecs.components.TransformComponent
+import com.github.kovah101.darkmatter.event.GameEventManager
+import com.github.kovah101.darkmatter.event.GameEventPlayerDeath
+import com.github.kovah101.darkmatter.event.GameEventType
 import ktx.ashley.addComponent
 import ktx.ashley.allOf
 import ktx.ashley.exclude
@@ -16,7 +18,9 @@ const val DAMAGE_AREA_HEIGHT = 2f
 private const val DAMAGE_PER_SECOND = 25f
 private const val DEATH_EXPLOSION_DELAY = 0.9f // delay till death
 
-class DamageSystem :
+class DamageSystem (
+    private val gameEventManager: GameEventManager
+        ) :
     IteratingSystem(allOf(PlayerComponent::class, TransformComponent::class).exclude(RemoveComponent::class).get()) {
 
     override fun processEntity(entity: Entity, deltaTime: Float) {
@@ -41,6 +45,10 @@ class DamageSystem :
             }
             player.life -= damage
             if (player.life <= 0f) {
+                gameEventManager.dispatchEvent(GameEventType.PLAYER_DEATH,
+                GameEventPlayerDeath.apply {
+                    this.distance = player.distance
+                })
                 entity.addComponent<RemoveComponent>(engine) {
                     delay = DEATH_EXPLOSION_DELAY
                 }

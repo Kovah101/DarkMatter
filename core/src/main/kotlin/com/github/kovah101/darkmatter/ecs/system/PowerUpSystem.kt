@@ -6,6 +6,9 @@ import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Rectangle
 import com.github.kovah101.darkmatter.V_WIDTH
 import com.github.kovah101.darkmatter.ecs.components.*
+import com.github.kovah101.darkmatter.event.GameEventCollectPowerUp
+import com.github.kovah101.darkmatter.event.GameEventManager
+import com.github.kovah101.darkmatter.event.GameEventType
 import ktx.ashley.*
 import ktx.collections.GdxArray
 import ktx.collections.gdxArrayOf
@@ -34,7 +37,9 @@ private class SpawnPattern(
     val types: GdxArray<PowerUpType> = gdxArrayOf(type1, type2, type3, type4, type5)
 )
 
-class PowerUpSystem :
+class PowerUpSystem(
+    private val gameEventManager: GameEventManager
+) :
     IteratingSystem(allOf(PowerUpComponent::class, TransformComponent::class).exclude(RemoveComponent::class).get()) {
     private val playerBoundingRect = Rectangle()
     private val powerUpBoundRect = Rectangle()
@@ -143,7 +148,13 @@ class PowerUpSystem :
                 LOG.error { "Unsupported power up type ${powerUpCmp.type}" }
             }
         }
-
+        gameEventManager.dispatchEvent(
+            GameEventType.COLLECT_POWER_UP,
+            GameEventCollectPowerUp.apply {
+                this.player = player
+                this.type = powerUpCmp.type
+            }
+        )
         powerUp.addComponent<RemoveComponent>(engine)
 
     }

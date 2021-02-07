@@ -8,13 +8,12 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
-import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.utils.viewport.FitViewport
 import com.github.kovah101.darkmatter.ecs.system.*
+import com.github.kovah101.darkmatter.event.GameEventManager
 import com.github.kovah101.darkmatter.screen.DarkMatterScreen
 import com.github.kovah101.darkmatter.screen.GameScreen
 import ktx.app.KtxGame
-import ktx.app.KtxScreen
 import ktx.log.debug
 import ktx.log.logger
 
@@ -29,6 +28,7 @@ class DarkMatter : KtxGame<DarkMatterScreen>() {
     val uiViewport = FitViewport(V_WIDTH_PIXELS.toFloat(), V_HEIGHT_PIXELS.toFloat()) // different scale - more pixels- for UI
     val gameViewport = FitViewport(V_WIDTH.toFloat(), V_HEIGHT.toFloat()) // world units
     val batch: Batch by lazy { SpriteBatch() }
+    val gameEventManager = GameEventManager()
 
     val graphicsAtlas by lazy { TextureAtlas(Gdx.files.internal("graphics/graphics.atlas")) }
     val backgroundTexture by lazy { Texture("graphics/background.png") }
@@ -37,8 +37,8 @@ class DarkMatter : KtxGame<DarkMatterScreen>() {
         PooledEngine().apply {
             addSystem(PlayerInputSystem(gameViewport))
             addSystem(MoveSystem())
-            addSystem(PowerUpSystem())
-            addSystem(DamageSystem())
+            addSystem(PowerUpSystem(gameEventManager))
+            addSystem(DamageSystem(gameEventManager))
             addSystem(
                 PlayerAnimationSystem(
                     graphicsAtlas.findRegion("ship_base"),
@@ -53,7 +53,8 @@ class DarkMatter : KtxGame<DarkMatterScreen>() {
                     batch,
                     gameViewport,
                     uiViewport,
-                    backgroundTexture
+                    backgroundTexture,
+                    gameEventManager
                 )
             )
             addSystem(RemoveSystem()) // last system to be added

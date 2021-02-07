@@ -4,11 +4,11 @@ import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.IntervalIteratingSystem
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
-import com.github.kovah101.darkmatter.ecs.components.*
+import com.github.kovah101.darkmatter.ecs.components.PlayerComponent
+import com.github.kovah101.darkmatter.ecs.components.TransformComponent
 import ktx.ashley.*
 import kotlin.math.max
 import kotlin.math.min
-import kotlin.with
 
 private const val WINDOW_INFO_UPDATE_RATE = 0.25f
 
