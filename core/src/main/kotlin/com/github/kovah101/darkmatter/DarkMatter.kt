@@ -22,12 +22,16 @@ private val LOG = logger<DarkMatter>()
 const val UNIT_SCALE = 1 / 16f  // 1 world unit = 16 pixels
 const val V_WIDTH = 9
 const val V_HEIGHT = 16
+const val V_WIDTH_PIXELS = 135
+const val V_HEIGHT_PIXELS = 240
 
 class DarkMatter : KtxGame<DarkMatterScreen>() {
+    val uiViewport = FitViewport(V_WIDTH_PIXELS.toFloat(), V_HEIGHT_PIXELS.toFloat()) // different scale - more pixels- for UI
     val gameViewport = FitViewport(V_WIDTH.toFloat(), V_HEIGHT.toFloat()) // world units
     val batch: Batch by lazy { SpriteBatch() }
 
-    val graphicsAtlas by lazy {TextureAtlas(Gdx.files.internal("graphics/graphics.atlas"))}
+    val graphicsAtlas by lazy { TextureAtlas(Gdx.files.internal("graphics/graphics.atlas")) }
+    val backgroundTexture by lazy { Texture("graphics/background.png") }
 
     val engine: Engine by lazy {
         PooledEngine().apply {
@@ -44,7 +48,14 @@ class DarkMatter : KtxGame<DarkMatterScreen>() {
             )
             addSystem(AttachSystem())
             addSystem(AnimationSystem(graphicsAtlas))
-            addSystem(RenderSystem(batch, gameViewport))
+            addSystem(
+                RenderSystem(
+                    batch,
+                    gameViewport,
+                    uiViewport,
+                    backgroundTexture
+                )
+            )
             addSystem(RemoveSystem()) // last system to be added
             addSystem(DebugSystem())
         }
@@ -63,5 +74,6 @@ class DarkMatter : KtxGame<DarkMatterScreen>() {
         LOG.debug { "Sprites in batch: ${(batch as SpriteBatch).maxSpritesInBatch}" }
         batch.dispose()
         graphicsAtlas.dispose()
+        backgroundTexture.dispose()
     }
 }
