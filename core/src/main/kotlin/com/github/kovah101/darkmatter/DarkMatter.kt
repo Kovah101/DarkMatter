@@ -14,6 +14,8 @@ import com.github.kovah101.darkmatter.event.GameEventManager
 import com.github.kovah101.darkmatter.screen.DarkMatterScreen
 import com.github.kovah101.darkmatter.screen.GameScreen
 import ktx.app.KtxGame
+import ktx.assets.async.AssetStorage
+import ktx.async.KtxAsync
 import ktx.log.debug
 import ktx.log.logger
 
@@ -29,6 +31,10 @@ class DarkMatter : KtxGame<DarkMatterScreen>() {
     val gameViewport = FitViewport(V_WIDTH.toFloat(), V_HEIGHT.toFloat()) // world units
     val batch: Batch by lazy { SpriteBatch() }
     val gameEventManager = GameEventManager()
+    val assets : AssetStorage by lazy {
+        KtxAsync.initiate()
+        AssetStorage()
+    }
 
     val graphicsAtlas by lazy { TextureAtlas(Gdx.files.internal("graphics/graphics.atlas")) }
     val backgroundTexture by lazy { Texture("graphics/background.png") }
@@ -39,6 +45,7 @@ class DarkMatter : KtxGame<DarkMatterScreen>() {
             addSystem(MoveSystem())
             addSystem(PowerUpSystem(gameEventManager))
             addSystem(DamageSystem(gameEventManager))
+            addSystem(CameraShakeSystem(gameViewport.camera, gameEventManager))
             addSystem(
                 PlayerAnimationSystem(
                     graphicsAtlas.findRegion("ship_base"),
@@ -66,8 +73,10 @@ class DarkMatter : KtxGame<DarkMatterScreen>() {
         Gdx.app.logLevel = LOG_DEBUG
         LOG.debug { "Create game instance" }
         // must add screens before using
-        addScreen(GameScreen(this))
-        setScreen<GameScreen>()
+        addScreen(LoadingScreen(this))
+        setScreen<LoadingScreen>()
+//        addScreen(GameScreen(this))
+//        setScreen<GameScreen>()
     }
 
     override fun dispose() {

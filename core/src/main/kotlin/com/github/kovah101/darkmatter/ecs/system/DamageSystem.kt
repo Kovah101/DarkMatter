@@ -6,8 +6,7 @@ import com.github.kovah101.darkmatter.ecs.components.PlayerComponent
 import com.github.kovah101.darkmatter.ecs.components.RemoveComponent
 import com.github.kovah101.darkmatter.ecs.components.TransformComponent
 import com.github.kovah101.darkmatter.event.GameEventManager
-import com.github.kovah101.darkmatter.event.GameEventPlayerDeath
-import com.github.kovah101.darkmatter.event.GameEventType
+import com.github.kovah101.darkmatter.event.GameEvent
 import ktx.ashley.addComponent
 import ktx.ashley.allOf
 import ktx.ashley.exclude
@@ -44,9 +43,14 @@ class DamageSystem (
                 }
             }
             player.life -= damage
+            gameEventManager.dispatchEvent(GameEvent.PlayerHit.apply {
+                this.player = entity
+                life = player.life
+                maxLife = player.maxLife
+            })
+
             if (player.life <= 0f) {
-                gameEventManager.dispatchEvent(GameEventType.PLAYER_DEATH,
-                GameEventPlayerDeath.apply {
+                gameEventManager.dispatchEvent(GameEvent.PlayerDeath.apply {
                     this.distance = player.distance
                 })
                 entity.addComponent<RemoveComponent>(engine) {

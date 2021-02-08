@@ -1,8 +1,6 @@
 package com.github.kovah101.darkmatter.screen
 
 
-import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Input
 import com.github.kovah101.darkmatter.DarkMatter
 import com.github.kovah101.darkmatter.UNIT_SCALE
 import com.github.kovah101.darkmatter.V_WIDTH
@@ -10,8 +8,6 @@ import com.github.kovah101.darkmatter.ecs.components.*
 import com.github.kovah101.darkmatter.ecs.system.DAMAGE_AREA_HEIGHT
 import com.github.kovah101.darkmatter.event.GameEvent
 import com.github.kovah101.darkmatter.event.GameEventListener
-import com.github.kovah101.darkmatter.event.GameEventPlayerDeath
-import com.github.kovah101.darkmatter.event.GameEventType
 import ktx.ashley.entity
 import ktx.ashley.with
 import ktx.log.debug
@@ -26,7 +22,7 @@ class GameScreen(game: DarkMatter) : DarkMatterScreen(game), GameEventListener {
 
     override fun show() {
         LOG.debug { "First screen shown" }
-        gameEventManager.addListener(GameEventType.PLAYER_DEATH, this)
+        gameEventManager.addListener(GameEvent.PlayerDeath::class, this)
 
         spawnPlayer()
 
@@ -82,11 +78,15 @@ class GameScreen(game: DarkMatter) : DarkMatterScreen(game), GameEventListener {
 //        }
     }
 
-    override fun onEvent(type: GameEventType, data: GameEvent?) {
-        if(type == GameEventType.PLAYER_DEATH){
-            val eventDate = data as GameEventPlayerDeath
-            spawnPlayer()
+    override fun onEvent(event: GameEvent) {
+        when (event) {
+            is GameEvent.PlayerDeath -> {
+                spawnPlayer()
+            }
+            GameEvent.CollectPowerUp -> TODO()
         }
-    }
 
+    }
 }
+
+
