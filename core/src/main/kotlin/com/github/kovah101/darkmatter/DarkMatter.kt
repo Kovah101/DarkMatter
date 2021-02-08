@@ -9,10 +9,13 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.utils.viewport.FitViewport
+import com.github.kovah101.darkmatter.assets.TextureAsset
+import com.github.kovah101.darkmatter.assets.TextureAtlasAsset
 import com.github.kovah101.darkmatter.ecs.system.*
 import com.github.kovah101.darkmatter.event.GameEventManager
 import com.github.kovah101.darkmatter.screen.DarkMatterScreen
 import com.github.kovah101.darkmatter.screen.GameScreen
+import com.github.kovah101.darkmatter.screen.LoadingScreen
 import ktx.app.KtxGame
 import ktx.assets.async.AssetStorage
 import ktx.async.KtxAsync
@@ -36,11 +39,10 @@ class DarkMatter : KtxGame<DarkMatterScreen>() {
         AssetStorage()
     }
 
-    val graphicsAtlas by lazy { TextureAtlas(Gdx.files.internal("graphics/graphics.atlas")) }
-    val backgroundTexture by lazy { Texture("graphics/background.png") }
-
     val engine: Engine by lazy {
         PooledEngine().apply {
+            val graphicsAtlas = assets[TextureAtlasAsset.GAME_GRAPHICS.descriptor]
+
             addSystem(PlayerInputSystem(gameViewport))
             addSystem(MoveSystem())
             addSystem(PowerUpSystem(gameEventManager))
@@ -60,7 +62,7 @@ class DarkMatter : KtxGame<DarkMatterScreen>() {
                     batch,
                     gameViewport,
                     uiViewport,
-                    backgroundTexture,
+                    assets[TextureAsset.BACKGROUND.descriptor],
                     gameEventManager
                 )
             )
@@ -83,7 +85,6 @@ class DarkMatter : KtxGame<DarkMatterScreen>() {
         super.dispose()
         LOG.debug { "Sprites in batch: ${(batch as SpriteBatch).maxSpritesInBatch}" }
         batch.dispose()
-        graphicsAtlas.dispose()
-        backgroundTexture.dispose()
+        assets.dispose()
     }
 }

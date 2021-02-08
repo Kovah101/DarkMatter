@@ -1,6 +1,7 @@
 package com.github.kovah101.darkmatter.screen
 
 
+import com.badlogic.ashley.core.Engine
 import com.github.kovah101.darkmatter.DarkMatter
 import com.github.kovah101.darkmatter.UNIT_SCALE
 import com.github.kovah101.darkmatter.V_WIDTH
@@ -12,12 +13,15 @@ import ktx.ashley.entity
 import ktx.ashley.with
 import ktx.log.debug
 import ktx.log.logger
-import java.lang.Float.min
+import kotlin.math.min
 
 private val LOG = logger<GameScreen>()
 private const val MAX_DELTA_TIME = 1 / 20f //used to stop spiral of death
 
-class GameScreen(game: DarkMatter) : DarkMatterScreen(game), GameEventListener {
+class GameScreen(
+    game: DarkMatter,
+    private val engine: Engine = game.engine
+) : DarkMatterScreen(game), GameEventListener {
 
 
     override fun show() {
