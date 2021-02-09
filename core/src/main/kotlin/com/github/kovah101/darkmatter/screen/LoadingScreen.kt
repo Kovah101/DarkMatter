@@ -1,11 +1,11 @@
 package com.github.kovah101.darkmatter.screen
 
 import com.github.kovah101.darkmatter.DarkMatter
+import com.github.kovah101.darkmatter.assets.SoundAsset
 import com.github.kovah101.darkmatter.assets.TextureAsset
 import com.github.kovah101.darkmatter.assets.TextureAtlasAsset
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
-import ktx.app.KtxScreen
 import ktx.async.KtxAsync
 import ktx.collections.gdxArrayOf
 import ktx.log.debug
@@ -20,7 +20,8 @@ class LoadingScreen(game: DarkMatter) : DarkMatterScreen(game) {
         // queue asset loading
         val assetRefs = gdxArrayOf(
             TextureAsset.values().map { assets.loadAsync(it.descriptor) },
-            TextureAtlasAsset.values().map { assets.loadAsync(it.descriptor) }
+            TextureAtlasAsset.values().map { assets.loadAsync(it.descriptor) },
+            SoundAsset.values().map { assets.loadAsync(it.descriptor) }
         ).flatten()
 
         // once assets are loaded change to GameScreen

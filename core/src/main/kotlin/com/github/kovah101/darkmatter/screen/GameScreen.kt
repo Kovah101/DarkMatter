@@ -5,6 +5,7 @@ import com.badlogic.ashley.core.Engine
 import com.github.kovah101.darkmatter.DarkMatter
 import com.github.kovah101.darkmatter.UNIT_SCALE
 import com.github.kovah101.darkmatter.V_WIDTH
+import com.github.kovah101.darkmatter.assets.MusicAsset
 import com.github.kovah101.darkmatter.ecs.components.*
 import com.github.kovah101.darkmatter.ecs.system.DAMAGE_AREA_HEIGHT
 import com.github.kovah101.darkmatter.event.GameEvent
@@ -28,6 +29,7 @@ class GameScreen(
         LOG.debug { "First screen shown" }
         gameEventManager.addListener(GameEvent.PlayerDeath::class, this)
 
+        audioService.play(MusicAsset.GAME)
         spawnPlayer()
 
         // dark matter
@@ -75,11 +77,7 @@ class GameScreen(
 
     override fun render(delta: Float) {
         engine.update(min(MAX_DELTA_TIME, delta))
-        // TODO Remove Debug lines
-        // extra life for debug
-//        if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_0)) {
-//            spawnPlayer()
-//        }
+        audioService.update()
     }
 
     override fun onEvent(event: GameEvent) {

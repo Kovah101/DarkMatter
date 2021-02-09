@@ -11,6 +11,8 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.utils.viewport.FitViewport
 import com.github.kovah101.darkmatter.assets.TextureAsset
 import com.github.kovah101.darkmatter.assets.TextureAtlasAsset
+import com.github.kovah101.darkmatter.audio.AudioService
+import com.github.kovah101.darkmatter.audio.DefaultAudioService
 import com.github.kovah101.darkmatter.ecs.system.*
 import com.github.kovah101.darkmatter.event.GameEventManager
 import com.github.kovah101.darkmatter.screen.DarkMatterScreen
@@ -30,14 +32,16 @@ const val V_WIDTH_PIXELS = 135
 const val V_HEIGHT_PIXELS = 240
 
 class DarkMatter : KtxGame<DarkMatterScreen>() {
-    val uiViewport = FitViewport(V_WIDTH_PIXELS.toFloat(), V_HEIGHT_PIXELS.toFloat()) // different scale - more pixels- for UI
+    val uiViewport =
+        FitViewport(V_WIDTH_PIXELS.toFloat(), V_HEIGHT_PIXELS.toFloat()) // different scale - more pixels- for UI
     val gameViewport = FitViewport(V_WIDTH.toFloat(), V_HEIGHT.toFloat()) // world units
     val batch: Batch by lazy { SpriteBatch() }
     val gameEventManager = GameEventManager()
-    val assets : AssetStorage by lazy {
+    val assets: AssetStorage by lazy {
         KtxAsync.initiate()
         AssetStorage()
     }
+    val audioService: AudioService by lazy { DefaultAudioService(assets) }
 
     val engine: Engine by lazy {
         PooledEngine().apply {
@@ -45,7 +49,7 @@ class DarkMatter : KtxGame<DarkMatterScreen>() {
 
             addSystem(PlayerInputSystem(gameViewport))
             addSystem(MoveSystem())
-            addSystem(PowerUpSystem(gameEventManager))
+            addSystem(PowerUpSystem(gameEventManager, audioService))
             addSystem(DamageSystem(gameEventManager))
             addSystem(CameraShakeSystem(gameViewport.camera, gameEventManager))
             addSystem(
