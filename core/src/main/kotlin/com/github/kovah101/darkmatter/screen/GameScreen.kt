@@ -14,6 +14,9 @@ import ktx.ashley.entity
 import ktx.ashley.with
 import ktx.log.debug
 import ktx.log.logger
+import ktx.preferences.flush
+import ktx.preferences.get
+import ktx.preferences.set
 import kotlin.math.min
 
 private val LOG = logger<GameScreen>()
@@ -27,6 +30,7 @@ class GameScreen(
 
     override fun show() {
         LOG.debug { "First screen shown" }
+        LOG.debug { "High Score: ${preferences["highscore", 0f]}" }
         gameEventManager.addListener(GameEvent.PlayerDeath::class, this)
 
         audioService.play(MusicAsset.GAME)
@@ -83,6 +87,11 @@ class GameScreen(
     override fun onEvent(event: GameEvent) {
         when (event) {
             is GameEvent.PlayerDeath -> {
+                LOG. debug { "Player died with a distance of ${event.distance} " }
+                // store high score
+                preferences.flush {
+                    this["highscore"] = event.distance
+                }
                 spawnPlayer()
             }
             GameEvent.CollectPowerUp -> TODO()

@@ -4,11 +4,13 @@ import com.badlogic.ashley.core.Engine
 import com.badlogic.ashley.core.PooledEngine
 import com.badlogic.gdx.Application.LOG_DEBUG
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.utils.viewport.FitViewport
+import com.github.kovah101.darkmatter.assets.MusicAsset
 import com.github.kovah101.darkmatter.assets.TextureAsset
 import com.github.kovah101.darkmatter.assets.TextureAtlasAsset
 import com.github.kovah101.darkmatter.audio.AudioService
@@ -42,8 +44,11 @@ class DarkMatter : KtxGame<DarkMatterScreen>() {
         AssetStorage()
     }
     val audioService: AudioService by lazy { DefaultAudioService(assets) }
+    val preferences : Preferences by lazy { Gdx.app.getPreferences("dark-matter")}
 
     val engine: Engine by lazy {
+
+
         PooledEngine().apply {
             val graphicsAtlas = assets[TextureAtlasAsset.GAME_GRAPHICS.descriptor]
 
@@ -88,6 +93,9 @@ class DarkMatter : KtxGame<DarkMatterScreen>() {
     override fun dispose() {
         super.dispose()
         LOG.debug { "Sprites in batch: ${(batch as SpriteBatch).maxSpritesInBatch}" }
+        MusicAsset.values().forEach {
+            LOG.debug { "Refcount $it: ${assets.getReferenceCount(it.descriptor)}" }
+        }
         batch.dispose()
         assets.dispose()
     }

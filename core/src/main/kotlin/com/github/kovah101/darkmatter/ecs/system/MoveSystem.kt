@@ -9,6 +9,7 @@ import com.github.kovah101.darkmatter.ecs.components.*
 import ktx.ashley.allOf
 import ktx.ashley.exclude
 import ktx.ashley.get
+import kotlin.math.abs
 import kotlin.math.min
 import kotlin.math.max
 
@@ -108,6 +109,11 @@ class MoveSystem :
             -MAX_VER_NEG_PLAYER_SPEED,
             MAX_VER_POS_PLAYER_SPEED
         )
+        // store original position
+        val oldY = transform.position.y
+        // move player
         moveEntity(transform, move, deltaTime)
+        // update distance
+        player.distance += abs(transform.position.y - oldY)
     }
 }
