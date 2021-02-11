@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.utils.viewport.FitViewport
 import com.github.kovah101.darkmatter.assets.MusicAsset
+import com.github.kovah101.darkmatter.assets.ShaderProgramAsset
 import com.github.kovah101.darkmatter.assets.TextureAsset
 import com.github.kovah101.darkmatter.assets.TextureAtlasAsset
 import com.github.kovah101.darkmatter.audio.AudioService
@@ -72,7 +73,8 @@ class DarkMatter : KtxGame<DarkMatterScreen>() {
                     gameViewport,
                     uiViewport,
                     assets[TextureAsset.BACKGROUND.descriptor],
-                    gameEventManager
+                    gameEventManager,
+                    assets[ShaderProgramAsset.OUTLINE.descriptor]
                 )
             )
             addSystem(RemoveSystem()) // last system to be added

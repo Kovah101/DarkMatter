@@ -3,16 +3,18 @@ package com.github.kovah101.darkmatter.ecs.system
 import com.badlogic.ashley.core.Engine
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.SortedIteratingSystem
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.Sprite
+import com.badlogic.gdx.graphics.glutils.ShaderProgram
+import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.viewport.Viewport
-import com.github.kovah101.darkmatter.ecs.components.GraphicComponent
-import com.github.kovah101.darkmatter.ecs.components.PowerUpType
-import com.github.kovah101.darkmatter.ecs.components.TransformComponent
+import com.github.kovah101.darkmatter.ecs.components.*
 import com.github.kovah101.darkmatter.event.*
 import ktx.ashley.allOf
+import ktx.ashley.exclude
 import ktx.ashley.get
 import ktx.graphics.use
 import ktx.log.error
@@ -26,17 +28,27 @@ class RenderSystem(
     private val gameViewport: Viewport,
     private val uiViewport: Viewport,
     backgroundTexture: Texture,
-    private val gameEventManager: GameEventManager
+    private val gameEventManager: GameEventManager,
+    private val outlineShader: ShaderProgram
 ) : GameEventListener,
     SortedIteratingSystem(
     allOf(TransformComponent::class, GraphicComponent::class).get(),
     // comparing entities by transform component
     compareBy { entity -> entity[TransformComponent.mapper] }
 ) {
+    // background values
     private val background = Sprite(backgroundTexture.apply {
         setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat)
     })
     private val backgroundSpeed = Vector2(0.01f, -0.25f)
+
+    // shader values
+    private val textureSizeLoc = outlineShader.getUniformLocation("u_textureSize")
+    private val outlineColorLoc = outlineShader.getUniformLocation("u_outlineColor")
+    private val outlineColor = Color(0f, 113f/255f, 214f/255f, 1f)
+    private val playerEntities by lazy {
+        engine.getEntitiesFor(allOf(PlayerComponent::class).exclude(RemoveComponent::class).get())
+    }
 
     override fun addedToEngine(engine: Engine?) {
         super.addedToEngine(engine)
@@ -70,6 +82,36 @@ class RenderSystem(
             super.update(deltaTime)
         }
 
+        // render outlines of entities
+        renderEntityOutlines()
+
+    }
+
+    private fun renderEntityOutlines(){
+        batch.use(gameViewport.camera.combined) {
+            it.shader = outlineShader
+            playerEntities.forEach{ entity ->
+                renderPlayerOutlines(entity, it)
+            }
+            it.shader = null
+        }
+    }
+
+    private fun renderPlayerOutlines(entity: Entity, batch: Batch){
+        val player = entity[PlayerComponent.mapper]
+        require(player != null) {"Entity |entity| must have a PlayerComponent. entity=$entity"}
+
+        if(player.shield > 0f){
+            outlineColor.a = MathUtils.clamp(player.shield/player.maxShield, 0f, 1f)
+
+            outlineShader.setUniformf(outlineColorLoc, outlineColor)
+            entity[GraphicComponent.mapper]?.let { graphic ->
+                graphic.sprite.run {
+                    outlineShader.setUniformf(textureSizeLoc, texture.width.toFloat(), texture.height.toFloat())
+                    draw(batch)
+                }
+            }
+        }
     }
 
     override fun processEntity(entity: Entity, deltaTime: Float) {
