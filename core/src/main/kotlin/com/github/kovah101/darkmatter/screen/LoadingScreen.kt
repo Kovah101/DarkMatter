@@ -28,6 +28,7 @@ class LoadingScreen(game: DarkMatter) : DarkMatterScreen(game) {
     private lateinit var touchToBeginLabel: Label
 
     override fun show() {
+        LOG.debug { "Loading screen shown" }
         val old = System.currentTimeMillis()
         // queue asset loading
         val assetRefs = gdxArrayOf(
@@ -105,6 +106,10 @@ class LoadingScreen(game: DarkMatter) : DarkMatterScreen(game) {
         }
     }
 
+    override fun resize(width: Int, height: Int) {
+        stage.viewport.update(width, height, true)
+    }
+
     private fun assetsLoaded() {
         game.addScreen(GameScreen(game))
         touchToBeginLabel += Actions.forever(
@@ -113,6 +118,8 @@ class LoadingScreen(game: DarkMatter) : DarkMatterScreen(game) {
                         + Actions.fadeOut(0.5f)
             )
         )
+        game.addScreen(GameOverScreen(game))
+
     }
 
 }

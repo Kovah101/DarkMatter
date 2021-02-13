@@ -54,8 +54,6 @@ class DarkMatter : KtxGame<DarkMatterScreen>() {
     val preferences : Preferences by lazy { Gdx.app.getPreferences("dark-matter")}
 
     val engine: Engine by lazy {
-
-
         PooledEngine().apply {
             val graphicsAtlas = assets[TextureAtlasAsset.GAME_GRAPHICS.descriptor]
 
@@ -93,7 +91,8 @@ class DarkMatter : KtxGame<DarkMatterScreen>() {
         LOG.debug { "Create game instance" }
         val assetRefs = gdxArrayOf(
             TextureAtlasAsset.values().filter { it.isSkinAtlas }.map { assets.loadAsync(it.descriptor) },
-            BitmapFontAsset.values().map {assets.loadAsync(it.descriptor)}
+            BitmapFontAsset.values().map {assets.loadAsync(it.descriptor)},
+            I18NBundleAsset.values().map { assets.loadAsync(it.descriptor) }
         ).flatten()
         KtxAsync.launch {
             assetRefs.joinAll() // wait till loaded

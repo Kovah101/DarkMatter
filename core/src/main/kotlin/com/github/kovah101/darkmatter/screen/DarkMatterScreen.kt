@@ -3,8 +3,10 @@ package com.github.kovah101.darkmatter.screen
 
 import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.utils.I18NBundle
 import com.badlogic.gdx.utils.viewport.Viewport
 import com.github.kovah101.darkmatter.DarkMatter
+import com.github.kovah101.darkmatter.assets.I18NBundleAsset
 import com.github.kovah101.darkmatter.audio.AudioService
 import com.github.kovah101.darkmatter.event.GameEventManager
 import ktx.app.KtxScreen
@@ -19,7 +21,8 @@ abstract class DarkMatterScreen(
     val assets: AssetStorage = game.assets,
     val audioService: AudioService = game.audioService,
     val preferences: Preferences = game.preferences,
-    val stage : Stage = game.stage
+    val stage : Stage = game.stage,
+    val bundle: I18NBundle = assets[I18NBundleAsset.DEFAULT.descriptor]
 ) : KtxScreen {
 
     override fun resize(width: Int, height: Int) {

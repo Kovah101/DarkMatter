@@ -18,6 +18,7 @@ import ktx.preferences.flush
 import ktx.preferences.get
 import ktx.preferences.set
 import kotlin.math.min
+import kotlin.math.roundToInt
 
 private val LOG = logger<GameScreen>()
 private const val MAX_DELTA_TIME = 1 / 20f //used to stop spiral of death
@@ -27,9 +28,8 @@ class GameScreen(
     private val engine: Engine = game.engine
 ) : DarkMatterScreen(game), GameEventListener {
 
-
     override fun show() {
-        LOG.debug { "First screen shown" }
+        LOG.debug { "Game screen shown" }
         LOG.debug { "High Score: ${preferences["highscore", 0f]}" }
         gameEventManager.addListener(GameEvent.PlayerDeath::class, this)
 
@@ -37,6 +37,10 @@ class GameScreen(
         spawnPlayer()
 
         // dark matter
+        spawnDarkMatter()
+    }
+
+    private fun spawnDarkMatter() {
         engine.entity {
             with<TransformComponent> {
                 size.set(
@@ -87,12 +91,17 @@ class GameScreen(
     override fun onEvent(event: GameEvent) {
         when (event) {
             is GameEvent.PlayerDeath -> {
-                LOG. debug { "Player died with a distance of ${event.distance} " }
+                val distanceScore = event.distance.roundToInt()
+                LOG. debug { "Player died with a distance of $distanceScore " }
                 // store high score
                 preferences.flush {
-                    this["highscore"] = event.distance
+                    this["highscore"] = distanceScore
                 }
-                spawnPlayer()
+                game.getScreen<GameOverScreen>().run {
+                    score = distanceScore
+                    highScore = preferences["highscore", 0]
+                }
+                game.setScreen<GameOverScreen>()
             }
             GameEvent.CollectPowerUp -> TODO()
         }
