@@ -30,7 +30,7 @@ class GameScreen(
 
     override fun show() {
         LOG.debug { "Game screen shown" }
-        LOG.debug { "High Score: ${preferences["highscore", 0f]}" }
+        LOG.debug { "High Score: ${preferences["highscore", 0]}" }
         gameEventManager.addListener(GameEvent.PlayerDeath::class, this)
 
         audioService.play(MusicAsset.GAME)

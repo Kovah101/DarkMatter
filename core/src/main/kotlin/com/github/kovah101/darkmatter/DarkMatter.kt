@@ -82,7 +82,7 @@ class DarkMatter : KtxGame<DarkMatterScreen>() {
                 )
             )
             addSystem(RemoveSystem()) // last system to be added
-            addSystem(DebugSystem())
+            //addSystem(DebugSystem())
         }
     }
 
