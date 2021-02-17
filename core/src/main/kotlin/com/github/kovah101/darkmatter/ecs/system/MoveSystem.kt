@@ -16,11 +16,11 @@ import kotlin.math.max
 private const val UPDATE_RATE = 1 / 25f
 // supersedes deltaTime in case of lag
 // gives constant movement
-private const val HOR_ACC = 16.5f
+private const val HOR_ACC = 18.5f
 private const val VER_ACC = 2.25f
 private const val MAX_VER_NEG_PLAYER_SPEED = 0.75f
 private const val MAX_VER_POS_PLAYER_SPEED = 5f
-private const val MAX_HOR_SPEED = 5.5f
+private const val MAX_HOR_SPEED = 5.75f
 
 class MoveSystem :
     IteratingSystem(allOf(TransformComponent::class, MoveComponent::class).exclude(RemoveComponent::class).get()) {
