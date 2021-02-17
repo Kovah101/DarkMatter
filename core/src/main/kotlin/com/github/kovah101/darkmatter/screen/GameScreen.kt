@@ -3,6 +3,8 @@ package com.github.kovah101.darkmatter.screen
 
 import com.badlogic.ashley.core.Engine
 import com.badlogic.ashley.core.Entity
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Input
 import com.github.kovah101.darkmatter.DarkMatter
 import com.github.kovah101.darkmatter.UNIT_SCALE
 import com.github.kovah101.darkmatter.V_WIDTH
@@ -38,7 +40,6 @@ class GameScreen(
         LOG.debug { "Game screen shown" }
         LOG.debug { "High Score: ${preferences["highscore", 0]}" }
         gameEventManager.addListener(GameEvent.PlayerDeath::class, this)
-
 
         engine.run {
             // attempt to stop constant player respawning & music restarting

@@ -1,6 +1,7 @@
 package com.github.kovah101.darkmatter.screen
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Input
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Label
@@ -102,7 +103,6 @@ class LoadingScreen(game: DarkMatter) : DarkMatterScreen(game) {
             viewport.apply()
             act()
             draw()
-
         }
     }
 

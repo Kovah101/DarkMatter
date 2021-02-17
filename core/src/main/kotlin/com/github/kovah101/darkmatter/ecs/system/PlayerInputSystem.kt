@@ -13,6 +13,7 @@ import ktx.ashley.allOf
 import ktx.ashley.get
 
 private const val TOUCH_TOLERANCE_DISTANCE = 0.2f
+private const val TILT_TOLERANCE = 0.35f
 
 class PlayerInputSystem (
     private val gameViewport: Viewport,
@@ -36,6 +37,14 @@ class PlayerInputSystem (
             diffX > TOUCH_TOLERANCE_DISTANCE -> FacingDirection.RIGHT
             else -> FacingDirection.DEFAULT
         }
+        // Take accelerometer reading
+        val tiltX = Gdx.input.accelerometerX
+        facing.direction = when {
+            tiltX > TILT_TOLERANCE -> FacingDirection.LEFT
+            tiltX < -TILT_TOLERANCE -> FacingDirection.RIGHT
+            else -> FacingDirection.DEFAULT
+        }
+
     }
 
         }
