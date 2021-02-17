@@ -20,7 +20,8 @@ enum class AnimationType(
     SPEED_1("orb_blue", speedRate = 0.5f),
     SPEED_2("orb_yellow", speedRate = 0.5f),
     LIFE("life", speedRate = 0.5f),
-    SHIELD("shield", speedRate = 0.5f)
+    SHIELD("shield", speedRate = 0.5f),
+    EXPLOSION("explosion", Animation.PlayMode.NORMAL, speedRate = 0.5f)
 }
 
 class Animation2D (

@@ -2,6 +2,7 @@ package com.github.kovah101.darkmatter.ecs.system
 
 import com.badlogic.ashley.core.Engine
 import com.badlogic.ashley.core.Entity
+import com.badlogic.gdx.math.Vector2
 import com.github.kovah101.darkmatter.UNIT_SCALE
 import com.github.kovah101.darkmatter.V_HEIGHT
 import com.github.kovah101.darkmatter.V_WIDTH
@@ -58,5 +59,20 @@ fun Engine.createDarkMatter(){
         }
         with<AnimationComponent> { type = AnimationType.DARK_MATTER }
         with<GraphicComponent>()
+    }
+}
+
+fun Engine.addExplosion(transform : TransformComponent){
+    entity {
+        with<TransformComponent>{
+            size.set(1.5f,1.5f)
+            setInitialPosition(transform.position.x, transform.position.y, 2f)
+        }
+        with<GraphicComponent>()
+        with<AnimationComponent>{ type = AnimationType.EXPLOSION}
+        with<RemoveComponent>{
+            delay = 1f
+        }
+
     }
 }

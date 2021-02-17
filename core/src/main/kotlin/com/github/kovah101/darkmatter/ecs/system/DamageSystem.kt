@@ -2,6 +2,7 @@ package com.github.kovah101.darkmatter.ecs.system
 
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.IteratingSystem
+import com.github.kovah101.darkmatter.ecs.components.GraphicComponent
 import com.github.kovah101.darkmatter.ecs.components.PlayerComponent
 import com.github.kovah101.darkmatter.ecs.components.RemoveComponent
 import com.github.kovah101.darkmatter.ecs.components.TransformComponent
@@ -49,6 +50,7 @@ class DamageSystem (
                 maxLife = player.maxLife
             })
 
+            // on death
             if (player.life <= 0f) {
                 gameEventManager.dispatchEvent(GameEvent.PlayerDeath.apply {
                     this.distance = player.distance
@@ -56,6 +58,8 @@ class DamageSystem (
                 entity.addComponent<RemoveComponent>(engine) {
                     delay = DEATH_EXPLOSION_DELAY
                 }
+                entity[GraphicComponent.mapper]?.sprite?.setAlpha(0f)
+                engine.addExplosion(transform)
             }
         }
     }

@@ -9,6 +9,7 @@ import com.github.kovah101.darkmatter.V_WIDTH
 import com.github.kovah101.darkmatter.assets.MusicAsset
 import com.github.kovah101.darkmatter.ecs.components.*
 import com.github.kovah101.darkmatter.ecs.system.DAMAGE_AREA_HEIGHT
+import com.github.kovah101.darkmatter.ecs.system.addExplosion
 import com.github.kovah101.darkmatter.ecs.system.createDarkMatter
 import com.github.kovah101.darkmatter.ecs.system.createPlayer
 import com.github.kovah101.darkmatter.event.GameEvent
@@ -38,21 +39,17 @@ class GameScreen(
         LOG.debug { "High Score: ${preferences["highscore", 0]}" }
         gameEventManager.addListener(GameEvent.PlayerDeath::class, this)
 
-        audioService.play(MusicAsset.GAME)
 
         engine.run {
-            // attempt to stop constant player respawning
+            // attempt to stop constant player respawning & music restarting
             LOG.debug { "player alive = $playerAlive" }
             if (!playerAlive) {
+                audioService.play(MusicAsset.GAME)
                 createPlayer(assets)
                 createDarkMatter()
                 playerAlive = true
             }
         }
-        //spawnPlayer()
-
-        // dark matter
-        //spawnDarkMatter()
     }
 
 
