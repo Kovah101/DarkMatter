@@ -10,6 +10,7 @@ import ktx.style.SkinDsl
 import ktx.style.label
 import ktx.style.skin
 import ktx.style.textButton
+import ktx.style.imageButton
 
 enum class LabelStyles {
     DEFAULT,
@@ -18,7 +19,13 @@ enum class LabelStyles {
 
 enum class TextButtonStyles {
     DEFAULT,
-    LARGE
+    LABEL,
+    TRANSPARENT,
+    LABEL_TRANSPARENT
+}
+
+enum class ImageButtonStyles {
+    SOUND_ON_OFF
 }
 
 fun createSkin(assets: AssetStorage){
@@ -27,19 +34,47 @@ fun createSkin(assets: AssetStorage){
     val normalFont = assets[BitmapFontAsset.FONT_DEFAULT.descriptor]
     Scene2DSkin.defaultSkin = skin(atlas) { skin ->
         createLabelStyles(normalFont, gradientFont)
-        textButton(TextButtonStyles.DEFAULT.name) {
-            font = normalFont
-            up = skin.getDrawable("frame")
-            down = up
-        }
-        textButton(TextButtonStyles.LARGE.name) {
-            font = normalFont
-            up = skin.getDrawable("label_frame")
-            down = up
-
-        }
+        createTextButtonStyles(normalFont, skin)
+        createImageButtons(skin)
     }
 
+}
+
+private fun @SkinDsl Skin.createImageButtons(skin: Skin) {
+    imageButton(ImageButtonStyles.SOUND_ON_OFF.name) {
+        imageUp = skin.getDrawable("sound")
+        imageChecked = skin.getDrawable("no_sound")
+        imageDown = imageChecked
+        up = skin.getDrawable("frame")
+        down = up
+    }
+}
+
+
+private fun @SkinDsl Skin.createTextButtonStyles(
+    normalFont: BitmapFont,
+    skin: Skin
+) {
+    textButton(TextButtonStyles.DEFAULT.name) {
+        font = normalFont
+        up = skin.getDrawable("frame")
+        down = up
+    }
+    textButton(TextButtonStyles.LABEL.name) {
+        font = normalFont
+        up = skin.getDrawable("label_frame")
+        down = up
+    }
+    textButton(TextButtonStyles.TRANSPARENT.name) {
+        font = normalFont
+        up = skin.getDrawable("frame_transparent")
+        down = up
+    }
+    textButton(TextButtonStyles.LABEL_TRANSPARENT.name) {
+        font = normalFont
+        up = skin.getDrawable("label_frame_transparent")
+        down = up
+    }
 }
 
 

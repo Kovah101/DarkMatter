@@ -1,6 +1,7 @@
 package com.github.kovah101.darkmatter.ui
 
 import com.badlogic.gdx.math.MathUtils
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.I18NBundle
@@ -13,6 +14,7 @@ class GameOverUI (private val bundle: I18NBundle){
     private val lastScoreButton: TextButton
     private val highScoreButton: TextButton
     val backButton: TextButton
+    val soundButton : ImageButton
 
     // initialise variables
     init {
@@ -30,14 +32,18 @@ class GameOverUI (private val bundle: I18NBundle){
             }
             row()
 
-            lastScoreButton = textButton(bundle["score", 0], TextButtonStyles.LARGE.name)
+            lastScoreButton = textButton(bundle["score", 0], TextButtonStyles.LABEL.name)
             row()
 
-            highScoreButton = textButton(bundle["highscore", 0], TextButtonStyles.LARGE.name)
+            highScoreButton = textButton(bundle["highscore", 0], TextButtonStyles.LABEL.name)
             row()
 
             backButton = textButton("Restart", LabelStyles.DEFAULT.name)
             row()
+
+            soundButton = imageButton (ImageButtonStyles.SOUND_ON_OFF.name)
+            row()
+
 
             setFillParent(true)
             top()
