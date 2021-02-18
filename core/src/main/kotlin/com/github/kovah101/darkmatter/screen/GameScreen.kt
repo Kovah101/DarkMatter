@@ -8,6 +8,7 @@ import com.badlogic.gdx.Input
 import com.github.kovah101.darkmatter.DarkMatter
 import com.github.kovah101.darkmatter.UNIT_SCALE
 import com.github.kovah101.darkmatter.V_WIDTH
+import com.github.kovah101.darkmatter.assets.I18NBundleAsset
 import com.github.kovah101.darkmatter.assets.MusicAsset
 import com.github.kovah101.darkmatter.ecs.components.*
 import com.github.kovah101.darkmatter.ecs.system.DAMAGE_AREA_HEIGHT
@@ -16,6 +17,8 @@ import com.github.kovah101.darkmatter.ecs.system.createDarkMatter
 import com.github.kovah101.darkmatter.ecs.system.createPlayer
 import com.github.kovah101.darkmatter.event.GameEvent
 import com.github.kovah101.darkmatter.event.GameEventListener
+import com.github.kovah101.darkmatter.ui.GameUI
+import ktx.actors.plusAssign
 import ktx.ashley.entity
 import ktx.ashley.get
 import ktx.ashley.with
@@ -35,8 +38,11 @@ class GameScreen(
     game: DarkMatter,
     private val engine: Engine = game.engine
 ) : DarkMatterScreen(game), GameEventListener {
+    private  val ui = GameUI(assets[I18NBundleAsset.DEFAULT.descriptor])
+
 
     override fun show() {
+        super.show()
         LOG.debug { "Game screen shown" }
         LOG.debug { "High Score: ${preferences["highscore", 0]}" }
         gameEventManager.addListener(GameEvent.PlayerDeath::class, this)
@@ -51,6 +57,17 @@ class GameScreen(
                 playerAlive = true
             }
         }
+            setupUI()
+    }
+
+    private fun setupUI(){
+        ui.run {
+            updateDistance(200f)
+            updateLife(MAX_LIFE, MAX_LIFE)
+            updateShield(100f, MAX_SHIELD)
+
+        }
+        stage += ui
     }
 
 
@@ -61,8 +78,14 @@ class GameScreen(
 
 
     override fun render(delta: Float) {
-        engine.update(min(MAX_DELTA_TIME, delta))
+        val deltaTime = min(MAX_DELTA_TIME, delta)
+        engine.update(deltaTime)
         audioService.update()
+        stage.run {
+            viewport.apply()
+            act(deltaTime)
+            draw()
+        }
     }
 
     override fun onEvent(event: GameEvent) {
