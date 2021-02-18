@@ -19,12 +19,13 @@ class GameOverUI (private val bundle: I18NBundle){
         table = scene2d.table {
             defaults().pad(10f).expandX().fillX()
 
+            row()
             label(bundle["gameTitle"], LabelStyles.GRADIENT.name) { cell ->
                 wrap = true
                 setAlignment(Align.center)
                 cell.apply {
-                    padTop(15f)
-                    padBottom(20f)
+                    padTop(30f)
+                    padBottom(15f)
                 }
             }
             row()
