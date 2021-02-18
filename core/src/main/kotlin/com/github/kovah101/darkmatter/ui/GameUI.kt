@@ -100,4 +100,12 @@ class GameUI(private val bundle: I18NBundle) : Group() {
     fun updateShield(shield: Float, maxShield: Float) {
         shieldBarImage.color.a = MathUtils.clamp(shield / maxShield, 0f, 1f)
     }
+
+    fun updateSpeed(speed: Float){
+        speedLabel.run {
+            text.setLength(0)
+            text.append(MathUtils.clamp(speed, MIN_SPEED, MAX_SPEED).roundToInt())
+            invalidateHierarchy()
+        }
+    }
 }

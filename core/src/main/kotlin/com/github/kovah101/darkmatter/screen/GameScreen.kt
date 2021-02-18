@@ -127,6 +127,7 @@ class GameScreen(
 
             is GameEvent.PlayerMove -> {
                 ui.updateDistance(event.distance)
+                ui.updateSpeed(event.speed)
             }
 
 

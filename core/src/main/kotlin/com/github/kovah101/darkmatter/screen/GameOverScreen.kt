@@ -19,7 +19,7 @@ class GameOverScreen(
         backButton.onClick {
             game.setScreen<GameScreen>()
             // hide UI
-            stage -= table
+            //stage -= table
         }
     }
 
@@ -34,6 +34,10 @@ class GameOverScreen(
             updateScores(score, highScore)
             stage += this.table
         }
+    }
+
+    override fun hide() {
+        stage.clear()
     }
 
     override fun render(delta: Float) {
