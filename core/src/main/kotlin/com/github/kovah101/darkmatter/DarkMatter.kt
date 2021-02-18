@@ -58,7 +58,7 @@ class DarkMatter : KtxGame<DarkMatterScreen>() {
             val graphicsAtlas = assets[TextureAtlasAsset.GAME_GRAPHICS.descriptor]
 
             addSystem(PlayerInputSystem(gameViewport))
-            addSystem(MoveSystem())
+            addSystem(MoveSystem(gameEventManager))
             addSystem(PowerUpSystem(gameEventManager, audioService))
             addSystem(DamageSystem(gameEventManager))
             addSystem(CameraShakeSystem(gameViewport.camera, gameEventManager))

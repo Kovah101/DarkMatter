@@ -45,7 +45,13 @@ class GameScreen(
         super.show()
         LOG.debug { "Game screen shown" }
         LOG.debug { "High Score: ${preferences["highscore", 0]}" }
-        gameEventManager.addListener(GameEvent.PlayerDeath::class, this)
+        gameEventManager.run {
+            addListener(GameEvent.PlayerDeath::class, this@GameScreen)
+            addListener(GameEvent.PlayerHit::class, this@GameScreen)
+            addListener(GameEvent.PlayerMove::class, this@GameScreen)
+            addListener(GameEvent.PlayerBlock::class, this@GameScreen)
+            addListener(GameEvent.PlayerDeath::class, this@GameScreen)
+        }
 
         engine.run {
             // attempt to stop constant player respawning & music restarting
@@ -62,9 +68,9 @@ class GameScreen(
 
     private fun setupUI(){
         ui.run {
-            updateDistance(200f)
+            updateDistance(0f)
             updateLife(MAX_LIFE, MAX_LIFE)
-            updateShield(100f, MAX_SHIELD)
+            updateShield(0f, MAX_SHIELD)
 
         }
         stage += ui
@@ -106,10 +112,43 @@ class GameScreen(
                 }
                 game.setScreen<GameOverScreen>()
             }
-            GameEvent.CollectPowerUp -> TODO()
+            is GameEvent.CollectPowerUp -> {
+                onCollectPowerUp(event)
+            }
+
+            is GameEvent.PlayerHit -> {
+                ui.run {
+                    updateLife(event.life, event.maxLife)
+                }
+            }
+            is GameEvent.PlayerBlock -> {
+                ui.updateShield(event.shield, event.maxShield)
+            }
+
+            is GameEvent.PlayerMove -> {
+                ui.updateDistance(event.distance)
+            }
+
+
         }
 
     }
+
+    private fun onCollectPowerUp(event : GameEvent.CollectPowerUp){
+        // check for player component in event
+        event.player[PlayerComponent.mapper]?.let { player ->
+            when(event.type){
+                PowerUpType.LIFE -> ui.updateLife(player.life, player.maxLife)
+                PowerUpType.SHIELD -> ui.updateShield(player.shield, player.maxShield)
+                else -> {
+                    // ignore &
+                    //return
+                }
+            }
+
+        }
+    }
+
 }
 
 

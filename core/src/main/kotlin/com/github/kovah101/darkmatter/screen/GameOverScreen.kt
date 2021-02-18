@@ -3,6 +3,7 @@ package com.github.kovah101.darkmatter.screen
 import com.badlogic.ashley.core.Engine
 import com.github.kovah101.darkmatter.DarkMatter
 import com.github.kovah101.darkmatter.ui.GameOverUI
+import ktx.actors.minusAssign
 import ktx.actors.onClick
 import ktx.actors.plusAssign
 import ktx.log.debug
@@ -17,6 +18,8 @@ class GameOverScreen(
     private val ui = GameOverUI(bundle).apply {
         backButton.onClick {
             game.setScreen<GameScreen>()
+            // hide UI
+            stage -= table
         }
     }
 

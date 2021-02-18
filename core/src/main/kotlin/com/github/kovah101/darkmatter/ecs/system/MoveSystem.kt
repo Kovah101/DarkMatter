@@ -6,6 +6,8 @@ import com.badlogic.gdx.math.MathUtils
 import com.github.kovah101.darkmatter.V_HEIGHT
 import com.github.kovah101.darkmatter.V_WIDTH
 import com.github.kovah101.darkmatter.ecs.components.*
+import com.github.kovah101.darkmatter.event.GameEvent
+import com.github.kovah101.darkmatter.event.GameEventManager
 import ktx.ashley.allOf
 import ktx.ashley.exclude
 import ktx.ashley.get
@@ -22,7 +24,9 @@ private const val MAX_VER_NEG_PLAYER_SPEED = 0.75f
 private const val MAX_VER_POS_PLAYER_SPEED = 5f
 private const val MAX_HOR_SPEED = 5.75f
 
-class MoveSystem :
+class MoveSystem(
+    private val gameEventManager: GameEventManager
+) :
     IteratingSystem(allOf(TransformComponent::class, MoveComponent::class).exclude(RemoveComponent::class).get()) {
     private var accumulator = 0f
 
@@ -115,5 +119,10 @@ class MoveSystem :
         moveEntity(transform, move, deltaTime)
         // update distance
         player.distance += abs(transform.position.y - oldY)
+        // alert Game + UI of distance
+        gameEventManager.dispatchEvent(GameEvent.PlayerMove.apply {
+            distance = player.distance
+            speed = move.speed.y
+        })
     }
 }

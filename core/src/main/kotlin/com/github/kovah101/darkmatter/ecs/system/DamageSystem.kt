@@ -35,7 +35,11 @@ class DamageSystem (
             // block damage with shield first
             if (player.shield > 0f) {
                 val blockAmount = player.shield
-                player.shield = max(0f, player.shield - damage)
+                player.shield = max( player.shield - damage, 0f)
+                gameEventManager.dispatchEvent(GameEvent.PlayerBlock.apply {
+                    shield = player.shield
+                    maxShield = player.maxShield
+                })
                 damage -= blockAmount
 
                 if (damage <= 0f) {
