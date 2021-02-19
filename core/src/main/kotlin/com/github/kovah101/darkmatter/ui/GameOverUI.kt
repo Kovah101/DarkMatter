@@ -7,7 +7,6 @@ import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.I18NBundle
 import ktx.i18n.get
 import ktx.scene2d.*
-import com.github.kovah101.darkmatter.ui.LabelStyles
 
 class GameOverUI (private val bundle: I18NBundle){
     val table: KTableWidget
@@ -21,7 +20,6 @@ class GameOverUI (private val bundle: I18NBundle){
         table = scene2d.table {
             defaults().pad(10f).expandX().fillX()
 
-            row()
             label(bundle["gameTitle"], LabelStyles.GRADIENT.name) { cell ->
                 wrap = true
                 setAlignment(Align.center)
