@@ -5,7 +5,9 @@ import com.badlogic.gdx.Gdx
 import com.github.kovah101.darkmatter.DarkMatter
 import com.github.kovah101.darkmatter.assets.MusicAsset
 import com.github.kovah101.darkmatter.ecs.system.*
+import com.github.kovah101.darkmatter.ui.ControlDialog
 import com.github.kovah101.darkmatter.ui.MenuUI
+import com.github.kovah101.darkmatter.ui.TextDialog
 import ktx.actors.onChangeEvent
 import ktx.actors.onClick
 import ktx.actors.plusAssign
@@ -34,7 +36,17 @@ class MenuScreen(
 
         }
         quitGameButton.onClick { Gdx.app.exit() }
+        creditsButton.onClick {
+            creditsDialog.show(stage)
+        }
+        controlButton.onClick {
+            controlDialog.show(stage)
+
+        }
     }
+
+    private val creditsDialog = TextDialog(bundle, "credits")
+    private val controlDialog = ControlDialog(engine,bundle, "controls")
 
     override fun show() {
         super.show()
@@ -54,6 +66,7 @@ class MenuScreen(
             updateHighScore(preferences["highscore", 0])
             stage += this.table
         }
+        //stage.isDebugAll = true
     }
 
     override fun hide() {

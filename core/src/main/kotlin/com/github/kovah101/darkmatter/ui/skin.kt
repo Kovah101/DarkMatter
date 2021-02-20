@@ -28,6 +28,10 @@ enum class WindowStyles {
     DEFAULT
 }
 
+enum class ScrollPaneStyles {
+    DEFAULT
+}
+
 fun createSkin(assets: AssetStorage){
     val atlas = assets[TextureAtlasAsset.UI.descriptor]
     val gradientFont = assets[BitmapFontAsset.FONT_LARGE_GRADIENT.descriptor]
@@ -37,8 +41,16 @@ fun createSkin(assets: AssetStorage){
         createTextButtonStyles(normalFont, skin)
         createImageButtons(skin)
         createWindowStyle(skin, normalFont)
+        createScrollPaneStyles(skin)
     }
 
+}
+
+private fun @SkinDsl Skin.createScrollPaneStyles(skin: Skin) {
+    scrollPane(ScrollPaneStyles.DEFAULT.name) {
+        vScroll = skin.getDrawable("scroll_v")
+        vScrollKnob = skin.getDrawable("scroll_knob")
+    }
 }
 
 private fun @SkinDsl Skin.createWindowStyle(

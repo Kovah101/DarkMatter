@@ -66,7 +66,7 @@ class LoadingScreen(game: DarkMatter) : DarkMatterScreen(game) {
                 }
                 row()
 
-                touchToBeginLabel = label("Touch To Begin", LabelStyles.DEFAULT.name) {
+                touchToBeginLabel = label(bundle["touchToBegin"], LabelStyles.DEFAULT.name) {
                     wrap = true
                     setAlignment(Align.center)
                     color.a = 0f

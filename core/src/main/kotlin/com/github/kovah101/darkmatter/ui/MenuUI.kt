@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.I18NBundle
 import ktx.i18n.get
 import ktx.scene2d.*
 
+private const val TITLE_PADDING = 13f
 private const val PADDING = 2.5f
 private const val MAX_HIGH_SCORE = 9999
 
@@ -28,8 +29,8 @@ class MenuUI(private val bundle : I18NBundle) {
                 wrap = true
                 setAlignment(Align.center)
                 cell.apply {
-                    padTop(13f)
-                    padBottom(13f)
+                    padTop(TITLE_PADDING)
+                    padBottom(TITLE_PADDING)
                 }
             }
             row()

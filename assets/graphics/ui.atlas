@@ -57,6 +57,13 @@ label_frame_transparent
   orig: 20, 20
   offset: 0, 0
   index: -1
+life
+  rotate: false
+  xy: 58, 21
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: 0
 life_bar
   rotate: false
   xy: 1, 1
@@ -73,9 +80,23 @@ no_sound
   orig: 11, 9
   offset: 0, 0
   index: -1
+orb_blue
+  rotate: false
+  xy: 45, 10
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: 1
+orb_yellow
+  rotate: false
+  xy: 160, 222
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: 1
 pause
   rotate: false
-  xy: 45, 11
+  xy: 144, 189
   size: 6, 7
   orig: 6, 7
   offset: 0, 0
@@ -89,7 +110,7 @@ play
   index: -1
 quit
   rotate: false
-  xy: 160, 232
+  xy: 131, 177
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
@@ -109,6 +130,13 @@ scroll_v
   orig: 5, 22
   offset: 0, 0
   index: -1
+shield
+  rotate: false
+  xy: 160, 232
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: 0
 shield_bar
   rotate: false
   xy: 195, 243
