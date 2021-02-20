@@ -57,6 +57,6 @@ class DebugSystem : IntervalIteratingSystem(allOf(PlayerComponent::class).get(),
                 engine.getSystem<DamageSystem>().setProcessing(true)
             }
         }
-        Gdx.graphics.setTitle("DM Debug - pos:${transform.position}, life:${player.life}, shield:${player.shield}")
+        Gdx.graphics.setTitle("EH Debug - pos:${transform.position}, life:${player.life}, shield:${player.shield}")
     }
 }
