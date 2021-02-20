@@ -2,26 +2,20 @@ package com.github.kovah101.darkmatter.screen
 
 
 import com.badlogic.ashley.core.Engine
-import com.badlogic.ashley.core.Entity
-import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Input
 import com.github.kovah101.darkmatter.DarkMatter
-import com.github.kovah101.darkmatter.UNIT_SCALE
-import com.github.kovah101.darkmatter.V_WIDTH
 import com.github.kovah101.darkmatter.assets.I18NBundleAsset
 import com.github.kovah101.darkmatter.assets.MusicAsset
 import com.github.kovah101.darkmatter.ecs.components.*
-import com.github.kovah101.darkmatter.ecs.system.DAMAGE_AREA_HEIGHT
-import com.github.kovah101.darkmatter.ecs.system.addExplosion
-import com.github.kovah101.darkmatter.ecs.system.createDarkMatter
+import com.github.kovah101.darkmatter.ecs.system.DamageSystem
+import com.github.kovah101.darkmatter.ecs.system.PowerUpSystem
+import com.github.kovah101.darkmatter.ecs.system.createEventHorizon
 import com.github.kovah101.darkmatter.ecs.system.createPlayer
 import com.github.kovah101.darkmatter.event.GameEvent
 import com.github.kovah101.darkmatter.event.GameEventListener
 import com.github.kovah101.darkmatter.ui.GameUI
 import ktx.actors.plusAssign
-import ktx.ashley.entity
 import ktx.ashley.get
-import ktx.ashley.with
+import ktx.ashley.getSystem
 import ktx.log.debug
 import ktx.log.logger
 import ktx.preferences.flush
@@ -59,7 +53,7 @@ class GameScreen(
             if (!playerAlive) {
                 audioService.play(MusicAsset.GAME)
                 createPlayer(assets)
-                createDarkMatter()
+                createEventHorizon()
                 playerAlive = true
             }
         }
@@ -80,6 +74,12 @@ class GameScreen(
     override fun hide() {
         super.hide()
         gameEventManager.removeListener(this)
+        engine.run {
+            removeAllEntities()
+            getSystem<PowerUpSystem>().setProcessing(false)
+            getSystem<DamageSystem>().setProcessing(false)
+        }
+        stage.clear()
     }
 
 

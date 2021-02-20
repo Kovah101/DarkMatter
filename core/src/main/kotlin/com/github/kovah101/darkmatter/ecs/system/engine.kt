@@ -49,7 +49,7 @@ fun Engine.createPlayer (
     return playerShip
 }
 
-fun Engine.createDarkMatter(){
+fun Engine.createEventHorizon(){
     entity {
         with<TransformComponent> {
             size.set(

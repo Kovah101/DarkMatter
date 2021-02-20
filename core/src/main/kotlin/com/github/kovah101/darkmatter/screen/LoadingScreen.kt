@@ -92,7 +92,7 @@ class LoadingScreen(game: DarkMatter) : DarkMatterScreen(game) {
 
     override fun render(delta: Float) {
         if (assets.progress.isFinished && Gdx.input.justTouched() && game.containsScreen<GameScreen>()) {
-            game.setScreen<GameScreen>()
+            game.setScreen<MenuScreen>()
             game.removeScreen<LoadingScreen>()
             dispose()
         }
@@ -111,14 +111,15 @@ class LoadingScreen(game: DarkMatter) : DarkMatterScreen(game) {
     }
 
     private fun assetsLoaded() {
+        game.addScreen(MenuScreen(game))
         game.addScreen(GameScreen(game))
+        game.addScreen(GameOverScreen(game))
         touchToBeginLabel += Actions.forever(
             Actions.sequence(
                 Actions.fadeIn(0.5f)
                         + Actions.fadeOut(0.5f)
             )
         )
-        game.addScreen(GameOverScreen(game))
 
     }
 

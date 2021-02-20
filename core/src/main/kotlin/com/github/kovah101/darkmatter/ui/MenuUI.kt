@@ -28,8 +28,8 @@ class MenuUI(private val bundle : I18NBundle) {
                 wrap = true
                 setAlignment(Align.center)
                 cell.apply {
-                    padTop(15f)
-                    padBottom(20f)
+                    padTop(13f)
+                    padBottom(13f)
                 }
             }
             row()

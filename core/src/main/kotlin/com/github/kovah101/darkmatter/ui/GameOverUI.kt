@@ -13,7 +13,7 @@ class GameOverUI (private val bundle: I18NBundle){
     private val lastScoreButton: TextButton
     private val highScoreButton: TextButton
     val backButton: TextButton
-    val soundButton : ImageButton
+
 
     // initialise variables
     init {
@@ -36,12 +36,8 @@ class GameOverUI (private val bundle: I18NBundle){
             highScoreButton = textButton(bundle["highscore", 0], TextButtonStyles.LABEL.name)
             row()
 
-            backButton = textButton("Restart", LabelStyles.DEFAULT.name)
+            backButton = textButton("Menu", LabelStyles.DEFAULT.name)
             row()
-
-            soundButton = imageButton (ImageButtonStyles.SOUND_ON_OFF.name)
-            row()
-
 
             setFillParent(true)
             top()

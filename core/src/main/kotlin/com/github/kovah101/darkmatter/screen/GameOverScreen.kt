@@ -3,6 +3,7 @@ package com.github.kovah101.darkmatter.screen
 import com.badlogic.ashley.core.Engine
 import com.github.kovah101.darkmatter.DarkMatter
 import com.github.kovah101.darkmatter.assets.MusicAsset
+import com.github.kovah101.darkmatter.ecs.system.createEventHorizon
 import com.github.kovah101.darkmatter.ui.GameOverUI
 import ktx.actors.minusAssign
 import ktx.actors.onChangeEvent
@@ -21,14 +22,7 @@ class GameOverScreen(
 ) : DarkMatterScreen(game) {
     private val ui = GameOverUI(bundle).apply {
         backButton.onClick {
-            game.setScreen<GameScreen>()
-        }
-        soundButton.onChangeEvent {
-            audioService.enabled = !this.isChecked
-            preferences.flush{
-                this["musicEnabledKey"] = audioService.enabled
-
-            }
+            game.setScreen<MenuScreen>()
         }
     }
 
@@ -42,6 +36,12 @@ class GameOverScreen(
         //start game over music
         audioService.play(MusicAsset.GAME_OVER)
 
+        engine.createEventHorizon()
+
+        setupUI()
+    }
+
+    private fun setupUI() {
         ui.run {
             updateScores(score, highScore)
             stage += this.table
@@ -49,6 +49,7 @@ class GameOverScreen(
     }
 
     override fun hide() {
+        engine.removeAllEntities()
         stage.clear()
     }
 
