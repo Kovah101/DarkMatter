@@ -46,7 +46,7 @@ class MenuScreen(
     }
 
     private val creditsDialog = TextDialog(bundle, "credits")
-    private val controlDialog = ControlDialog(engine,bundle, "controls")
+    private val controlDialog = ControlDialog(bundle)
 
     override fun show() {
         super.show()

@@ -3,6 +3,7 @@ package com.github.kovah101.darkmatter.ui
 import com.badlogic.ashley.core.Engine
 import com.badlogic.ashley.core.Entity
 import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.scenes.scene2d.ui.Button
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Table
@@ -22,54 +23,50 @@ import ktx.scene2d.*
 private const val PADDING = 7f
 private const val DIALOG_WIDTH_SCALE = 0.95f
 private const val DIALOG_HEIGHT_SCALE = 0.95f
+private const val IMAGE_WIDTH = 20f
+private const val IMAGE_BOTTOM_PADDING = 8f
 
 class ControlDialog(
-    engine: Engine,
     bundle: I18NBundle,
-    textBundleKey: String
 ) : Dialog("", Scene2DSkin.defaultSkin, WindowStyles.DEFAULT.name) {
 
     private lateinit var lifePowerUp: Image
-    val powerUpTable : Table
+
+    // val powerUpTable : Table
+    //val table: KTableWidget
+    //val backButton: Button
 
     init {
-        buttonTable.defaults().padBottom(2f)
+        contentTable.defaults().expand().fillY()
+        contentTable.add(scene2d.label(bundle["controls"], LabelStyles.GRADIENT.name) {
+            wrap = true
+            setAlignment(Align.top)
+        }).colspan(4).width(115f).center().padTop(0f)
+        contentTable.row()
+
+        contentTable.add(scene2d.image("life_0")).width(IMAGE_WIDTH).padLeft(10f).padBottom(IMAGE_BOTTOM_PADDING)
+        contentTable.add(scene2d.image("shield_0")).width(IMAGE_WIDTH).padBottom(IMAGE_BOTTOM_PADDING)
+        contentTable.add(scene2d.image("orb_blue_1")).width(IMAGE_WIDTH).padBottom(IMAGE_BOTTOM_PADDING)
+        contentTable.add(scene2d.image("orb_yellow_1")).width(IMAGE_WIDTH).padRight(10f).padBottom(IMAGE_BOTTOM_PADDING)
+        contentTable.row()
+
+        contentTable.add(scene2d.label(bundle["escape"], LabelStyles.GRADIENT.name) {
+            wrap = true
+            setAlignment(Align.top)
+        }).colspan(4).center().width(130f)
+        contentTable.row()
+
+        buttonTable.defaults().padBottom(5f)
         button(scene2d.textButton(bundle["close"], TextButtonStyles.DEFAULT.name).apply {
             labelCell.padLeft(PADDING).padRight(PADDING)
             onClick { hide() }
         })
         buttonTable.pack()
 
-        contentTable.defaults().expand().fill()
-        contentTable.add(scene2d.scrollPane(ScrollPaneStyles.DEFAULT.name) {
-            setScrollbarsVisible(true)
-            fadeScrollBars = false
-            variableSizeKnobs = true
-
-            label(bundle[textBundleKey], LabelStyles.DEFAULT.name) {
-                wrap = true
-                setAlignment(Align.top)
-            }
-        }).padRight(-96f)
-        contentTable.row()
         contentTable.pack()
-
-        powerUpTable = contentTable
-        powerUpTable.defaults().fill().expand().padRight(6f).padLeft(6f)
-        powerUpTable.add(scene2d.image("life_0"))
-        powerUpTable.add(scene2d.image("shield_0"))
-        powerUpTable.add(scene2d.image("orb_blue_1"))
-        powerUpTable.add(scene2d.image("orb_yellow_1"))
-        powerUpTable.pack()
-
-
-
-        // to prevent rescaling or rotating
-        // avoids additional texture and draw calls
         isTransform = false
-
-
     }
+
 
     override fun getPrefHeight() = V_HEIGHT_PIXELS * DIALOG_HEIGHT_SCALE
 
