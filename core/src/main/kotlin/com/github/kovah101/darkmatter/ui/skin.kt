@@ -6,11 +6,7 @@ import com.github.kovah101.darkmatter.assets.BitmapFontAsset
 import com.github.kovah101.darkmatter.assets.TextureAtlasAsset
 import ktx.assets.async.AssetStorage
 import ktx.scene2d.Scene2DSkin
-import ktx.style.SkinDsl
-import ktx.style.label
-import ktx.style.skin
-import ktx.style.textButton
-import ktx.style.imageButton
+import ktx.style.*
 
 enum class LabelStyles {
     DEFAULT,
@@ -28,6 +24,10 @@ enum class ImageButtonStyles {
     SOUND_ON_OFF
 }
 
+enum class WindowStyles {
+    DEFAULT
+}
+
 fun createSkin(assets: AssetStorage){
     val atlas = assets[TextureAtlasAsset.UI.descriptor]
     val gradientFont = assets[BitmapFontAsset.FONT_LARGE_GRADIENT.descriptor]
@@ -36,8 +36,19 @@ fun createSkin(assets: AssetStorage){
         createLabelStyles(normalFont, gradientFont)
         createTextButtonStyles(normalFont, skin)
         createImageButtons(skin)
+        createWindowStyle(skin, normalFont)
     }
 
+}
+
+private fun @SkinDsl Skin.createWindowStyle(
+    skin: Skin,
+    normalFont: BitmapFont
+) {
+    window(WindowStyles.DEFAULT.name) {
+        background = skin.getDrawable("frame")
+        titleFont = normalFont
+    }
 }
 
 private fun @SkinDsl Skin.createImageButtons(skin: Skin) {

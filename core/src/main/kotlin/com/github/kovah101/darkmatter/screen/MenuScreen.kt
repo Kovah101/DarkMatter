@@ -10,9 +10,13 @@ import ktx.actors.onChangeEvent
 import ktx.actors.onClick
 import ktx.actors.plusAssign
 import ktx.ashley.getSystem
+import ktx.log.debug
+import ktx.log.logger
 import ktx.preferences.flush
 import ktx.preferences.set
 import ktx.preferences.get
+
+private val LOG = logger<MenuScreen>()
 
 class MenuScreen(
     game: DarkMatter,
@@ -25,6 +29,9 @@ class MenuScreen(
             preferences.flush {
                 this["musicEnabledKey"] = audioService.enabled
             }
+            LOG.debug { "audio mode = ${audioService.enabled}" }
+            if(audioService.enabled) { audioService.play(MusicAsset.MENU) }
+
         }
         quitGameButton.onClick { Gdx.app.exit() }
     }
@@ -32,10 +39,11 @@ class MenuScreen(
     override fun show() {
         super.show()
         engine.run {
-             val menuPlayer = createPlayer(assets, spawnY = 2.8f)
+            createPlayer(assets, spawnY = 2.8f)
             createEventHorizon()
         }
         audioService.enabled = preferences["musicEnabledKey", true]
+        LOG.debug { "audio mode starts = ${audioService.enabled}" }
         audioService.play(MusicAsset.MENU)
         setupUI()
     }
@@ -60,6 +68,8 @@ class MenuScreen(
 
     override fun render(delta: Float) {
         engine.update(delta)
+        //audioService.play(MusicAsset.MENU)
+
         stage.run {
             viewport.apply()
             act(delta)
