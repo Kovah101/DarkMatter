@@ -70,7 +70,7 @@ class GameScreen(
         ui.run {
             updateDistance(0f)
             updateLife(MAX_LIFE, MAX_LIFE)
-            updateShield(0f, MAX_SHIELD)
+            updateShield(10f, MAX_SHIELD)
 
         }
         stage += ui

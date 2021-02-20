@@ -19,6 +19,7 @@ private val LOG = logger<AudioService>()
 private const val MAX_SOUND_INSTANCES = 16
 
 interface AudioService {
+    var enabled : Boolean
     fun play(soundAsset: SoundAsset, volume: Float = 1f)
     fun play(musicAsset: MusicAsset, volume: Float = 1f, loop: Boolean = true)
     fun pause()
@@ -41,6 +42,14 @@ private class SoundRequestPool : Pool<SoundRequest>() {
 }
 
 class DefaultAudioService(private val assets: AssetStorage) : AudioService {
+    override var enabled = true
+        set(value) {
+            when(value){
+                true -> currentMusic?.play()
+                false -> currentMusic?.pause()
+            }
+            field = value
+        }
     private val soundCache = EnumMap<SoundAsset, Sound>(SoundAsset::class.java)
     private val soundRequestPool = SoundRequestPool()
     private val soundRequests = EnumMap<SoundAsset, SoundRequest>(SoundAsset::class.java)
@@ -48,6 +57,8 @@ class DefaultAudioService(private val assets: AssetStorage) : AudioService {
     private var currentMusicAsset : MusicAsset? = null
 
     override fun play(soundAsset: SoundAsset, volume: Float) {
+        if (!enabled) return
+
         when {
             soundAsset in soundRequests -> {
                 // same sound request is done in one frame multiple times
@@ -89,6 +100,8 @@ class DefaultAudioService(private val assets: AssetStorage) : AudioService {
                     assets.unload(currentAsset.descriptor)
                 }
                 currentMusicAsset = musicAsset
+                if (!enabled) return@launch
+
                 currentMusic = assets[musicAsset.descriptor].apply {
                     this.volume = volume
                     this.isLooping = loop
@@ -103,6 +116,8 @@ class DefaultAudioService(private val assets: AssetStorage) : AudioService {
     }
 
     override fun resume() {
+        if (!enabled) return
+
         currentMusic?.play()
     }
 
