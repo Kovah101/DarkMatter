@@ -139,7 +139,8 @@ class PowerUpSystem(
             gameEventManager.dispatchEvent(
                 GameEvent.CollectPowerUp.apply {
                     this.player = player
-                    this.type = powerUpType
+                    type = powerUpType
+                    LOG.debug { "Power Up event sent!" }
                 })
         }
         powerUp.addComponent<RemoveComponent>(engine)

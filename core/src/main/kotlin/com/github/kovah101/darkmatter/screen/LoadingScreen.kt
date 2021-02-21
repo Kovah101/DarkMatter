@@ -2,6 +2,7 @@ package com.github.kovah101.darkmatter.screen
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Label
@@ -76,6 +77,7 @@ class LoadingScreen(game: DarkMatter) : DarkMatterScreen(game) {
                 stack { cell ->
                     progressBar = image("life_bar").apply {
                         scaleX = 0f
+                        //color = Color.GOLD
                     }
                     label("Loading...", LabelStyles.DEFAULT.name) {
                         setAlignment(Align.center)

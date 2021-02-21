@@ -45,6 +45,7 @@ class GameScreen(
             addListener(GameEvent.PlayerMove::class, this@GameScreen)
             addListener(GameEvent.PlayerBlock::class, this@GameScreen)
             addListener(GameEvent.PlayerDeath::class, this@GameScreen)
+            addListener(GameEvent.CollectPowerUp::class, this@GameScreen)
         }
 
         engine.run {
@@ -98,19 +99,7 @@ class GameScreen(
         when (event) {
             is GameEvent.PlayerDeath -> {
                 playerAlive = false
-                val distanceScore = event.distance.roundToInt()
-                LOG.debug { "Player died with a distance of $distanceScore " }
-                // store high score
-                if (distanceScore > preferences["highscore", 0]) {
-                    preferences.flush {
-                        this["highscore"] = distanceScore
-                    }
-                }
-                game.getScreen<GameOverScreen>().run {
-                    score = distanceScore
-                    highScore = preferences["highscore", 0]
-                }
-                game.setScreen<GameOverScreen>()
+                onPlayerDeath(event)
             }
             is GameEvent.CollectPowerUp -> {
                 onCollectPowerUp(event)
@@ -135,18 +124,37 @@ class GameScreen(
 
     }
 
+    private fun onPlayerDeath(event: GameEvent.PlayerDeath) {
+        val distanceScore = event.distance.roundToInt()
+        LOG.debug { "Player died with a distance of $distanceScore " }
+        // store high score
+        if (distanceScore > preferences["highscore", 0]) {
+            preferences.flush {
+                this["highscore"] = distanceScore
+            }
+        }
+        game.getScreen<GameOverScreen>().run {
+            score = distanceScore
+            highScore = preferences["highscore", 0]
+        }
+        game.setScreen<GameOverScreen>()
+    }
+
     private fun onCollectPowerUp(event : GameEvent.CollectPowerUp){
         // check for player component in event
         event.player[PlayerComponent.mapper]?.let { player ->
             when(event.type){
-                PowerUpType.LIFE -> ui.updateLife(player.life, player.maxLife)
-                PowerUpType.SHIELD -> ui.updateShield(player.shield, player.maxShield)
+                PowerUpType.LIFE -> {
+                    ui.updateLife(player.life, player.maxLife)
+                }
+                PowerUpType.SHIELD -> {
+                    ui.updateShield(player.shield, player.maxShield)
+                }
                 else -> {
                     // ignore &
                     //return
                 }
             }
-
         }
     }
 
