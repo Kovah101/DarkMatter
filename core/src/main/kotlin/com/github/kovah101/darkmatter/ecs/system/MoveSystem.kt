@@ -16,10 +16,11 @@ import kotlin.math.min
 import kotlin.math.max
 
 private const val UPDATE_RATE = 1 / 25f
+
 // supersedes deltaTime in case of lag
 // gives constant movement
 private const val HOR_ACC = 18.5f
-private const val VER_ACC = 2.25f
+private const val VER_ACC = 2.25f // event horizon pull strength
 private const val MAX_VER_NEG_PLAYER_SPEED = 0.75f
 private const val MAX_VER_POS_PLAYER_SPEED = 5f
 private const val MAX_HOR_SPEED = 5.75f
@@ -44,9 +45,9 @@ class MoveSystem(
 
             super.update(UPDATE_RATE)
         }
-        
+
         val alpha = accumulator / UPDATE_RATE // % between frames
-        entities.forEach { entity ->  
+        entities.forEach { entity ->
             entity[TransformComponent.mapper]?.let { transform ->
                 transform.interpolatedPosition.set(
                     MathUtils.lerp(transform.prevPosition.x, transform.position.x, alpha),
@@ -65,15 +66,33 @@ class MoveSystem(
         require(move != null) { "Entity |entity| must have a MoveComponent. entity=$entity" }
 
         val player = entity[PlayerComponent.mapper]
+        val projectile = entity[ProjectileComponent.mapper]
         if (player != null) {
             // player movement
             entity[FacingComponent.mapper]?.let { facing ->
                 movePlayer(transform, move, player, facing, deltaTime)
             }
-        } else {
+        }
+//        else if (projectile != null) {
+//            // projectile movement
+//            moveProjectile(transform, projectile, move, deltaTime)
+//        }
+        else {
             // other movement like power ups or enemies
             moveEntity(transform, move, deltaTime)
         }
+    }
+
+    private fun moveProjectile(
+        transform: TransformComponent,
+        projectile: ProjectileComponent,
+        move: MoveComponent,
+        deltaTime: Float
+    ) {
+        // set move speed based on projectile type
+        move.speed.y = projectile.type.speed
+        // move projectile
+        moveEntity(transform, move, deltaTime)
     }
 
     private fun moveEntity(transform: TransformComponent, move: MoveComponent, deltaTime: Float) {

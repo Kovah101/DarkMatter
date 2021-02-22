@@ -4,6 +4,41 @@ size: 2048, 128
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
+asteroid
+  rotate: false
+  xy: 1597, 110
+  size: 17, 11
+  orig: 17, 11
+  offset: 0, 0
+  index: 1
+asteroid
+  rotate: false
+  xy: 55, 4
+  size: 14, 13
+  orig: 14, 13
+  offset: 0, 0
+  index: 0
+asteroid
+  rotate: false
+  xy: 1561, 56
+  size: 13, 11
+  orig: 13, 11
+  offset: 0, 0
+  index: 2
+asteroid
+  rotate: false
+  xy: 71, 9
+  size: 9, 8
+  orig: 9, 8
+  offset: 0, 0
+  index: 3
+asteroid
+  rotate: false
+  xy: 1561, 46
+  size: 9, 8
+  orig: 9, 8
+  offset: 0, 0
+  index: 4
 dark_matter
   rotate: false
   xy: 1, 71
@@ -426,7 +461,7 @@ dark_matter
   index: 55
 error
   rotate: false
-  xy: 67, 9
+  xy: 1638, 113
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
@@ -489,105 +524,112 @@ explosion
   index: 6
 fire
   rotate: false
-  xy: 1597, 92
+  xy: 1561, 26
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: 0
 fire
   rotate: false
-  xy: 1561, 28
+  xy: 122, 9
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: 1
+laser
+  rotate: false
+  xy: 1597, 88
+  size: 8, 9
+  orig: 8, 9
+  offset: 0, 0
+  index: -1
+life
+  rotate: false
+  xy: 1628, 113
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: 1
 life
   rotate: false
-  xy: 1579, 77
-  size: 8, 8
-  orig: 8, 8
-  offset: 0, 0
-  index: 1
-life
-  rotate: false
-  xy: 1561, 48
+  xy: 92, 9
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: 3
 life
   rotate: false
-  xy: 1619, 113
+  xy: 1648, 113
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: 0
 life
   rotate: false
-  xy: 1629, 113
+  xy: 112, 9
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: 2
 orb_blue
   rotate: false
-  xy: 1609, 113
+  xy: 1561, 36
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: 1
 orb_blue
   rotate: false
-  xy: 1561, 38
+  xy: 1658, 113
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: 0
 orb_yellow
   rotate: false
-  xy: 77, 9
+  xy: 102, 9
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: 1
 orb_yellow
   rotate: false
-  xy: 1639, 113
+  xy: 1678, 113
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: 0
 shield
   rotate: false
-  xy: 1597, 102
+  xy: 82, 9
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: 0
 shield
   rotate: false
-  xy: 87, 9
+  xy: 1668, 113
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: 1
 ship_base
   rotate: false
-  xy: 1561, 58
+  xy: 1616, 112
   size: 10, 9
   orig: 10, 9
   offset: 0, 0
   index: -1
 ship_left
   rotate: false
-  xy: 1597, 112
+  xy: 1579, 76
   size: 10, 9
   orig: 10, 9
   offset: 0, 0
   index: -1
 ship_right
   rotate: false
-  xy: 55, 8
+  xy: 1597, 99
   size: 10, 9
   orig: 10, 9
   offset: 0, 0

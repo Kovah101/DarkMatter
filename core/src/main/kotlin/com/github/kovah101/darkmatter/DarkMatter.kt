@@ -65,6 +65,7 @@ class DarkMatter : KtxGame<DarkMatterScreen>() {
             addSystem(DamageSystem(gameEventManager).apply {
                 setProcessing(false)
             })
+            addSystem(ProjectileSystem(gameEventManager))
             addSystem(CameraShakeSystem(gameViewport.camera, gameEventManager))
             addSystem(
                 PlayerAnimationSystem(

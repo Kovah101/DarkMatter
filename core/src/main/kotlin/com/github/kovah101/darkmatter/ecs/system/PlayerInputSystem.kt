@@ -49,6 +49,11 @@ class PlayerInputSystem(
                 else -> FacingDirection.DEFAULT
             }
         }
+        // Laser on tap or button press
+        // add fire delays
+        if (Gdx.input.isTouched) {
+            engine.spawnLaser(transform)
+        }
 
     }
 

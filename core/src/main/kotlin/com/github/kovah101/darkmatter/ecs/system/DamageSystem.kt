@@ -66,5 +66,8 @@ class DamageSystem (
                 engine.addExplosion(transform)
             }
         }
+
+        // process player on enemy collision damage
+
     }
 }

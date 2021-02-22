@@ -21,7 +21,7 @@ import kotlin.math.min
 private val LOG = logger<PowerUpSystem>()
 private const val MAX_SPAWN_INTERVAL = 1.5f
 private const val MIN_SPAWN_INTERVAL = 0.9f
-private const val POWER_UP_SPEED = -8.75f
+private const val POWER_UP_SPEED = -8.75f //fall speed
 
 
 private class SpawnPattern(
