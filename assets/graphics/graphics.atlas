@@ -4,41 +4,41 @@ size: 2048, 128
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
-asteroid
+asteroidChip
   rotate: false
-  xy: 1597, 110
-  size: 17, 11
-  orig: 17, 11
+  xy: 1597, 89
+  size: 9, 8
+  orig: 9, 8
   offset: 0, 0
-  index: 1
-asteroid
-  rotate: false
-  xy: 55, 4
-  size: 14, 13
-  orig: 14, 13
-  offset: 0, 0
-  index: 0
-asteroid
+  index: -1
+asteroidChunk
   rotate: false
   xy: 1561, 56
   size: 13, 11
   orig: 13, 11
   offset: 0, 0
-  index: 2
-asteroid
+  index: -1
+asteroidEgg
   rotate: false
-  xy: 71, 9
-  size: 9, 8
-  orig: 9, 8
+  xy: 55, 4
+  size: 14, 13
+  orig: 14, 13
   offset: 0, 0
-  index: 3
-asteroid
+  index: -1
+asteroidLong
+  rotate: false
+  xy: 1597, 110
+  size: 17, 11
+  orig: 17, 11
+  offset: 0, 0
+  index: -1
+asteroidSmall
   rotate: false
   xy: 1561, 46
   size: 9, 8
   orig: 9, 8
   offset: 0, 0
-  index: 4
+  index: -1
 dark_matter
   rotate: false
   xy: 1, 71
@@ -531,14 +531,14 @@ fire
   index: 0
 fire
   rotate: false
-  xy: 122, 9
+  xy: 121, 9
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: 1
 laser
   rotate: false
-  xy: 1597, 88
+  xy: 71, 8
   size: 8, 9
   orig: 8, 9
   offset: 0, 0
@@ -552,7 +552,7 @@ life
   index: 1
 life
   rotate: false
-  xy: 92, 9
+  xy: 91, 9
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
@@ -566,7 +566,7 @@ life
   index: 0
 life
   rotate: false
-  xy: 112, 9
+  xy: 111, 9
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
@@ -587,7 +587,7 @@ orb_blue
   index: 0
 orb_yellow
   rotate: false
-  xy: 102, 9
+  xy: 101, 9
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
@@ -601,7 +601,7 @@ orb_yellow
   index: 0
 shield
   rotate: false
-  xy: 82, 9
+  xy: 81, 9
   size: 8, 8
   orig: 8, 8
   offset: 0, 0

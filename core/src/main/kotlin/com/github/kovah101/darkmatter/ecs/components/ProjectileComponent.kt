@@ -10,7 +10,7 @@ enum class ProjectileType (
     val speed : Float
 ) {
     NONE("", 0f, 0f),
-    LASER("laser", 50f, 5f)
+    LASER("laser", 50f, 10f)
 }
 
 class ProjectileComponent: Component, Pool.Poolable {

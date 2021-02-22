@@ -53,6 +53,7 @@ class PlayerInputSystem(
         // add fire delays
         if (Gdx.input.isTouched) {
             engine.spawnLaser(transform)
+            engine.spawnAsteroid(transform)
         }
 
     }

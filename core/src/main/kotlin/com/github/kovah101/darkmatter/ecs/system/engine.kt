@@ -80,14 +80,24 @@ fun Engine.addExplosion(transform : TransformComponent){
 fun Engine.spawnLaser(transform: TransformComponent){
     entity {
         with<TransformComponent>{
-            size.set(1f,1f)
-            setInitialPosition(transform.position.x, transform.position.y, 2f)
+            size.set(0.5f,0.5f)
+            setInitialPosition(transform.position.x + (transform.size.x * 0.25f), transform.position.y + (transform.size.y * 0.5f), 2f)
         }
         with<AnimationComponent>{type = AnimationType.LASER}
         with<GraphicComponent>()
         with<ProjectileComponent>{type = ProjectileType.LASER}
         with<MoveComponent>{speed.y = ProjectileType.LASER.speed}
-
     }
+}
 
+fun Engine.spawnAsteroid(transform: TransformComponent){
+    entity {
+        with<TransformComponent>{
+            size.set(1f,1f)
+            setInitialPosition(transform.position.x + (transform.size.x * 1f), transform.position.y + (transform.size.y * 3.5f), 2f)
+        }
+        with<AnimationComponent>{type = AnimationType.ASTEROID_CHUNK}
+        with<GraphicComponent>()
+        with<MoveComponent>{speed.y = EnemyType.ASTEROID_CHUNK.speed}
+    }
 }

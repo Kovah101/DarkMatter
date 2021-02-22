@@ -22,7 +22,8 @@ enum class AnimationType(
     LIFE("life", speedRate = 0.5f),
     SHIELD("shield", speedRate = 0.5f),
     EXPLOSION("explosion", Animation.PlayMode.NORMAL, speedRate = 0.5f),
-    LASER("laser")
+    LASER("laser"),
+    ASTEROID_CHUNK("asteroidChunk")
 }
 
 class Animation2D (
