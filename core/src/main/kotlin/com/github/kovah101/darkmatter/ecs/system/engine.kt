@@ -94,10 +94,11 @@ fun Engine.spawnAsteroid(transform: TransformComponent){
     entity {
         with<TransformComponent>{
             size.set(1f,1f)
-            setInitialPosition(transform.position.x + (transform.size.x * 1f), transform.position.y + (transform.size.y * 3.5f), 2f)
+            setInitialPosition(5f, 14f, 2f)
         }
         with<AnimationComponent>{type = AnimationType.ASTEROID_CHUNK}
         with<GraphicComponent>()
+        with<EnemyComponent>{type = EnemyType.ASTEROID_CHUNK}
         with<MoveComponent>{speed.y = EnemyType.ASTEROID_CHUNK.speed}
     }
 }

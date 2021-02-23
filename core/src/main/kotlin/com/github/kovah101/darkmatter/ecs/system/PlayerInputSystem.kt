@@ -15,11 +15,13 @@ import ktx.ashley.get
 
 private const val TOUCH_TOLERANCE_DISTANCE = 0.2f
 private const val TILT_TOLERANCE = 0.35f
+private const val ENEMY_SPAWN_DELAY = 1.5f
 
 class PlayerInputSystem(
     private val gameViewport: Viewport,
 ) : IteratingSystem(allOf(PlayerComponent::class, TransformComponent::class, FacingComponent::class).get()) {
     private val tmpVec = Vector2()
+    private var enemySpawnTimer = 0f
 
     override fun processEntity(entity: Entity, deltaTime: Float) {
         val facing = entity[FacingComponent.mapper]
@@ -51,9 +53,14 @@ class PlayerInputSystem(
         }
         // Laser on tap or button press
         // add fire delays
+        // temp spawns asteriod
         if (Gdx.input.isTouched) {
             engine.spawnLaser(transform)
-            engine.spawnAsteroid(transform)
+            enemySpawnTimer -= deltaTime
+            if (enemySpawnTimer <= 0f) {
+                enemySpawnTimer = ENEMY_SPAWN_DELAY
+                engine.spawnAsteroid(transform)
+            }
         }
 
     }

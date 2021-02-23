@@ -8,6 +8,10 @@ import ktx.ashley.addComponent
 import ktx.ashley.allOf
 import ktx.ashley.exclude
 import ktx.ashley.get
+import ktx.log.debug
+import ktx.log.logger
+
+private val LOG = logger<ProjectileSystem>()
 
 class ProjectileSystem(
     private val gameEventManager: GameEventManager
@@ -29,10 +33,11 @@ class ProjectileSystem(
         val projectile = entity[ProjectileComponent.mapper]
         require(projectile != null) { "Entity |entity| must have a ProjectileComponent. entity=$entity" }
 
-
+        // TODO move to enemy system with spawn patterns
         enemyEntities.forEach { enemy ->
+            //LOG.debug { "There are ${enemyEntities.size()} enemies" }
             enemy[TransformComponent.mapper]?.let { enemyTrans ->
-                if (enemyTrans.position.y <= 2f) {
+                if (enemyTrans.position.y <= 1f) {
                     enemy.addComponent<RemoveComponent>(engine)
                 }
             }

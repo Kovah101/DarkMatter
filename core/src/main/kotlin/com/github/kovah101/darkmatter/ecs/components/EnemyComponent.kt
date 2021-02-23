@@ -12,7 +12,7 @@ enum class EnemyType(
 
 ){
     NONE(0f,0f,0f),
-    ASTEROID_CHUNK(25f,100f,-5f)
+    ASTEROID_CHUNK(25f,100f,-3f)
 }
 
 class EnemyComponent : Component, Pool.Poolable {
