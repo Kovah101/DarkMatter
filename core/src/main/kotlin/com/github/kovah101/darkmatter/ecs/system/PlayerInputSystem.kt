@@ -11,10 +11,13 @@ import ktx.ashley.addComponent
 import ktx.ashley.allOf
 import ktx.ashley.exclude
 import ktx.ashley.get
+import ktx.log.debug
+import ktx.log.logger
 
+private val LOG = logger<PlayerInputSystem>()
 private const val TOUCH_TOLERANCE_DISTANCE = 0.2f
 private const val TILT_TOLERANCE = 0.35f
-private const val ENEMY_SPAWN_DELAY = 1.5f
+private const val ENEMY_SPAWN_DELAY = 1f
 
 class PlayerInputSystem(
     private val gameViewport: Viewport,
@@ -76,6 +79,7 @@ class PlayerInputSystem(
             if (enemySpawnTimer <= 0f) {
                 enemySpawnTimer = ENEMY_SPAWN_DELAY
                 engine.spawnAsteroid(transform)
+                LOG.debug { "asteroid spawned" }
             }
         }
 

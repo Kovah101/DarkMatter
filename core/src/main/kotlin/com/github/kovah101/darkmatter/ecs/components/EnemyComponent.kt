@@ -7,7 +7,7 @@ import ktx.ashley.mapperFor
 
 enum class EnemyType(
     val damage : Float,
-    val health : Float,
+    var health : Float,
     val speed : Float,
 
 ){

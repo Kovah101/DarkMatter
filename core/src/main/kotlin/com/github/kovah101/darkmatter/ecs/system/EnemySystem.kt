@@ -5,14 +5,13 @@ import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.math.Rectangle
 import com.github.kovah101.darkmatter.ecs.components.*
 import com.github.kovah101.darkmatter.event.GameEventManager
-import ktx.ashley.addComponent
-import ktx.ashley.allOf
-import ktx.ashley.exclude
-import ktx.ashley.get
+import ktx.ashley.*
 import ktx.log.debug
 import ktx.log.logger
+import java.rmi.activation.ActivationGroup.getSystem
 
 private val LOG = logger<EnemySystem>()
+private const val DEATH_EXPLOSION_DELAY = 0.9f // delay till death
 
 class EnemySystem(
     private val gameEventManager: GameEventManager
@@ -36,12 +35,10 @@ class EnemySystem(
         val enemy = entity[EnemyComponent.mapper]
         require(enemy != null) { "Entity |entity| must have a EnemyComponent. entity=$entity" }
 
-        // TODO move to enemy system with spawn patterns
-
-
+        // TODO spawn patterns
         if (transform.position.y <= 1f) {
             //projectile off the screen so remove
-            entity.addComponent<RemoveComponent>(engine)
+            destroyEnemy(entity, transform)
             return
         }
 
@@ -65,15 +62,39 @@ class EnemySystem(
                 if (projectileBoundRect.overlaps(enemyBoundRect)) {
                     damageEnemy(entity, projectile)
                 }
-
             }
-
         }
 
     }
 
-    private fun damageEnemy(enemy : Entity, projectile : Entity){
-        LOG.debug { "Enemy hit!" }
+    private fun damageEnemy(entity : Entity, projectile : Entity){
+        val transform = entity[TransformComponent.mapper]
+        require(transform != null) { "Entity |entity| must have a TransformComponent. entity=$entity" }
+        val enemy = entity[EnemyComponent.mapper]
+        require(enemy != null) { "Entity |entity| must have a EnemyComponent. entity=$entity" }
+
         // TODO damage and destroy both projectile and enemy
+        val damage = projectile[ProjectileComponent.mapper]?.type?.damage
+        require(damage != null) { "Projectile |projectile| must have a ProjectileComponent. projectile=$projectile" }
+
+        enemy.type.health -= damage
+        if (enemy.type.health < 0) {
+            destroyEnemy(entity, transform)
+            // spawn power up on destroying enemy
+            engine.getSystem<PowerUpSystem>().spawnPowerUp(PowerUpType.SPEED_2, transform.position.x, transform.position.y)
+        }
+
+        projectile.addComponent<RemoveComponent>(engine)
+    }
+
+    private fun destroyEnemy(
+        entity: Entity,
+        transform: TransformComponent
+    ) {
+        entity.addComponent<RemoveComponent>(engine) {
+            delay = DEATH_EXPLOSION_DELAY
+        }
+        entity[GraphicComponent.mapper]?.sprite?.setAlpha(0f)
+        engine.addExplosion(transform)
     }
 }
