@@ -22,7 +22,6 @@ import kotlinx.coroutines.launch
 import ktx.app.KtxGame
 import ktx.assets.async.AssetStorage
 import ktx.async.KtxAsync
-import ktx.collections.GdxArray
 import ktx.collections.gdxArrayOf
 import ktx.log.debug
 import ktx.log.logger
@@ -65,7 +64,7 @@ class DarkMatter : KtxGame<DarkMatterScreen>() {
             addSystem(DamageSystem(gameEventManager).apply {
                 setProcessing(false)
             })
-            addSystem(ProjectileSystem(gameEventManager))
+            addSystem(EnemySystem(gameEventManager))
             addSystem(CameraShakeSystem(gameViewport.camera, gameEventManager))
             addSystem(
                 PlayerAnimationSystem(

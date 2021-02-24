@@ -6,11 +6,10 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.viewport.Viewport
-import com.github.kovah101.darkmatter.ecs.components.FacingComponent
-import com.github.kovah101.darkmatter.ecs.components.FacingDirection
-import com.github.kovah101.darkmatter.ecs.components.PlayerComponent
-import com.github.kovah101.darkmatter.ecs.components.TransformComponent
+import com.github.kovah101.darkmatter.ecs.components.*
+import ktx.ashley.addComponent
 import ktx.ashley.allOf
+import ktx.ashley.exclude
 import ktx.ashley.get
 
 private const val TOUCH_TOLERANCE_DISTANCE = 0.2f
@@ -23,11 +22,28 @@ class PlayerInputSystem(
     private val tmpVec = Vector2()
     private var enemySpawnTimer = 0f
 
+    // by lazy to initialise later
+    private val projectileEntities by lazy {
+        engine.getEntitiesFor(
+            allOf(ProjectileComponent::class).exclude(RemoveComponent::class).get()
+        )
+    }
+
     override fun processEntity(entity: Entity, deltaTime: Float) {
         val facing = entity[FacingComponent.mapper]
         require(facing != null) { "Entity |entity| must have FacingComponent. entity=$entity" }
         val transform = entity[TransformComponent.mapper]
         require(transform != null) { "Entity |entity| must have TransformComponent. entity=$entity" }
+
+
+        projectileEntities.forEach { projectile ->
+            //LOG.debug { "There are ${enemyEntities.size()} enemies" }
+            projectile[TransformComponent.mapper]?.let { enemyTrans ->
+                if (enemyTrans.position.y >= 16f) {
+                    projectile.addComponent<RemoveComponent>(engine)
+                }
+            }
+        }
 
         //Takes mouse/touch input x coordinate and converts to world coordinate
         tmpVec.x = Gdx.input.x.toFloat()
