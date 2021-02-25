@@ -72,7 +72,6 @@ class PowerUpSystem(
                 // nothing to spawn
                 return
             }
-
             spawnPowerUp(powerUpType, 1f * MathUtils.random(0, V_WIDTH - 1), 16f)
         }
     }

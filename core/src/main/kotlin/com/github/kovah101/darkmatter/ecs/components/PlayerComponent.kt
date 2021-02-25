@@ -6,6 +6,8 @@ import ktx.ashley.mapperFor
 
 const val MAX_LIFE = 100f
 const val MAX_SHIELD = 100f
+//TODO add ammo & max ammo for lasers, implement decrement & UI
+//TODO new ammo power up icon & replace SPEED_2 in spawn
 
 class PlayerComponent : Component, Pool.Poolable {
     var life = MAX_LIFE

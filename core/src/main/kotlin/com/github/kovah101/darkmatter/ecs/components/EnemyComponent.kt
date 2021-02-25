@@ -10,10 +10,11 @@ enum class EnemyType(
     var health : Float,
     val maxHealth : Float,
     val speed : Float,
+    val animationType: AnimationType
 
 ){
-    NONE(0f,0f,0f, 0f),
-    ASTEROID_CHUNK(25f,100f,100f, -3f)
+    NONE(0f,0f,0f, 0f, AnimationType.NONE),
+    ASTEROID_CHUNK(25f,100f,100f, -3f, AnimationType.ASTEROID_CHUNK)
 }
 
 class EnemyComponent : Component, Pool.Poolable {

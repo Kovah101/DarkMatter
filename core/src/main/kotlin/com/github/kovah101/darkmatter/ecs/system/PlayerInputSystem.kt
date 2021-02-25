@@ -74,17 +74,17 @@ class PlayerInputSystem(
         }
         // Laser on tap or button press
         // add fire delays
-        // temp spawns asteriod
+        // temp spawns asteroid
         enemySpawnTimer -= deltaTime
         laserReloadTimer -= deltaTime
         if (Gdx.input.isTouched && laserReloadTimer <= 0f) {
             laserReloadTimer = 1 / LASER_FIRE_SPEED
             engine.spawnLaser(transform)
-            if (enemySpawnTimer <= 0f) {
-                enemySpawnTimer = ENEMY_SPAWN_DELAY
-                engine.spawnAsteroid(transform)
-                LOG.debug { "asteroid spawned" }
-            }
+//            if (enemySpawnTimer <= 0f) {
+//                enemySpawnTimer = ENEMY_SPAWN_DELAY
+//                engine.spawnAsteroid(transform)
+//                LOG.debug { "asteroid spawned" }
+//            }
         }
 
     }
