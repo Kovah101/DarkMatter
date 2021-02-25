@@ -27,7 +27,7 @@ class EnemySystem(
             allOf(ProjectileComponent::class).exclude(RemoveComponent::class).get()
         )
     }
-
+    // TODO Spawn system & patterns
 
     override fun processEntity(entity: Entity, deltaTime: Float) {
         val transform = entity[TransformComponent.mapper]
@@ -35,7 +35,6 @@ class EnemySystem(
         val enemy = entity[EnemyComponent.mapper]
         require(enemy != null) { "Entity |entity| must have a EnemyComponent. entity=$entity" }
 
-        // TODO spawn patterns
         if (transform.position.y <= 1f) {
             //projectile off the screen so remove
             destroyEnemy(entity, transform)
@@ -73,17 +72,17 @@ class EnemySystem(
         val enemy = entity[EnemyComponent.mapper]
         require(enemy != null) { "Entity |entity| must have a EnemyComponent. entity=$entity" }
 
-        // TODO damage and destroy both projectile and enemy
         val damage = projectile[ProjectileComponent.mapper]?.type?.damage
         require(damage != null) { "Projectile |projectile| must have a ProjectileComponent. projectile=$projectile" }
-
+        LOG.debug { "enemy health =${enemy.type.health}" }
         enemy.type.health -= damage
-        if (enemy.type.health < 0) {
+        LOG.debug { "enemy health =${enemy.type.health}" }
+        if (enemy.type.health <= 0) {
             destroyEnemy(entity, transform)
             // spawn power up on destroying enemy
             engine.getSystem<PowerUpSystem>().spawnPowerUp(PowerUpType.SPEED_2, transform.position.x, transform.position.y)
         }
-
+        // destroy projectile on successful hit
         projectile.addComponent<RemoveComponent>(engine)
     }
 

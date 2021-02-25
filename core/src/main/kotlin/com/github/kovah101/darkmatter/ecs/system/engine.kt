@@ -98,7 +98,10 @@ fun Engine.spawnAsteroid(transform: TransformComponent){
         }
         with<AnimationComponent>{type = AnimationType.ASTEROID_CHUNK}
         with<GraphicComponent>()
-        with<EnemyComponent>{type = EnemyType.ASTEROID_CHUNK}
+        with<EnemyComponent>{
+            type = EnemyType.ASTEROID_CHUNK
+            EnemyType.ASTEROID_CHUNK.health = EnemyType.ASTEROID_CHUNK.maxHealth
+        }
         with<MoveComponent>{speed.y = EnemyType.ASTEROID_CHUNK.speed}
     }
 }

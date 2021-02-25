@@ -17,13 +17,15 @@ import ktx.log.logger
 private val LOG = logger<PlayerInputSystem>()
 private const val TOUCH_TOLERANCE_DISTANCE = 0.2f
 private const val TILT_TOLERANCE = 0.35f
-private const val ENEMY_SPAWN_DELAY = 1f
+private const val ENEMY_SPAWN_DELAY = 3f
+private const val LASER_FIRE_SPEED = 2f
 
 class PlayerInputSystem(
     private val gameViewport: Viewport,
 ) : IteratingSystem(allOf(PlayerComponent::class, TransformComponent::class, FacingComponent::class).get()) {
     private val tmpVec = Vector2()
     private var enemySpawnTimer = 0f
+    private var laserReloadTimer = 0f
 
     // by lazy to initialise later
     private val projectileEntities by lazy {
@@ -73,9 +75,11 @@ class PlayerInputSystem(
         // Laser on tap or button press
         // add fire delays
         // temp spawns asteriod
-        if (Gdx.input.isTouched) {
+        enemySpawnTimer -= deltaTime
+        laserReloadTimer -= deltaTime
+        if (Gdx.input.isTouched && laserReloadTimer <= 0f) {
+            laserReloadTimer = 1 / LASER_FIRE_SPEED
             engine.spawnLaser(transform)
-            enemySpawnTimer -= deltaTime
             if (enemySpawnTimer <= 0f) {
                 enemySpawnTimer = ENEMY_SPAWN_DELAY
                 engine.spawnAsteroid(transform)
