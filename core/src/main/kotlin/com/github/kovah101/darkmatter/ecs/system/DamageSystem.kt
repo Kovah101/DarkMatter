@@ -55,29 +55,7 @@ class DamageSystem (
 
         if (transform.position.y <= DAMAGE_AREA_HEIGHT) {
             var damage = DAMAGE_PER_SECOND * deltaTime
-
-            // block damage with shield first
-            if (player.shield > 0f) {
-                val blockAmount = player.shield
-                player.shield = max( player.shield - damage, 0f)
-                gameEventManager.dispatchEvent(GameEvent.PlayerBlock.apply {
-                    shield = player.shield
-                    maxShield = player.maxShield
-                })
-                damage -= blockAmount
-
-                if (damage <= 0f) {
-                    // entire damage blocked by shield
-                    return
-                }
-            }
-            player.life -= damage
-            gameEventManager.dispatchEvent(GameEvent.PlayerHit.apply {
-                this.player = entity
-                life = player.life
-                maxLife = player.maxLife
-            })
-
+            damagePlayer(entity, damage)
         }
 
         // process player on enemy collision damage
@@ -100,39 +78,45 @@ class DamageSystem (
             }
 
             if (playerBoundRect.overlaps(enemyBoundRect)){
-                damagePlayer(entity, enemy)
+                enemy[EnemyComponent.mapper]?.let {
+                    var impactDamage = it.type.damage
+                    damagePlayer(entity, impactDamage)
+                    destroyEnemy(enemy)
+                }
+
             }
         }
     }
 
-    private fun damagePlayer ( entity: Entity, enemy : Entity) {
+    private fun damagePlayer ( entity: Entity, damage : Float) {
         //damage player
         val player = entity[PlayerComponent.mapper]
         require(player != null) { "Entity |entity| must have a PlayerComponent. entity=$entity" }
-        var damage = enemy[EnemyComponent.mapper]?.type?.damage
-        require(damage != null) { "Enemy |enemy| must have a EnemyComponent. enemy=$enemy" }
+        var damageTaken = damage
         // block damage with shield first
         if (player.shield > 0f) {
             val blockAmount = player.shield
-            player.shield = max( player.shield - damage, 0f)
+            player.shield = max( player.shield - damageTaken, 0f)
             gameEventManager.dispatchEvent(GameEvent.PlayerBlock.apply {
                 shield = player.shield
                 maxShield = player.maxShield
             })
-            damage -= blockAmount
+            damageTaken -= blockAmount
 
-            if (damage <= 0f) {
+            if (damageTaken <= 0f) {
                 // entire damage blocked by shield
                 return
             }
         }
-        player.life -= damage
+        player.life -= damageTaken
         gameEventManager.dispatchEvent(GameEvent.PlayerHit.apply {
             this.player = entity
             life = player.life
             maxLife = player.maxLife
         })
+    }
 
+    private fun destroyEnemy(enemy: Entity) {
         // destroy enemy
         val enemyTrans = enemy[TransformComponent.mapper]
         require(enemyTrans != null) { "Enemy |enemy| must have a TransformComponent. enemy=$enemy" }
