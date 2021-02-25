@@ -43,7 +43,7 @@ class EnemySystem(
             allOf(ProjectileComponent::class).exclude(RemoveComponent::class).get()
         )
     }
-    // TODO Spawn system & patterns
+    // TODO Add new asteroids
     private var spawnTimer = 0f
     private val spawnPatterns = gdxArrayOf(
         EnemySpawnPattern(type1 = EnemyType.ASTEROID_CHUNK, type3= EnemyType.ASTEROID_CHUNK, type5 = EnemyType.ASTEROID_CHUNK),
@@ -135,7 +135,7 @@ class EnemySystem(
 
         val damage = projectile[ProjectileComponent.mapper]?.type?.damage
         require(damage != null) { "Projectile |projectile| must have a ProjectileComponent. projectile=$projectile" }
-        LOG.debug { "enemy health =${enemy.type.health}" }
+        //LOG.debug { "enemy health =${enemy.type.health}" }
         enemy.type.health -= damage
         LOG.debug { "enemy health =${enemy.type.health}" }
         if (enemy.type.health <= 0) {

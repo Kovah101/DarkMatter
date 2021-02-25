@@ -38,22 +38,22 @@ class ControlDialog(
 
     init {
         contentTable.defaults().expand().fillY()
-        contentTable.add(scene2d.label(bundle["controls"], LabelStyles.GRADIENT.name) {
+        contentTable.add(scene2d.label(bundle["controls"], LabelStyles.DEFAULT.name) {
             wrap = true
             setAlignment(Align.top)
         }).colspan(4).width(115f).center().padTop(0f)
         contentTable.row()
 
-        contentTable.add(scene2d.image("life_0")).width(IMAGE_WIDTH).padLeft(10f).padBottom(IMAGE_BOTTOM_PADDING)
-        contentTable.add(scene2d.image("shield_0")).width(IMAGE_WIDTH).padBottom(IMAGE_BOTTOM_PADDING)
-        contentTable.add(scene2d.image("orb_blue_1")).width(IMAGE_WIDTH).padBottom(IMAGE_BOTTOM_PADDING)
-        contentTable.add(scene2d.image("orb_yellow_1")).width(IMAGE_WIDTH).padRight(10f).padBottom(IMAGE_BOTTOM_PADDING)
+        contentTable.add(scene2d.image("life_0")).width(IMAGE_WIDTH).height(IMAGE_WIDTH).padLeft(10f).padBottom(IMAGE_BOTTOM_PADDING)
+        contentTable.add(scene2d.image("shield_0")).width(IMAGE_WIDTH).height(IMAGE_WIDTH).padBottom(IMAGE_BOTTOM_PADDING)
+        contentTable.add(scene2d.image("orb_blue_1")).width(IMAGE_WIDTH).height(IMAGE_WIDTH).padBottom(IMAGE_BOTTOM_PADDING)
+        contentTable.add(scene2d.image("orb_yellow_1")).width(IMAGE_WIDTH).height(IMAGE_WIDTH).padRight(10f).padBottom(IMAGE_BOTTOM_PADDING)
         contentTable.row()
 
-        contentTable.add(scene2d.label(bundle["escape"], LabelStyles.GRADIENT.name) {
+        contentTable.add(scene2d.label(bundle["escape"], LabelStyles.DEFAULT.name) {
             wrap = true
             setAlignment(Align.top)
-        }).colspan(4).center().width(130f)
+        }).colspan(4).center().width(115f)
         contentTable.row()
 
         buttonTable.defaults().padBottom(5f)

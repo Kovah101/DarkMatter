@@ -75,6 +75,7 @@ class MenuScreen(
             removeAllEntities()
             getSystem<PowerUpSystem>().setProcessing(true)
             getSystem<DamageSystem>().setProcessing(true)
+            getSystem<EnemySystem>().setProcessing(true)
         }
         stage.clear()
     }

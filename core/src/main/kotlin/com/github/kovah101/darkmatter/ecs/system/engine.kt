@@ -80,7 +80,7 @@ fun Engine.addExplosion(transform : TransformComponent){
 fun Engine.spawnLaser(transform: TransformComponent){
     entity {
         with<TransformComponent>{
-            size.set(0.5f,0.5f)
+            size.set(0.5f,0.75f)
             setInitialPosition(transform.position.x + (transform.size.x * 0.25f), transform.position.y + (transform.size.y * 0.5f), 2f)
         }
         with<AnimationComponent>{type = AnimationType.LASER}

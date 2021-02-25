@@ -6,10 +6,7 @@ import com.github.kovah101.darkmatter.DarkMatter
 import com.github.kovah101.darkmatter.assets.I18NBundleAsset
 import com.github.kovah101.darkmatter.assets.MusicAsset
 import com.github.kovah101.darkmatter.ecs.components.*
-import com.github.kovah101.darkmatter.ecs.system.DamageSystem
-import com.github.kovah101.darkmatter.ecs.system.PowerUpSystem
-import com.github.kovah101.darkmatter.ecs.system.createEventHorizon
-import com.github.kovah101.darkmatter.ecs.system.createPlayer
+import com.github.kovah101.darkmatter.ecs.system.*
 import com.github.kovah101.darkmatter.event.GameEvent
 import com.github.kovah101.darkmatter.event.GameEventListener
 import com.github.kovah101.darkmatter.ui.GameUI
@@ -79,6 +76,8 @@ class GameScreen(
             removeAllEntities()
             getSystem<PowerUpSystem>().setProcessing(false)
             getSystem<DamageSystem>().setProcessing(false)
+            getSystem<EnemySystem>().setProcessing(false)
+
         }
         stage.clear()
     }
