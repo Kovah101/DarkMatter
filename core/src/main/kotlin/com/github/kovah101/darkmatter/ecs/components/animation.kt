@@ -27,7 +27,8 @@ enum class AnimationType(
     ASTEROID_CHIP("asteroidChip"),
     ASTEROID_EGG("asteroidEgg"),
     ASTEROID_SMALL("asteroidSmall"),
-    ASTEROID_LONG("asteroidLong")
+    ASTEROID_LONG("asteroidLong"),
+    AMMO("laser_ammo", speedRate = 0.5f)
 }
 
 class Animation2D (

@@ -2,6 +2,7 @@ package com.github.kovah101.darkmatter.screen
 
 
 import com.badlogic.ashley.core.Engine
+import com.badlogic.gdx.Game
 import com.github.kovah101.darkmatter.DarkMatter
 import com.github.kovah101.darkmatter.assets.I18NBundleAsset
 import com.github.kovah101.darkmatter.assets.MusicAsset
@@ -43,6 +44,7 @@ class GameScreen(
             addListener(GameEvent.PlayerBlock::class, this@GameScreen)
             addListener(GameEvent.PlayerDeath::class, this@GameScreen)
             addListener(GameEvent.CollectPowerUp::class, this@GameScreen)
+            addListener(GameEvent.PlayerShoot::class, this@GameScreen)
         }
 
         engine.run {
@@ -115,9 +117,10 @@ class GameScreen(
 
             is GameEvent.PlayerMove -> {
                 ui.updateDistance(event.distance)
-                ui.updateSpeed(event.speed)
             }
-
+            is GameEvent.PlayerShoot -> {
+                ui.updateAmmo(event.ammo.toFloat(), event.maxAmmo.toFloat())
+            }
 
         }
 
@@ -148,6 +151,9 @@ class GameScreen(
                 }
                 PowerUpType.SHIELD -> {
                     ui.updateShield(player.shield, player.maxShield)
+                }
+                PowerUpType.AMMO -> {
+                    ui.updateAmmo(player.ammo.toFloat(), player.maxAmmo.toFloat())
                 }
                 else -> {
                     // ignore &

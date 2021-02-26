@@ -46,6 +46,13 @@ sealed class GameEvent {
 
         override fun toString() = "PlayerMove(distance=$distance,speed=$speed)"
     }
+
+    object PlayerShoot : GameEvent(){
+        var ammo = 0
+        var maxAmmo = 0
+
+        override fun toString() = "PlayerShoot(ammo=$ammo, maxAmmo=$maxAmmo)"
+    }
 }
 
 

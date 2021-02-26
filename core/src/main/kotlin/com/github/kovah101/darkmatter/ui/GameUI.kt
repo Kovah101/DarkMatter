@@ -40,6 +40,10 @@ class GameUI(private val bundle: I18NBundle) : Group() {
         width = GAME_HUD_SMALL_AREA_WIDTH
         setAlignment(Align.center)
     }
+    private val ammoBarImage = scene2d.image("life_bar_blue") {
+        width = GAME_HUD_SMALL_AREA_WIDTH
+        height = GAME_HUD_AREA_HEIGHT
+    }
 
 
     init {
@@ -77,7 +81,7 @@ class GameUI(private val bundle: I18NBundle) : Group() {
                 gameHudHeight + GAME_HUD_BORDER_SIZE_Y
             )
         }
-        this += speedLabel.apply {
+        this += ammoBarImage.apply {
             setPosition(
                 gameHudX + gameHudWidth - GAME_HUD_BORDER_SIZE_X - GAME_HUD_SMALL_AREA_WIDTH,
                 gameHudHeight + GAME_HUD_BORDER_SIZE_Y
@@ -101,11 +105,7 @@ class GameUI(private val bundle: I18NBundle) : Group() {
         shieldBarImage.color.a = MathUtils.clamp(shield / maxShield, 0f, 1f)
     }
 
-    fun updateSpeed(speed: Float){
-        speedLabel.run {
-            text.setLength(0)
-            text.append(MathUtils.clamp(speed, MIN_SPEED, MAX_SPEED).roundToInt())
-            invalidateHierarchy()
-        }
+    fun updateAmmo(ammo: Float, maxAmmo : Float){
+        ammoBarImage.scaleX = MathUtils.clamp(ammo/maxAmmo, 0f, 1f)
     }
 }

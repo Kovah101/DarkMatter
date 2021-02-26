@@ -49,9 +49,9 @@ class PowerUpSystem(
     }
     private var spawnTime = 0f
     private val spawnPatterns = gdxArrayOf(
-        SpawnPattern(type1 = PowerUpType.SPEED_1, type2 = PowerUpType.LIFE, type5 = PowerUpType.LIFE),
+        SpawnPattern(type1 = PowerUpType.SPEED_1, type2 = PowerUpType.LIFE, type5 = PowerUpType.AMMO),
         SpawnPattern(type2 = PowerUpType.LIFE, type3 = PowerUpType.SHIELD, type4 = PowerUpType.SPEED_1),
-        SpawnPattern(type1 = PowerUpType.SHIELD, type3 = PowerUpType.SHIELD, type5 = PowerUpType.SPEED_1)
+        SpawnPattern(type1 = PowerUpType.AMMO, type3 = PowerUpType.SPEED_1, type5 = PowerUpType.SHIELD)
     )
     private val currentSpawnPattern = GdxArray<PowerUpType>()
 
@@ -132,6 +132,7 @@ class PowerUpSystem(
             player[PlayerComponent.mapper]?.let {
                 it.life = min(it.maxLife, it.life + powerUpType.lifeGain)
                 it.shield = min(it.maxShield, it.shield + powerUpType.shieldGain)
+                it.ammo = min(it.maxAmmo, it.ammo +powerUpType.ammoGain)
             }
             audioService.play(powerUpType.soundAsset)
 

@@ -48,12 +48,12 @@ class GameOverUI (private val bundle: I18NBundle){
     fun updateScores(score: Int, highScore: Int) {
         lastScoreButton.label.run {
             text.setLength(0)
-            text.append(bundle["score", MathUtils.clamp(score, 0, 999)])
+            text.append(bundle["score", MathUtils.clamp(score, 0, 9999)])
             invalidateHierarchy()
         }
         highScoreButton.label.run {
             text.setLength(0)
-            text.append(bundle["highscore", MathUtils.clamp(highScore, 0, 999)])
+            text.append(bundle["highscore", MathUtils.clamp(highScore, 0, 9999)])
             invalidateHierarchy()
         }
     }

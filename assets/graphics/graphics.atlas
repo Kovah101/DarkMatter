@@ -461,7 +461,7 @@ dark_matter
   index: 55
 error
   rotate: false
-  xy: 1638, 113
+  xy: 91, 9
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
@@ -524,14 +524,14 @@ explosion
   index: 6
 fire
   rotate: false
-  xy: 1561, 26
+  xy: 1648, 113
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: 0
 fire
   rotate: false
-  xy: 121, 9
+  xy: 131, 9
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
@@ -543,6 +543,20 @@ laser
   orig: 8, 9
   offset: 0, 0
   index: -1
+laser_ammo
+  rotate: false
+  xy: 81, 9
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: 0
+laser_ammo
+  rotate: false
+  xy: 121, 9
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: 1
 life
   rotate: false
   xy: 1628, 113
@@ -552,63 +566,63 @@ life
   index: 1
 life
   rotate: false
-  xy: 91, 9
+  xy: 1561, 26
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: 3
 life
   rotate: false
-  xy: 1648, 113
+  xy: 101, 9
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: 0
 life
   rotate: false
-  xy: 111, 9
+  xy: 1668, 113
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: 2
 orb_blue
   rotate: false
-  xy: 1561, 36
+  xy: 1638, 113
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: 1
 orb_blue
   rotate: false
-  xy: 1658, 113
+  xy: 111, 9
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: 0
 orb_yellow
   rotate: false
-  xy: 101, 9
+  xy: 1658, 113
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: 1
 orb_yellow
   rotate: false
+  xy: 1688, 113
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: 0
+shield
+  rotate: false
+  xy: 1561, 36
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: 0
+shield
+  rotate: false
   xy: 1678, 113
-  size: 8, 8
-  orig: 8, 8
-  offset: 0, 0
-  index: 0
-shield
-  rotate: false
-  xy: 81, 9
-  size: 8, 8
-  orig: 8, 8
-  offset: 0, 0
-  index: 0
-shield
-  rotate: false
-  xy: 1668, 113
   size: 8, 8
   orig: 8, 8
   offset: 0, 0

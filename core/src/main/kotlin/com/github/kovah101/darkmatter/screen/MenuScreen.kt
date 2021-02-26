@@ -53,6 +53,7 @@ class MenuScreen(
         engine.run {
             createPlayer(assets, spawnY = 2.8f)
             createEventHorizon()
+            getSystem<PowerUpSystem>().setProcessing(true)
         }
         audioService.enabled = preferences["musicEnabledKey", true]
         LOG.debug { "audio mode starts = ${audioService.enabled}" }

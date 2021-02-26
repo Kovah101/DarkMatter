@@ -7,6 +7,8 @@ import com.badlogic.gdx.Input
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.viewport.Viewport
 import com.github.kovah101.darkmatter.ecs.components.*
+import com.github.kovah101.darkmatter.event.GameEvent
+import com.github.kovah101.darkmatter.event.GameEventManager
 import ktx.ashley.addComponent
 import ktx.ashley.allOf
 import ktx.ashley.exclude
@@ -20,6 +22,7 @@ private const val TILT_TOLERANCE = 0.35f
 private const val LASER_FIRE_SPEED = 2.5f
 
 class PlayerInputSystem(
+    private val gameEventManager: GameEventManager,
     private val gameViewport: Viewport,
 ) : IteratingSystem(allOf(PlayerComponent::class, TransformComponent::class, FacingComponent::class).get()) {
     private val tmpVec = Vector2()
@@ -37,6 +40,8 @@ class PlayerInputSystem(
         require(facing != null) { "Entity |entity| must have FacingComponent. entity=$entity" }
         val transform = entity[TransformComponent.mapper]
         require(transform != null) { "Entity |entity| must have TransformComponent. entity=$entity" }
+        val player = entity[PlayerComponent.mapper]
+        require(player != null) {"Entity |entity| must have PlayerComponent. entity=$entity"}
 
 
         projectileEntities.forEach { projectile ->
@@ -72,12 +77,18 @@ class PlayerInputSystem(
         }
         // Laser on tap or button press
         // add fire delays
-        // TODO add ammo, UI & power up
         laserReloadTimer -= deltaTime
-        if (Gdx.input.isTouched && laserReloadTimer <= 0f) {
+        if (Gdx.input.isTouched && laserReloadTimer <= 0f && player.ammo > 0) {
             laserReloadTimer = 1 / LASER_FIRE_SPEED
             engine.spawnLaser(transform)
-
+            player.ammo --
+            LOG.debug { "player ammo=${player.ammo}" }
+            gameEventManager.dispatchEvent(
+                GameEvent.PlayerShoot.apply {
+                    this.ammo = player.ammo
+                    this.maxAmmo = player.maxAmmo
+                    LOG.debug { "Ammo Event Sent" }
+                })
         }
 
     }

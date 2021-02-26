@@ -190,11 +190,7 @@ class EnemySystem(
     }
 
     override fun onEvent(event: GameEvent) {
-//        when(event){
-//            is GameEvent.PlayerMove ->{
-//                LOG.debug { "new timers =$MED_MIN_SPAWN_INTERVAL & $MED_MAX_SPAWN_INTERVAL, distance=${event.distance}" }
-//            }
-//        }
+        // TODO edit difficulty settings
         if(event is GameEvent.PlayerMove){
             when{
                 event.distance.toInt() == 10 -> {
