@@ -1,11 +1,15 @@
 package com.github.kovah101.darkmatter.ecs.system
 
+import com.badlogic.ashley.core.Engine
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Rectangle
+import com.badlogic.gdx.scenes.scene2d.Event
 import com.github.kovah101.darkmatter.V_WIDTH
 import com.github.kovah101.darkmatter.ecs.components.*
+import com.github.kovah101.darkmatter.event.GameEvent
+import com.github.kovah101.darkmatter.event.GameEventListener
 import com.github.kovah101.darkmatter.event.GameEventManager
 import ktx.ashley.*
 import ktx.collections.GdxArray
@@ -16,22 +20,26 @@ import java.rmi.activation.ActivationGroup.getSystem
 
 private val LOG = logger<EnemySystem>()
 private const val DEATH_EXPLOSION_DELAY = 0.9f // delay till death
-private const val MAX_SPAWN_INTERVAL = 1.5f
-private const val MIN_SPAWN_INTERVAL = 0.9f
+private const val EASY_MAX_SPAWN_INTERVAL = 1.5f
+private const val EASY_MIN_SPAWN_INTERVAL = 0.9f
+private const val MED_MAX_SPAWN_INTERVAL = 1.0f
+private const val MED_MIN_SPAWN_INTERVAL = 0.65f
+private const val HARD_MAX_SPAWN_INTERVAL = 0.7f
+private const val HARD_MIN_SPAWN_INTERVAL = 0.35f
 
 private class EnemySpawnPattern(
-    type1 : EnemyType = EnemyType.NONE,
-    type2 : EnemyType = EnemyType.NONE,
-    type3 : EnemyType = EnemyType.NONE,
-    type4 : EnemyType = EnemyType.NONE,
-    type5 : EnemyType = EnemyType.NONE,
-    type6 : EnemyType = EnemyType.NONE,
-    val types : GdxArray<EnemyType> = gdxArrayOf(type1, type2, type3, type4, type5, type6)
+    type1: EnemyType = EnemyType.NONE,
+    type2: EnemyType = EnemyType.NONE,
+    type3: EnemyType = EnemyType.NONE,
+    type4: EnemyType = EnemyType.NONE,
+    type5: EnemyType = EnemyType.NONE,
+    type6: EnemyType = EnemyType.NONE,
+    val types: GdxArray<EnemyType> = gdxArrayOf(type1, type2, type3, type4, type5, type6)
 )
 
 class EnemySystem(
     private val gameEventManager: GameEventManager
-) : IteratingSystem(
+) : GameEventListener, IteratingSystem(
     allOf(EnemyComponent::class, TransformComponent::class).exclude(RemoveComponent::class).get()
 ) {
     private val projectileBoundRect = Rectangle()
@@ -43,21 +51,41 @@ class EnemySystem(
             allOf(ProjectileComponent::class).exclude(RemoveComponent::class).get()
         )
     }
-    // TODO Add new asteroids
+
     private var spawnTimer = 0f
+    private var minSpawnTimer = EASY_MIN_SPAWN_INTERVAL
+    private var maxSpawnTimer = EASY_MAX_SPAWN_INTERVAL
+    private var difficulty = 1f
     private val spawnPatterns = gdxArrayOf(
-        EnemySpawnPattern(type1 = EnemyType.ASTEROID_CHUNK, type3= EnemyType.ASTEROID_CHUNK, type5 = EnemyType.ASTEROID_CHUNK),
-        EnemySpawnPattern(type2 = EnemyType.ASTEROID_CHUNK, type3= EnemyType.ASTEROID_CHUNK, type4 = EnemyType.ASTEROID_CHUNK),
-        EnemySpawnPattern(type1 = EnemyType.ASTEROID_CHUNK, type5= EnemyType.ASTEROID_CHUNK, type6 = EnemyType.ASTEROID_CHUNK)
+        EnemySpawnPattern(
+            type1 = EnemyType.ASTEROID_CHUNK,
+            type3 = EnemyType.ASTEROID_CHIP,
+            type5 = EnemyType.ASTEROID_SMALL
+        ),
+        EnemySpawnPattern(
+            type2 = EnemyType.ASTEROID_EGG,
+            type3 = EnemyType.ASTEROID_LONG,
+            type4 = EnemyType.ASTEROID_CHUNK
+        ),
+        EnemySpawnPattern(
+            type1 = EnemyType.ASTEROID_EGG,
+            type5 = EnemyType.ASTEROID_CHIP,
+            type6 = EnemyType.ASTEROID_LONG
+        )
     )
 
     private val currentSpawnPattern = GdxArray<EnemyType>()
+
+    override fun addedToEngine(engine: Engine?) {
+        super.addedToEngine(engine)
+        gameEventManager.addListener(GameEvent.PlayerMove::class, this)
+    }
 
     override fun update(deltaTime: Float) {
         super.update(deltaTime)
         spawnTimer -= deltaTime
         if (spawnTimer <= 0f) {
-            spawnTimer = MathUtils.random(MIN_SPAWN_INTERVAL, MAX_SPAWN_INTERVAL)
+            spawnTimer = MathUtils.random(minSpawnTimer, maxSpawnTimer)
 
             if (currentSpawnPattern.isEmpty) {
                 currentSpawnPattern.addAll(spawnPatterns[MathUtils.random(0, spawnPatterns.size - 1)].types)
@@ -65,27 +93,27 @@ class EnemySystem(
             }
             // select enemy type + remove from pattern
             val enemyType = currentSpawnPattern.removeIndex(0)
-            if(enemyType == EnemyType.NONE){
+            if (enemyType == EnemyType.NONE) {
                 // do nothing
                 return
             }
-            spawnEnemy(enemyType, 1f * MathUtils.random(0, V_WIDTH-1), 16f)
+            spawnEnemy(enemyType, 1f * MathUtils.random(0, V_WIDTH - 1), 16f)
         }
     }
 
-    private fun spawnEnemy(enemyType: EnemyType, x : Float, y : Float){
-        engine.entity{
-            with<TransformComponent>{
+    private fun spawnEnemy(enemyType: EnemyType, x: Float, y: Float) {
+        engine.entity {
+            with<TransformComponent> {
                 //size.set(1f,1f)
                 setInitialPosition(x, y, 0f)
             }
-            with<AnimationComponent>{type = enemyType.animationType}
+            with<AnimationComponent> { type = enemyType.animationType }
             with<GraphicComponent>()
-            with<EnemyComponent>{
+            with<EnemyComponent> {
                 type = enemyType
                 enemyType.health = enemyType.maxHealth
             }
-            with<MoveComponent>{speed.y = enemyType.speed}
+            with<MoveComponent> { speed.y = enemyType.speed * difficulty }
 
         }
     }
@@ -127,7 +155,7 @@ class EnemySystem(
 
     }
 
-    private fun damageEnemy(entity : Entity, projectile : Entity){
+    private fun damageEnemy(entity: Entity, projectile: Entity) {
         val transform = entity[TransformComponent.mapper]
         require(transform != null) { "Entity |entity| must have a TransformComponent. entity=$entity" }
         val enemy = entity[EnemyComponent.mapper]
@@ -137,11 +165,14 @@ class EnemySystem(
         require(damage != null) { "Projectile |projectile| must have a ProjectileComponent. projectile=$projectile" }
         //LOG.debug { "enemy health =${enemy.type.health}" }
         enemy.type.health -= damage
-        LOG.debug { "enemy health =${enemy.type.health}" }
+        //LOG.debug { "enemy health =${enemy.type.health}" }
         if (enemy.type.health <= 0) {
             destroyEnemy(entity, transform)
-            // spawn power up on destroying enemy
-            engine.getSystem<PowerUpSystem>().spawnPowerUp(PowerUpType.SPEED_2, transform.position.x, transform.position.y)
+            if (enemy.type == EnemyType.ASTEROID_EGG) {
+                // spawn power up on destroying enemy
+                engine.getSystem<PowerUpSystem>()
+                    .spawnPowerUp(PowerUpType.SPEED_2, transform.position.x, transform.position.y)
+            }
         }
         // destroy projectile on successful hit
         projectile.addComponent<RemoveComponent>(engine)
@@ -156,5 +187,33 @@ class EnemySystem(
         }
         entity[GraphicComponent.mapper]?.sprite?.setAlpha(0f)
         engine.addExplosion(transform)
+    }
+
+    override fun onEvent(event: GameEvent) {
+//        when(event){
+//            is GameEvent.PlayerMove ->{
+//                LOG.debug { "new timers =$MED_MIN_SPAWN_INTERVAL & $MED_MAX_SPAWN_INTERVAL, distance=${event.distance}" }
+//            }
+//        }
+        if(event is GameEvent.PlayerMove){
+            when{
+                event.distance.toInt() == 10 -> {
+                    // enter medium difficulty
+                    minSpawnTimer = MED_MIN_SPAWN_INTERVAL
+                    maxSpawnTimer = MED_MAX_SPAWN_INTERVAL
+                    difficulty = 1.5f
+                    LOG.debug { "MEDIUM DIFFICULTY, minSpawnTimer=$minSpawnTimer, maxSpawnTimer=$maxSpawnTimer" }
+                }
+                event.distance.toInt() ==  20 -> {
+                    // enter hard difficulty
+                    minSpawnTimer = HARD_MIN_SPAWN_INTERVAL
+                    maxSpawnTimer = HARD_MAX_SPAWN_INTERVAL
+                    difficulty = 2f
+                    LOG.debug { "HARD DIFFICULTY,  minSpawnTimer=$minSpawnTimer, maxSpawnTimer=$maxSpawnTimer" }
+                }
+            }
+        }
+
+
     }
 }

@@ -14,12 +14,15 @@ enum class EnemyType(
 
 ){
     NONE(0f,0f,0f, 0f, AnimationType.NONE),
-    ASTEROID_CHUNK(25f,100f,100f, -3f, AnimationType.ASTEROID_CHUNK)
+    ASTEROID_CHUNK(75f,100f,100f, -3f, AnimationType.ASTEROID_CHUNK),
+    ASTEROID_CHIP(60f, 80f, 80f, -3.75f, AnimationType.ASTEROID_CHIP),
+    ASTEROID_SMALL(50f, 50f, 50f, -5f, AnimationType.ASTEROID_SMALL),
+    ASTEROID_EGG(100f, 100f, 100f, -2.25f, AnimationType.ASTEROID_EGG),
+    ASTEROID_LONG(100f, 100f, 100f, -2.75f, AnimationType.ASTEROID_LONG)
 }
 
 class EnemyComponent : Component, Pool.Poolable {
     var type = EnemyType.NONE
-    val health = EnemyType.NONE.health
 
     override fun reset() {
         type = EnemyType.NONE

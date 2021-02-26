@@ -65,7 +65,7 @@ class DarkMatter : KtxGame<DarkMatterScreen>() {
                 setProcessing(false)
             })
             addSystem(EnemySystem(gameEventManager).apply {
-                setProcessing(false)
+                setProcessing(true)
             })
             addSystem(CameraShakeSystem(gameViewport.camera, gameEventManager))
             addSystem(
