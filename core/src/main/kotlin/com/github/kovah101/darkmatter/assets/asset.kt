@@ -28,7 +28,7 @@ enum class TextureAtlasAsset(
     GAME_GRAPHICS(false, "graphics.atlas"),
     UI(true, "ui.atlas")
 }
-
+// TODO add laser sound & ammo sound
 enum class SoundAsset(
     fileName: String,
     directory: String = "sound",
