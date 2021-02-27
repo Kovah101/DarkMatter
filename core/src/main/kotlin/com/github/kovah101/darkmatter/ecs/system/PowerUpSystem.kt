@@ -9,6 +9,7 @@ import com.github.kovah101.darkmatter.audio.AudioService
 import com.github.kovah101.darkmatter.ecs.components.*
 import com.github.kovah101.darkmatter.event.GameEvent
 import com.github.kovah101.darkmatter.event.GameEventManager
+import com.github.kovah101.darkmatter.screen.currentDifficulty
 import ktx.ashley.*
 import ktx.collections.GdxArray
 import ktx.collections.gdxArrayOf
@@ -64,6 +65,7 @@ class PowerUpSystem(
 
             if (currentSpawnPattern.isEmpty) {
                 currentSpawnPattern.addAll(spawnPatterns[MathUtils.random(0, spawnPatterns.size - 1)].types)
+                LOG.debug { "Difficulty=$currentDifficulty" }
                 LOG.debug { "Next pattern: $currentSpawnPattern" }
             }
 
