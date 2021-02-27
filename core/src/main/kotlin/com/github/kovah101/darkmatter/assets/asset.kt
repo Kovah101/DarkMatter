@@ -28,6 +28,7 @@ enum class TextureAtlasAsset(
     GAME_GRAPHICS(false, "graphics.atlas"),
     UI(true, "ui.atlas")
 }
+
 // TODO add laser sound & ammo sound
 enum class SoundAsset(
     fileName: String,
@@ -92,4 +93,15 @@ enum class I18NBundleAsset(
     val descriptor: AssetDescriptor<I18NBundle> = AssetDescriptor("$directory/$fileName", I18NBundle::class.java)
 ) {
     DEFAULT("i18n")
+}
+
+enum class GlobalDifficulty(
+     val pullSpeedMultiplier: Float,
+     val minEnemySpawnTimer: Float,
+     val maxEnemySpawnTimer: Float
+) {
+    EASY (0.8f, 1f, 1.75f),
+    MEDIUM(1f, 0.9f, 1.5f),
+    HARD(1.2f, 0.75f, 1.25f),
+    EXTRA_HARD(1.5f, 0.6f, 1f)
 }

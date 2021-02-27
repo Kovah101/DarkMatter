@@ -8,15 +8,18 @@ import com.github.kovah101.darkmatter.V_WIDTH
 import com.github.kovah101.darkmatter.ecs.components.*
 import com.github.kovah101.darkmatter.event.GameEvent
 import com.github.kovah101.darkmatter.event.GameEventManager
+import com.github.kovah101.darkmatter.screen.currentDifficulty
 import ktx.ashley.allOf
 import ktx.ashley.exclude
 import ktx.ashley.get
+import ktx.log.debug
+import ktx.log.logger
 import kotlin.math.abs
 import kotlin.math.min
 import kotlin.math.max
 
 private const val UPDATE_RATE = 1 / 25f
-
+private val LOG = logger<MoveSystem>()
 // supersedes deltaTime in case of lag
 // gives constant movement
 private const val HOR_ACC = 18.5f
@@ -24,6 +27,7 @@ private const val VER_ACC = 2.25f // event horizon pull strength
 private const val MAX_VER_NEG_PLAYER_SPEED = 0.75f
 private const val MAX_VER_POS_PLAYER_SPEED = 5f
 private const val MAX_HOR_SPEED = 5.75f
+private var speedMultiplier = currentDifficulty.pullSpeedMultiplier
 
 class MoveSystem(
     private val gameEventManager: GameEventManager
@@ -126,9 +130,11 @@ class MoveSystem(
 
         // update vertical speed
         // sucked into dark matter
-        // constant neg from DM, const pos from boosts
+        // constant neg from EH, const pos from boosts
+        // multiplied for difficulty settings
+        speedMultiplier = currentDifficulty.pullSpeedMultiplier
         move.speed.y = MathUtils.clamp(
-            move.speed.y - VER_ACC * deltaTime,
+            move.speed.y - VER_ACC * deltaTime * speedMultiplier,
             -MAX_VER_NEG_PLAYER_SPEED,
             MAX_VER_POS_PLAYER_SPEED
         )

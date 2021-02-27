@@ -4,6 +4,7 @@ package com.github.kovah101.darkmatter.screen
 import com.badlogic.ashley.core.Engine
 import com.badlogic.gdx.Game
 import com.github.kovah101.darkmatter.DarkMatter
+import com.github.kovah101.darkmatter.assets.GlobalDifficulty
 import com.github.kovah101.darkmatter.assets.I18NBundleAsset
 import com.github.kovah101.darkmatter.assets.MusicAsset
 import com.github.kovah101.darkmatter.ecs.components.*
@@ -25,12 +26,14 @@ import kotlin.math.roundToInt
 private val LOG = logger<GameScreen>()
 private const val MAX_DELTA_TIME = 1 / 20f //used to stop spiral of death
 var playerAlive : Boolean = false
+var currentDifficulty : GlobalDifficulty = GlobalDifficulty.EASY
 
 class GameScreen(
     game: DarkMatter,
     private val engine: Engine = game.engine
 ) : DarkMatterScreen(game), GameEventListener {
     private  val ui = GameUI(assets[I18NBundleAsset.DEFAULT.descriptor])
+
 
 
     override fun show() {
@@ -55,6 +58,8 @@ class GameScreen(
                 createPlayer(assets)
                 createEventHorizon()
                 playerAlive = true
+                currentDifficulty = GlobalDifficulty.EASY
+                LOG.debug { "current difficulty=$currentDifficulty" }
             }
         }
             setupUI()

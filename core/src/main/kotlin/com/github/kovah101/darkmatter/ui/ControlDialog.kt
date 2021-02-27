@@ -25,6 +25,7 @@ private const val DIALOG_WIDTH_SCALE = 0.95f
 private const val DIALOG_HEIGHT_SCALE = 0.95f
 private const val IMAGE_WIDTH = 20f
 private const val IMAGE_BOTTOM_PADDING = 8f
+private const val IMAGE_SCALE = 0.9f
 
 class ControlDialog(
     bundle: I18NBundle,
@@ -41,19 +42,20 @@ class ControlDialog(
         contentTable.add(scene2d.label(bundle["controls"], LabelStyles.DEFAULT.name) {
             wrap = true
             setAlignment(Align.top)
-        }).colspan(4).width(115f).center().padTop(0f)
+        }).colspan(5).width(115f).center().padTop(0f)
         contentTable.row()
 
-        contentTable.add(scene2d.image("life_0")).width(IMAGE_WIDTH).height(IMAGE_WIDTH).padLeft(10f).padBottom(IMAGE_BOTTOM_PADDING)
-        contentTable.add(scene2d.image("shield_0")).width(IMAGE_WIDTH).height(IMAGE_WIDTH).padBottom(IMAGE_BOTTOM_PADDING)
-        contentTable.add(scene2d.image("orb_blue_1")).width(IMAGE_WIDTH).height(IMAGE_WIDTH).padBottom(IMAGE_BOTTOM_PADDING)
-        contentTable.add(scene2d.image("orb_yellow_1")).width(IMAGE_WIDTH).height(IMAGE_WIDTH).padRight(10f).padBottom(IMAGE_BOTTOM_PADDING)
+        contentTable.add(scene2d.image("life_0")).width(IMAGE_WIDTH * IMAGE_SCALE).height(IMAGE_WIDTH * IMAGE_SCALE).padLeft(0f).padBottom(IMAGE_BOTTOM_PADDING)
+        contentTable.add(scene2d.image("shield_0")).width(IMAGE_WIDTH * IMAGE_SCALE).height(IMAGE_WIDTH * IMAGE_SCALE).padBottom(IMAGE_BOTTOM_PADDING)
+        contentTable.add(scene2d.image("laser_ammo_1")).width(IMAGE_WIDTH * IMAGE_SCALE).height(IMAGE_WIDTH * IMAGE_SCALE).padBottom(IMAGE_BOTTOM_PADDING)
+        contentTable.add(scene2d.image("orb_blue_1")).width(IMAGE_WIDTH * IMAGE_SCALE).height(IMAGE_WIDTH * IMAGE_SCALE).padBottom(IMAGE_BOTTOM_PADDING)
+        contentTable.add(scene2d.image("orb_yellow_1")).width(IMAGE_WIDTH * IMAGE_SCALE).height(IMAGE_WIDTH * IMAGE_SCALE).padRight(0f).padBottom(IMAGE_BOTTOM_PADDING)
         contentTable.row()
 
         contentTable.add(scene2d.label(bundle["escape"], LabelStyles.DEFAULT.name) {
             wrap = true
             setAlignment(Align.top)
-        }).colspan(4).center().width(115f)
+        }).colspan(5).center().width(115f)
         contentTable.row()
 
         buttonTable.defaults().padBottom(5f)

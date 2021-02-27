@@ -7,10 +7,12 @@ import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.scenes.scene2d.Event
 import com.github.kovah101.darkmatter.V_WIDTH
+import com.github.kovah101.darkmatter.assets.GlobalDifficulty
 import com.github.kovah101.darkmatter.ecs.components.*
 import com.github.kovah101.darkmatter.event.GameEvent
 import com.github.kovah101.darkmatter.event.GameEventListener
 import com.github.kovah101.darkmatter.event.GameEventManager
+import com.github.kovah101.darkmatter.screen.currentDifficulty
 import ktx.ashley.*
 import ktx.collections.GdxArray
 import ktx.collections.gdxArrayOf
@@ -53,9 +55,9 @@ class EnemySystem(
     }
 
     private var spawnTimer = 0f
-    private var minSpawnTimer = EASY_MIN_SPAWN_INTERVAL
-    private var maxSpawnTimer = EASY_MAX_SPAWN_INTERVAL
-    private var difficulty = 1f
+    private var minSpawnTimer = currentDifficulty.minEnemySpawnTimer
+    private var maxSpawnTimer = currentDifficulty.maxEnemySpawnTimer
+    private var speedMultiplier = currentDifficulty.pullSpeedMultiplier
     private val spawnPatterns = gdxArrayOf(
         EnemySpawnPattern(
             type1 = EnemyType.ASTEROID_CHUNK,
@@ -113,7 +115,7 @@ class EnemySystem(
                 type = enemyType
                 enemyType.health = enemyType.maxHealth
             }
-            with<MoveComponent> { speed.y = enemyType.speed * difficulty }
+            with<MoveComponent> { speed.y = enemyType.speed * speedMultiplier }
 
         }
     }
@@ -191,25 +193,32 @@ class EnemySystem(
 
     override fun onEvent(event: GameEvent) {
         // TODO edit difficulty settings
-        if(event is GameEvent.PlayerMove){
-            when{
+        if (event is GameEvent.PlayerMove) {
+            when {
                 event.distance.toInt() == 10 -> {
                     // enter medium difficulty
-                    minSpawnTimer = MED_MIN_SPAWN_INTERVAL
-                    maxSpawnTimer = MED_MAX_SPAWN_INTERVAL
-                    difficulty = 1.5f
-                    LOG.debug { "MEDIUM DIFFICULTY, minSpawnTimer=$minSpawnTimer, maxSpawnTimer=$maxSpawnTimer" }
+                    currentDifficulty = GlobalDifficulty.MEDIUM
+                    setDifficulty()
                 }
-                event.distance.toInt() ==  20 -> {
+                event.distance.toInt() == 25 -> {
                     // enter hard difficulty
-                    minSpawnTimer = HARD_MIN_SPAWN_INTERVAL
-                    maxSpawnTimer = HARD_MAX_SPAWN_INTERVAL
-                    difficulty = 2f
-                    LOG.debug { "HARD DIFFICULTY,  minSpawnTimer=$minSpawnTimer, maxSpawnTimer=$maxSpawnTimer" }
+                    currentDifficulty = GlobalDifficulty.HARD
+                    setDifficulty()
+                }
+                event.distance.toInt() == 50 -> {
+                    // enter hard difficulty
+                    currentDifficulty = GlobalDifficulty.EXTRA_HARD
+                    setDifficulty()
                 }
             }
         }
 
+    }
 
+    private fun setDifficulty() {
+        minSpawnTimer = currentDifficulty.minEnemySpawnTimer
+        maxSpawnTimer = currentDifficulty.maxEnemySpawnTimer
+        speedMultiplier = currentDifficulty.pullSpeedMultiplier
+        //LOG.debug { "DIFFICULTY=$currentDifficulty, minSpawnTimer=$minSpawnTimer, maxSpawnTimer=$maxSpawnTimer" }
     }
 }

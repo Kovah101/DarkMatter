@@ -19,8 +19,8 @@ import kotlin.math.min
 
 
 private val LOG = logger<PowerUpSystem>()
-private const val MAX_SPAWN_INTERVAL = 1.5f
-private const val MIN_SPAWN_INTERVAL = 0.9f
+private const val MAX_SPAWN_INTERVAL = 1.4f
+private const val MIN_SPAWN_INTERVAL = 0.8f
 private const val POWER_UP_SPEED = -8.75f //fall speed
 
 
@@ -30,7 +30,8 @@ private class SpawnPattern(
     type3: PowerUpType = PowerUpType.NONE,
     type4: PowerUpType = PowerUpType.NONE,
     type5: PowerUpType = PowerUpType.NONE,
-    val types: GdxArray<PowerUpType> = gdxArrayOf(type1, type2, type3, type4, type5)
+    type6: PowerUpType = PowerUpType.NONE,
+    val types: GdxArray<PowerUpType> = gdxArrayOf(type1, type2, type3, type4, type5, type6)
 )
 
 class PowerUpSystem(
@@ -49,9 +50,9 @@ class PowerUpSystem(
     }
     private var spawnTime = 0f
     private val spawnPatterns = gdxArrayOf(
-        SpawnPattern(type1 = PowerUpType.SPEED_1, type2 = PowerUpType.LIFE, type5 = PowerUpType.AMMO),
-        SpawnPattern(type2 = PowerUpType.LIFE, type3 = PowerUpType.SHIELD, type4 = PowerUpType.SPEED_1),
-        SpawnPattern(type1 = PowerUpType.AMMO, type3 = PowerUpType.SPEED_1, type5 = PowerUpType.SHIELD)
+        SpawnPattern(type1 = PowerUpType.SPEED_1, type2 = PowerUpType.LIFE, type4 = PowerUpType.AMMO, type6 = PowerUpType.SPEED_2),
+        SpawnPattern(type2 = PowerUpType.LIFE, type3 = PowerUpType.SHIELD, type4 = PowerUpType.SPEED_1, type6 = PowerUpType.AMMO),
+        SpawnPattern(type1 = PowerUpType.SPEED_1, type3 = PowerUpType.LIFE, type5 = PowerUpType.SHIELD, type6 = PowerUpType.SPEED_1)
     )
     private val currentSpawnPattern = GdxArray<PowerUpType>()
 
