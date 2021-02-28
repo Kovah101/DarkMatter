@@ -29,13 +29,14 @@ class RenderSystem(
     private val uiViewport: Viewport,
     backgroundTexture: Texture,
     private val gameEventManager: GameEventManager,
-    private val outlineShader: ShaderProgram
+    private val outlineShader: ShaderProgram,
+    private val yellowOutlineShader: ShaderProgram
 ) : GameEventListener,
     SortedIteratingSystem(
-    allOf(TransformComponent::class, GraphicComponent::class).get(),
-    // comparing entities by transform component
-    compareBy { entity -> entity[TransformComponent.mapper] }
-) {
+        allOf(TransformComponent::class, GraphicComponent::class).get(),
+        // comparing entities by transform component
+        compareBy { entity -> entity[TransformComponent.mapper] }
+    ) {
     // background values
     private val background = Sprite(backgroundTexture.apply {
         setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat)
@@ -45,9 +46,15 @@ class RenderSystem(
     // shader values
     private val textureSizeLoc = outlineShader.getUniformLocation("u_textureSize")
     private val outlineColorLoc = outlineShader.getUniformLocation("u_outlineColor")
-    private val outlineColor = Color(0f, 113f/255f, 214f/255f, 1f)
+    private val outlineColorBlue = Color(0f, 113f / 255f, 214f / 255f, 1f)
+    private val yellowTextureSizeLoc = yellowOutlineShader.getUniformLocation("u_textureSize")
+    private val yellowOutlineColorLoc = yellowOutlineShader.getUniformLocation("u_outlineColor")
+    private val outlineColorYellow = Color(214f / 255f, 113f / 255f, 0f, 1f)
     private val playerEntities by lazy {
         engine.getEntitiesFor(allOf(PlayerComponent::class).exclude(RemoveComponent::class).get())
+    }
+    private val enemyEntities by lazy {
+        engine.getEntitiesFor(allOf(EnemyComponent::class).exclude(RemoveComponent::class).get())
     }
 
     override fun addedToEngine(engine: Engine?) {
@@ -62,13 +69,15 @@ class RenderSystem(
 
     override fun update(deltaTime: Float) {
         uiViewport.apply()
-        batch.use(uiViewport.camera.combined){
+        batch.use(uiViewport.camera.combined) {
             // render background
             background.run {
                 // always return to original background speed
                 // over time dictated by 1f/10f
-                backgroundSpeed.y = min( -0.25f,
-                backgroundSpeed.y + deltaTime * (1f/10f))
+                backgroundSpeed.y = min(
+                    -0.25f,
+                    backgroundSpeed.y + deltaTime * (1f / 10f)
+                )
                 scroll(backgroundSpeed.x * deltaTime, backgroundSpeed.y * deltaTime)
                 draw(batch)
             }
@@ -87,24 +96,57 @@ class RenderSystem(
 
     }
 
-    private fun renderEntityOutlines(){
+    private fun renderEntityOutlines() {
         batch.use(gameViewport.camera.combined) {
             it.shader = outlineShader
-            playerEntities.forEach{ entity ->
+            playerEntities.forEach { entity ->
                 renderPlayerOutlines(entity, it)
+            }
+            it.shader = yellowOutlineShader
+            enemyEntities.forEach { entity ->
+                renderEnemyOutlines(entity, it)
             }
             it.shader = null
         }
     }
 
-    private fun renderPlayerOutlines(entity: Entity, batch: Batch){
+
+    // TODO new colours applied to all outlines
+    private fun renderEnemyOutlines(entity: Entity, batch: Batch) {
+        val enemy = entity[EnemyComponent.mapper]
+        require(enemy != null) { "Entity |entity| must have a PlayerComponent. entity=$entity" }
+        // glow yellow for speed boost 2
+        if (enemy.type == EnemyType.ASTEROID_EGG) {
+            outlineColorYellow.a = MathUtils.clamp(1f, 0f, 1f)
+            yellowOutlineShader.setUniformf(yellowOutlineColorLoc, outlineColorYellow)
+            entity[GraphicComponent.mapper]?.let { graphic ->
+                graphic.sprite.run {
+                    yellowOutlineShader.setUniformf(yellowTextureSizeLoc, texture.width.toFloat(), texture.height.toFloat())
+                    draw(batch)
+                }
+            }
+        }
+        // glow blue for speed boost 1
+        batch.shader = outlineShader
+        if (enemy.type == EnemyType.ASTEROID_CHUNK){
+            outlineColorBlue.a = MathUtils.clamp(1f, 0f, 1f)
+            outlineShader.setUniformf(outlineColorLoc, outlineColorBlue)
+            entity[GraphicComponent.mapper]?.let { graphic ->
+                graphic.sprite.run {
+                    outlineShader.setUniformf(textureSizeLoc, texture.width.toFloat(), texture.height.toFloat())
+                    draw(batch)
+                }
+            }
+        }
+    }
+
+    private fun renderPlayerOutlines(entity: Entity, batch: Batch) {
         val player = entity[PlayerComponent.mapper]
-        require(player != null) {"Entity |entity| must have a PlayerComponent. entity=$entity"}
+        require(player != null) { "Entity |entity| must have a PlayerComponent. entity=$entity" }
 
-        if(player.shield > 0f){
-            outlineColor.a = MathUtils.clamp(player.shield/player.maxShield, 0f, 1f)
-
-            outlineShader.setUniformf(outlineColorLoc, outlineColor)
+        if (player.shield > 0f) {
+            outlineColorBlue.a = MathUtils.clamp(player.shield / player.maxShield, 0f, 1f)
+            outlineShader.setUniformf(outlineColorLoc, outlineColorBlue)
             entity[GraphicComponent.mapper]?.let { graphic ->
                 graphic.sprite.run {
                     outlineShader.setUniformf(textureSizeLoc, texture.width.toFloat(), texture.height.toFloat())
@@ -142,10 +184,10 @@ class RenderSystem(
 
     override fun onEvent(event: GameEvent) {
         val powerUpEvent = event as GameEvent.CollectPowerUp
-            if(powerUpEvent.type == PowerUpType.SPEED_1){
-                backgroundSpeed.y -= 0.25f
-            } else if (powerUpEvent.type == PowerUpType.SPEED_2){
-                backgroundSpeed.y -= 0.5f
-            }
+        if (powerUpEvent.type == PowerUpType.SPEED_1) {
+            backgroundSpeed.y -= 0.25f
+        } else if (powerUpEvent.type == PowerUpType.SPEED_2) {
+            backgroundSpeed.y -= 0.5f
         }
     }
+}

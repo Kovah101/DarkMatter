@@ -18,7 +18,7 @@ import ktx.log.logger
 
 private val LOG = logger<PlayerInputSystem>()
 private const val TOUCH_TOLERANCE_DISTANCE = 0.2f
-private const val TILT_TOLERANCE = 0.35f
+private const val TILT_TOLERANCE = 0.30f
 private const val LASER_FIRE_SPEED = 3.5f
 
 class PlayerInputSystem(

@@ -35,8 +35,7 @@ private class EnemySpawnPattern(
     type3: EnemyType = EnemyType.NONE,
     type4: EnemyType = EnemyType.NONE,
     type5: EnemyType = EnemyType.NONE,
-    type6: EnemyType = EnemyType.NONE,
-    val types: GdxArray<EnemyType> = gdxArrayOf(type1, type2, type3, type4, type5, type6)
+    val types: GdxArray<EnemyType> = gdxArrayOf(type1, type2, type3, type4, type5)
 )
 
 class EnemySystem(
@@ -71,8 +70,8 @@ class EnemySystem(
         ),
         EnemySpawnPattern(
             type1 = EnemyType.ASTEROID_EGG,
-            type5 = EnemyType.ASTEROID_CHIP,
-            type6 = EnemyType.ASTEROID_LONG
+            type3 = EnemyType.ASTEROID_CHIP,
+            type5 = EnemyType.ASTEROID_LONG
         )
     )
 
@@ -177,11 +176,15 @@ class EnemySystem(
                     LOG.debug { "enemy destroyed event sent!" }
                 }
             )
+            // spawn power up on destroying enemy
             if (enemy.type == EnemyType.ASTEROID_EGG) {
-                // spawn power up on destroying enemy
                 engine.getSystem<PowerUpSystem>()
                     .spawnPowerUp(PowerUpType.SPEED_2, transform.position.x, transform.position.y, -4f)
+            }else if (enemy.type == EnemyType.ASTEROID_CHUNK){
+                engine.getSystem<PowerUpSystem>()
+                    .spawnPowerUp(PowerUpType.SPEED_1, transform.position.x, transform.position.y, -4f)
             }
+
         }
         // destroy projectile on successful hit
         projectile.addComponent<RemoveComponent>(engine)

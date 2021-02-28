@@ -84,6 +84,7 @@ class DarkMatter : KtxGame<DarkMatterScreen>() {
                     uiViewport,
                     assets[TextureAsset.BACKGROUND.descriptor],
                     gameEventManager,
+                    assets[ShaderProgramAsset.OUTLINE.descriptor],
                     assets[ShaderProgramAsset.OUTLINE.descriptor]
                 )
             )
