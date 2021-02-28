@@ -62,6 +62,9 @@ class GameScreen(
                 bonusScore = 0f
                 currentDifficulty = GlobalDifficulty.EASY
                 LOG.debug { "current difficulty=$currentDifficulty" }
+                getSystem<PowerUpSystem>().setProcessing(true)
+                getSystem<DamageSystem>().setProcessing(true)
+                getSystem<EnemySystem>().setProcessing(true)
             }
         }
             setupUI()

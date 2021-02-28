@@ -111,11 +111,11 @@ class RenderSystem(
     }
 
 
-    // TODO new colours applied to all outlines
     private fun renderEnemyOutlines(entity: Entity, batch: Batch) {
         val enemy = entity[EnemyComponent.mapper]
         require(enemy != null) { "Entity |entity| must have a PlayerComponent. entity=$entity" }
         // glow yellow for speed boost 2
+        batch.shader = yellowOutlineShader
         if (enemy.type == EnemyType.ASTEROID_EGG) {
             outlineColorYellow.a = MathUtils.clamp(1f, 0f, 1f)
             yellowOutlineShader.setUniformf(yellowOutlineColorLoc, outlineColorYellow)

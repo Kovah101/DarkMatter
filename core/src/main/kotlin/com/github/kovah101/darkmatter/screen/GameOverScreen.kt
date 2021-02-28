@@ -3,12 +3,16 @@ package com.github.kovah101.darkmatter.screen
 import com.badlogic.ashley.core.Engine
 import com.github.kovah101.darkmatter.DarkMatter
 import com.github.kovah101.darkmatter.assets.MusicAsset
+import com.github.kovah101.darkmatter.ecs.system.DamageSystem
+import com.github.kovah101.darkmatter.ecs.system.EnemySystem
+import com.github.kovah101.darkmatter.ecs.system.PowerUpSystem
 import com.github.kovah101.darkmatter.ecs.system.createEventHorizon
 import com.github.kovah101.darkmatter.ui.GameOverUI
 import ktx.actors.minusAssign
 import ktx.actors.onChangeEvent
 import ktx.actors.onClick
 import ktx.actors.plusAssign
+import ktx.ashley.getSystem
 import ktx.log.debug
 import ktx.log.logger
 import ktx.preferences.flush
@@ -23,6 +27,10 @@ class GameOverScreen(
     private val ui = GameOverUI(bundle).apply {
         backButton.onClick {
             game.setScreen<MenuScreen>()
+        }
+        restartButton.onClick {
+            game.setScreen<GameScreen>()
+
         }
     }
 
@@ -49,8 +57,14 @@ class GameOverScreen(
     }
 
     override fun hide() {
-        engine.removeAllEntities()
+        engine.run {
+            removeAllEntities()
+            getSystem<PowerUpSystem>().setProcessing(true)
+            getSystem<DamageSystem>().setProcessing(false)
+            getSystem<EnemySystem>().setProcessing(true)
+        }
         stage.clear()
+
     }
 
     override fun render(delta: Float) {

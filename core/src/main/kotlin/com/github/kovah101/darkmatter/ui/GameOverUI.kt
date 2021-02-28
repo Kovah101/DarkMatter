@@ -13,19 +13,20 @@ class GameOverUI (private val bundle: I18NBundle){
     private val lastScoreButton: TextButton
     private val highScoreButton: TextButton
     val backButton: TextButton
+    val restartButton : TextButton
 
 
     // initialise variables
     init {
         table = scene2d.table {
-            defaults().pad(10f).expandX().fillX()
+            defaults().pad(5f).expandX().fillX()
 
             label(bundle["gameTitle"], LabelStyles.GRADIENT.name) { cell ->
                 wrap = true
                 setAlignment(Align.center)
                 cell.apply {
                     padTop(30f)
-                    padBottom(15f)
+                    padBottom(10f)
                 }
             }
             row()
@@ -36,7 +37,10 @@ class GameOverUI (private val bundle: I18NBundle){
             highScoreButton = textButton(bundle["highscore", 0], TextButtonStyles.LABEL.name)
             row()
 
-            backButton = textButton("Menu", LabelStyles.DEFAULT.name)
+            restartButton = textButton(bundle["restart"], TextButtonStyles.LABEL.name)
+            row()
+
+            backButton = textButton(bundle["backToMenu"], LabelStyles.DEFAULT.name)
             row()
 
             setFillParent(true)
