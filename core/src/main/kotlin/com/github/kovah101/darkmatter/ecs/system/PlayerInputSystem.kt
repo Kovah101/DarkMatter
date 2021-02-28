@@ -19,7 +19,7 @@ import ktx.log.logger
 private val LOG = logger<PlayerInputSystem>()
 private const val TOUCH_TOLERANCE_DISTANCE = 0.2f
 private const val TILT_TOLERANCE = 0.35f
-private const val LASER_FIRE_SPEED = 2.5f
+private const val LASER_FIRE_SPEED = 3.5f
 
 class PlayerInputSystem(
     private val gameEventManager: GameEventManager,
@@ -82,12 +82,12 @@ class PlayerInputSystem(
             laserReloadTimer = 1 / LASER_FIRE_SPEED
             engine.spawnLaser(transform)
             player.ammo --
-            LOG.debug { "player ammo=${player.ammo}" }
+            //LOG.debug { "player ammo=${player.ammo}" }
             gameEventManager.dispatchEvent(
                 GameEvent.PlayerShoot.apply {
                     this.ammo = player.ammo
                     this.maxAmmo = player.maxAmmo
-                    LOG.debug { "Ammo Event Sent" }
+                    //LOG.debug { "Ammo Event Sent" }
                 })
         }
 

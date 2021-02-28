@@ -75,11 +75,11 @@ class PowerUpSystem(
                 // nothing to spawn
                 return
             }
-            spawnPowerUp(powerUpType, 1f * MathUtils.random(0, V_WIDTH - 1), 16f)
+            spawnPowerUp(powerUpType, 1f * MathUtils.random(0, V_WIDTH - 1), 16f, POWER_UP_SPEED)
         }
     }
 
-    fun spawnPowerUp(powerUpType: PowerUpType, x: Float, y: Float) {
+    fun spawnPowerUp(powerUpType: PowerUpType, x: Float, y: Float, fallSpeed : Float) {
         engine.entity {
             with<TransformComponent> {
                 setInitialPosition(x, y, 0f)
@@ -87,9 +87,10 @@ class PowerUpSystem(
             with<PowerUpComponent> { type = powerUpType }
             with<AnimationComponent> { type = powerUpType.animationType }
             with<GraphicComponent>()
-            with<MoveComponent> { speed.y = POWER_UP_SPEED }
+            with<MoveComponent> { speed.y = fallSpeed }
         }
     }
+
 
     override fun processEntity(entity: Entity, deltaTime: Float) {
         val transform = entity[TransformComponent.mapper]

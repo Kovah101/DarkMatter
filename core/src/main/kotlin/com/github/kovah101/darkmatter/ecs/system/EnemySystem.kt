@@ -170,10 +170,17 @@ class EnemySystem(
         //LOG.debug { "enemy health =${enemy.type.health}" }
         if (enemy.type.health <= 0) {
             destroyEnemy(entity, transform)
+            // dispatch event to add bonus points
+            gameEventManager.dispatchEvent(
+                GameEvent.EnemyDestroyed.apply {
+                    bonusPoints = enemy.type.damage
+                    LOG.debug { "enemy destroyed event sent!" }
+                }
+            )
             if (enemy.type == EnemyType.ASTEROID_EGG) {
                 // spawn power up on destroying enemy
                 engine.getSystem<PowerUpSystem>()
-                    .spawnPowerUp(PowerUpType.SPEED_2, transform.position.x, transform.position.y)
+                    .spawnPowerUp(PowerUpType.SPEED_2, transform.position.x, transform.position.y, -4f)
             }
         }
         // destroy projectile on successful hit
@@ -192,7 +199,6 @@ class EnemySystem(
     }
 
     override fun onEvent(event: GameEvent) {
-        // TODO edit difficulty settings
         if (event is GameEvent.PlayerMove) {
             when {
                 event.distance.toInt() == 10 -> {

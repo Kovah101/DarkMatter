@@ -53,6 +53,12 @@ sealed class GameEvent {
 
         override fun toString() = "PlayerShoot(ammo=$ammo, maxAmmo=$maxAmmo)"
     }
+
+    object EnemyDestroyed : GameEvent(){
+        var bonusPoints = 0f
+
+        override fun toString() = "Enemy destroyed(gain $bonusPoints bonus points)"
+    }
 }
 
 

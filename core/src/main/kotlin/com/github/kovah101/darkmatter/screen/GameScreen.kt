@@ -2,7 +2,6 @@ package com.github.kovah101.darkmatter.screen
 
 
 import com.badlogic.ashley.core.Engine
-import com.badlogic.gdx.Game
 import com.github.kovah101.darkmatter.DarkMatter
 import com.github.kovah101.darkmatter.assets.GlobalDifficulty
 import com.github.kovah101.darkmatter.assets.I18NBundleAsset
@@ -25,7 +24,8 @@ import kotlin.math.roundToInt
 
 private val LOG = logger<GameScreen>()
 private const val MAX_DELTA_TIME = 1 / 20f //used to stop spiral of death
-var playerAlive : Boolean = false
+private var playerAlive : Boolean = false
+private var bonusScore = 0f
 var currentDifficulty : GlobalDifficulty = GlobalDifficulty.EASY
 
 class GameScreen(
@@ -48,6 +48,7 @@ class GameScreen(
             addListener(GameEvent.PlayerDeath::class, this@GameScreen)
             addListener(GameEvent.CollectPowerUp::class, this@GameScreen)
             addListener(GameEvent.PlayerShoot::class, this@GameScreen)
+            addListener(GameEvent.EnemyDestroyed::class, this@GameScreen)
         }
 
         engine.run {
@@ -58,6 +59,7 @@ class GameScreen(
                 createPlayer(assets)
                 createEventHorizon()
                 playerAlive = true
+                bonusScore = 0f
                 currentDifficulty = GlobalDifficulty.EASY
                 LOG.debug { "current difficulty=$currentDifficulty" }
             }
@@ -67,7 +69,7 @@ class GameScreen(
 
     private fun setupUI(){
         ui.run {
-            updateDistance(0f)
+            updateScore(0f, bonusScore)
             updateLife(MAX_LIFE, MAX_LIFE)
             updateShield(10f, MAX_SHIELD)
 
@@ -121,10 +123,15 @@ class GameScreen(
             }
 
             is GameEvent.PlayerMove -> {
-                ui.updateDistance(event.distance)
+                ui.updateScore(event.distance, bonusScore)
             }
             is GameEvent.PlayerShoot -> {
                 ui.updateAmmo(event.ammo.toFloat(), event.maxAmmo.toFloat())
+                //LOG.debug { "ammo=${event.ammo}" }
+            }
+            is GameEvent.EnemyDestroyed -> {
+                bonusScore += event.bonusPoints
+                //LOG.debug { "enemy destroyed event received, bonus score=$bonusScore" }
             }
 
         }
@@ -132,16 +139,16 @@ class GameScreen(
     }
 
     private fun onPlayerDeath(event: GameEvent.PlayerDeath) {
-        val distanceScore = event.distance.roundToInt()
-        LOG.debug { "Player died with a distance of $distanceScore " }
+        val totalScore = ((event.distance * 10) + bonusScore).roundToInt()
+        LOG.debug { "Player died with a distance of $totalScore " }
         // store high score
-        if (distanceScore > preferences["highscore", 0]) {
+        if (totalScore > preferences["highscore", 0]) {
             preferences.flush {
-                this["highscore"] = distanceScore
+                this["highscore"] = totalScore
             }
         }
         game.getScreen<GameOverScreen>().run {
-            score = distanceScore
+            score = totalScore
             highScore = preferences["highscore", 0]
         }
         game.setScreen<GameOverScreen>()

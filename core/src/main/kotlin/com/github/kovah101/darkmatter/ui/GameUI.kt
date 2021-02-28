@@ -89,10 +89,11 @@ class GameUI(private val bundle: I18NBundle) : Group() {
         }
     }
 
-    fun updateDistance(distance: Float) {
+    fun updateScore(distance: Float, bonusScore: Float) {
         distanceLabel.run {
             text.setLength(0)
-            text.append(MathUtils.clamp(distance, 0f, MAX_DISTANCE).roundToInt())
+            var totalScore = distance * 10 + bonusScore
+            text.append(MathUtils.clamp(totalScore, 0f, MAX_DISTANCE).roundToInt())
             invalidateHierarchy()
         }
     }

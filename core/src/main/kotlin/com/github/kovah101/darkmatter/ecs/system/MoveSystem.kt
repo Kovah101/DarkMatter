@@ -22,7 +22,7 @@ private const val UPDATE_RATE = 1 / 25f
 private val LOG = logger<MoveSystem>()
 // supersedes deltaTime in case of lag
 // gives constant movement
-private const val HOR_ACC = 18.5f
+private const val HOR_ACC = 20.5f
 private const val VER_ACC = 2.25f // event horizon pull strength
 private const val MAX_VER_NEG_PLAYER_SPEED = 0.75f
 private const val MAX_VER_POS_PLAYER_SPEED = 5f
@@ -112,6 +112,19 @@ class MoveSystem(
         )
     }
 
+    private fun movePlayerEntity(transform: TransformComponent, move: MoveComponent, deltaTime: Float) {
+        transform.position.x = MathUtils.clamp(
+            transform.position.x + move.speed.x * deltaTime,
+            0f,
+            V_WIDTH - transform.size.x
+        )
+        transform.position.y = MathUtils.clamp(
+            transform.position.y + move.speed.y * deltaTime,
+            1f,
+            V_HEIGHT - 1f - transform.size.y // -1 so player doesn't go in HUD
+        )
+    }
+
     private fun movePlayer(
         transform: TransformComponent,
         move: MoveComponent,
@@ -141,7 +154,7 @@ class MoveSystem(
         // store original position
         val oldY = transform.position.y
         // move player
-        moveEntity(transform, move, deltaTime)
+        movePlayerEntity(transform, move, deltaTime)
         // update distance
         player.distance += abs(transform.position.y - oldY)
         // alert Game + UI of distance
