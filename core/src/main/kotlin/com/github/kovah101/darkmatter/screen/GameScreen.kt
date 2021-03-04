@@ -75,7 +75,7 @@ class GameScreen(
             updateScore(0f, bonusScore)
             updateLife(MAX_LIFE, MAX_LIFE)
             updateShield(10f, MAX_SHIELD)
-
+            updateAmmo(MAX_AMMO.toFloat(), MAX_AMMO.toFloat())
         }
         stage += ui
     }

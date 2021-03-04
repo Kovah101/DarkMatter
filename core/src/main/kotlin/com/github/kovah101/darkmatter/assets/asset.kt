@@ -100,8 +100,8 @@ enum class GlobalDifficulty(
      val minEnemySpawnTimer: Float,
      val maxEnemySpawnTimer: Float
 ) {
-    EASY (0.8f, 1.2f, 1.75f),
-    MEDIUM(1f, 1.0f, 1.5f),
-    HARD(1.2f, 0.8f, 1.25f),
-    EXTRA_HARD(1.5f, 0.6f, 1f)
+    EASY (0.75f, 1.1f, 1.6f),
+    MEDIUM(0.95f, 1.0f, 1.4f),
+    HARD(1.1f, 0.8f, 1.25f),
+    EXTRA_HARD(1.3f, 0.6f, 1f)
 }

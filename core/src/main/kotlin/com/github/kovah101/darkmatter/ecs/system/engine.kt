@@ -32,7 +32,9 @@ fun Engine.createPlayer (
         }
         with<MoveComponent>()
         with<GraphicComponent>()
-        with<PlayerComponent>()
+        with<PlayerComponent>{
+            ammo = MAX_AMMO
+        }
         with<FacingComponent>()
     }
 

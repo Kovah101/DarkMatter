@@ -204,17 +204,17 @@ class EnemySystem(
     override fun onEvent(event: GameEvent) {
         if (event is GameEvent.PlayerMove) {
             when {
-                event.distance.toInt() == 10 -> {
+                event.distance.toInt() == 12 -> {
                     // enter medium difficulty
                     currentDifficulty = GlobalDifficulty.MEDIUM
                     setDifficulty()
                 }
-                event.distance.toInt() == 25 -> {
+                event.distance.toInt() == 24 -> {
                     // enter hard difficulty
                     currentDifficulty = GlobalDifficulty.HARD
                     setDifficulty()
                 }
-                event.distance.toInt() == 50 -> {
+                event.distance.toInt() == 36 -> {
                     // enter hard difficulty
                     currentDifficulty = GlobalDifficulty.EXTRA_HARD
                     setDifficulty()
