@@ -41,7 +41,8 @@ enum class SoundAsset(
     SHIELD("shield.wav"),
     DAMAGE("damage.wav"),
     BLOCK("block.wav"),
-    SPAWN("spawn.wav")
+    SPAWN("spawn.wav"),
+    EXPLOSION("explosion.wav")
 }
 
 enum class MusicAsset(

@@ -6,6 +6,7 @@ import com.github.kovah101.darkmatter.DarkMatter
 import com.github.kovah101.darkmatter.assets.GlobalDifficulty
 import com.github.kovah101.darkmatter.assets.I18NBundleAsset
 import com.github.kovah101.darkmatter.assets.MusicAsset
+import com.github.kovah101.darkmatter.assets.SoundAsset
 import com.github.kovah101.darkmatter.ecs.components.*
 import com.github.kovah101.darkmatter.ecs.system.*
 import com.github.kovah101.darkmatter.event.GameEvent
@@ -129,12 +130,12 @@ class GameScreen(
                 ui.updateScore(event.distance, bonusScore)
             }
             is GameEvent.PlayerShoot -> {
+                // play laser sound TODO need new sound for laser
+                audioService.play(SoundAsset.SPAWN)
                 ui.updateAmmo(event.ammo.toFloat(), event.maxAmmo.toFloat())
-                //LOG.debug { "ammo=${event.ammo}" }
             }
             is GameEvent.EnemyDestroyed -> {
                 bonusScore += event.bonusPoints
-                //LOG.debug { "enemy destroyed event received, bonus score=$bonusScore" }
             }
 
         }

@@ -2,6 +2,7 @@ package com.github.kovah101.darkmatter.ecs.components
 
 import com.badlogic.ashley.core.Component
 import com.badlogic.gdx.utils.Pool
+import com.github.kovah101.darkmatter.assets.SoundAsset
 import ktx.ashley.mapperFor
 
 
@@ -10,7 +11,8 @@ enum class EnemyType(
     var health : Float,
     val maxHealth : Float,
     val speed : Float,
-    val animationType: AnimationType
+    val animationType: AnimationType,
+    val soundAsset: SoundAsset = SoundAsset.EXPLOSION
 
 ){
     NONE(0f,0f,0f, 0f, AnimationType.NONE),

@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.scenes.scene2d.Event
 import com.github.kovah101.darkmatter.V_WIDTH
 import com.github.kovah101.darkmatter.assets.GlobalDifficulty
+import com.github.kovah101.darkmatter.audio.AudioService
 import com.github.kovah101.darkmatter.ecs.components.*
 import com.github.kovah101.darkmatter.event.GameEvent
 import com.github.kovah101.darkmatter.event.GameEventListener
@@ -39,7 +40,8 @@ private class EnemySpawnPattern(
 )
 
 class EnemySystem(
-    private val gameEventManager: GameEventManager
+    private val gameEventManager: GameEventManager,
+    private val audioService: AudioService
 ) : GameEventListener, IteratingSystem(
     allOf(EnemyComponent::class, TransformComponent::class).exclude(RemoveComponent::class).get()
 ) {
@@ -199,6 +201,8 @@ class EnemySystem(
         }
         entity[GraphicComponent.mapper]?.sprite?.setAlpha(0f)
         engine.addExplosion(transform)
+        //play enemy death noise
+        audioService.play(entity.getComponent(EnemyComponent::class.java).type.soundAsset)
     }
 
     override fun onEvent(event: GameEvent) {
