@@ -16,11 +16,11 @@ enum class EnemyType(
 
 ){
     NONE(0f,0f,0f, 0f, AnimationType.NONE),
-    ASTEROID_CHUNK(50f,90f,90f, -3f, AnimationType.ASTEROID_CHUNK),
-    ASTEROID_CHIP(50f, 80f, 80f, -3.75f, AnimationType.ASTEROID_CHIP),
-    ASTEROID_SMALL(25f, 50f, 50f, -5f, AnimationType.ASTEROID_SMALL),
-    ASTEROID_EGG(75f, 90f, 90f, -2.25f, AnimationType.ASTEROID_EGG),
-    ASTEROID_LONG(75f, 90f, 90f, -2.75f, AnimationType.ASTEROID_LONG)
+    ASTEROID_CHUNK(25f,90f,90f, -3f, AnimationType.ASTEROID_CHUNK),
+    ASTEROID_CHIP(25f, 80f, 80f, -3.75f, AnimationType.ASTEROID_CHIP),
+    ASTEROID_SMALL(10f, 50f, 50f, -5f, AnimationType.ASTEROID_SMALL),
+    ASTEROID_EGG(50f, 90f, 90f, -2.25f, AnimationType.ASTEROID_EGG),
+    ASTEROID_LONG(50f, 90f, 90f, -2.75f, AnimationType.ASTEROID_LONG)
 }
 
 class EnemyComponent : Component, Pool.Poolable {
