@@ -29,6 +29,8 @@ private const val MAX_VER_POS_PLAYER_SPEED = 5f
 private const val MAX_HOR_SPEED = 6.0f
 private var speedMultiplier = currentDifficulty.pullSpeedMultiplier
 
+// TODO adjust horizontal acceleration and max horizontal speed to make movement more fluid
+
 class MoveSystem(
     private val gameEventManager: GameEventManager
 ) :

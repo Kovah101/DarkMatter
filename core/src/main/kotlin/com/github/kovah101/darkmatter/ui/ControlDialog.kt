@@ -37,6 +37,8 @@ class ControlDialog(
     //val table: KTableWidget
     //val backButton: Button
 
+    // TODO rearrange power ups to be vertical and adjust text to match
+
     init {
         contentTable.defaults().expand().fillY()
         contentTable.add(scene2d.label(bundle["controls"], LabelStyles.DEFAULT.name) {

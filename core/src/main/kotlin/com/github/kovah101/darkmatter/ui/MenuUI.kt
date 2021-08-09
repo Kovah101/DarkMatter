@@ -39,7 +39,7 @@ class MenuUI(private val bundle : I18NBundle) {
             row()
 
             soundButton = imageButton(ImageButtonStyles.SOUND_ON_OFF.name).cell(colspan = 1, expandX = false)
-            // TODO add ammo symbol and text to controls
+            // TODO change buttons to all be transparent
             controlButton = textButton(bundle["control"], TextButtonStyles.DEFAULT.name).cell(colspan = 1)
             row()
 

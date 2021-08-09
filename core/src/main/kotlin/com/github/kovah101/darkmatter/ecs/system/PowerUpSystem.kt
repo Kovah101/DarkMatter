@@ -14,7 +14,6 @@ import ktx.ashley.*
 import ktx.collections.GdxArray
 import ktx.collections.gdxArrayOf
 import ktx.log.debug
-import ktx.log.error
 import ktx.log.logger
 import kotlin.math.min
 
@@ -24,6 +23,7 @@ private const val MAX_SPAWN_INTERVAL = 1.4f
 private const val MIN_SPAWN_INTERVAL = 0.8f
 private const val POWER_UP_SPEED = -8.75f //fall speed
 
+// TODO adjust power up fall speed for more fluid gameplay
 
 private class SpawnPattern(
     type1: PowerUpType = PowerUpType.NONE,
@@ -51,9 +51,24 @@ class PowerUpSystem(
     }
     private var spawnTime = 0f
     private val spawnPatterns = gdxArrayOf(
-        SpawnPattern(type1 = PowerUpType.SPEED_1, type2 = PowerUpType.LIFE, type4 = PowerUpType.AMMO, type6 = PowerUpType.SPEED_2),
-        SpawnPattern(type2 = PowerUpType.LIFE, type3 = PowerUpType.SHIELD, type4 = PowerUpType.SPEED_1, type6 = PowerUpType.AMMO),
-        SpawnPattern(type1 = PowerUpType.SPEED_1, type3 = PowerUpType.LIFE, type5 = PowerUpType.SHIELD, type6 = PowerUpType.SPEED_1)
+        SpawnPattern(
+            type1 = PowerUpType.SPEED_1,
+            type2 = PowerUpType.LIFE,
+            type4 = PowerUpType.AMMO,
+            type6 = PowerUpType.SPEED_2
+        ),
+        SpawnPattern(
+            type2 = PowerUpType.LIFE,
+            type3 = PowerUpType.SHIELD,
+            type4 = PowerUpType.SPEED_1,
+            type6 = PowerUpType.AMMO
+        ),
+        SpawnPattern(
+            type1 = PowerUpType.SPEED_1,
+            type3 = PowerUpType.LIFE,
+            type5 = PowerUpType.SHIELD,
+            type6 = PowerUpType.SPEED_1
+        )
     )
     private val currentSpawnPattern = GdxArray<PowerUpType>()
 
@@ -79,7 +94,7 @@ class PowerUpSystem(
         }
     }
 
-    fun spawnPowerUp(powerUpType: PowerUpType, x: Float, y: Float, fallSpeed : Float) {
+    fun spawnPowerUp(powerUpType: PowerUpType, x: Float, y: Float, fallSpeed: Float) {
         engine.entity {
             with<TransformComponent> {
                 setInitialPosition(x, y, 0f)
@@ -136,7 +151,7 @@ class PowerUpSystem(
             player[PlayerComponent.mapper]?.let {
                 it.life = min(it.maxLife, it.life + powerUpType.lifeGain)
                 it.shield = min(it.maxShield, it.shield + powerUpType.shieldGain)
-                it.ammo = min(it.maxAmmo, it.ammo +powerUpType.ammoGain)
+                it.ammo = min(it.maxAmmo, it.ammo + powerUpType.ammoGain)
             }
             audioService.play(powerUpType.soundAsset)
 

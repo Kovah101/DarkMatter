@@ -84,6 +84,8 @@ class EnemySystem(
         gameEventManager.addListener(GameEvent.PlayerMove::class, this)
     }
 
+    // TODO Add removedFromEngine like Render System, adjust spawn patterns for more variety and re-look at Asteroid stats
+
     override fun update(deltaTime: Float) {
         super.update(deltaTime)
         spawnTimer -= deltaTime
@@ -158,6 +160,7 @@ class EnemySystem(
 
     }
 
+    // collision between laser and enemies
     private fun damageEnemy(entity: Entity, projectile: Entity) {
         val transform = entity[TransformComponent.mapper]
         require(transform != null) { "Entity |entity| must have a TransformComponent. entity=$entity" }
@@ -205,6 +208,8 @@ class EnemySystem(
         audioService.play(entity.getComponent(EnemyComponent::class.java).type.soundAsset)
     }
 
+    // TODO Adjust difficulty to make easier at the start and more granular
+    // log changes to make sure its working
     override fun onEvent(event: GameEvent) {
         if (event is GameEvent.PlayerMove) {
             when {

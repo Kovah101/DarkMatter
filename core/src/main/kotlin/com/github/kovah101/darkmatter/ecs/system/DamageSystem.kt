@@ -20,6 +20,8 @@ const val DAMAGE_AREA_HEIGHT = 2f
 private const val DAMAGE_PER_SECOND = 25f
 private const val DEATH_EXPLOSION_DELAY = 0.9f // delay till death
 
+// TODO adjust damage per second to make game smoother, add asteroid explosion sound on collision
+
 class DamageSystem (
     private val gameEventManager: GameEventManager
         ) :
@@ -116,6 +118,7 @@ class DamageSystem (
         })
     }
 
+    // TODO needs to make noise
     private fun destroyEnemy(enemy: Entity) {
         // destroy enemy
         val enemyTrans = enemy[TransformComponent.mapper]

@@ -117,12 +117,12 @@ class GameScreen(
                 onCollectPowerUp(event)
             }
 
-            is GameEvent.PlayerHit -> {
+            is GameEvent.PlayerHit -> { // TODO add damage sound
                 ui.run {
                     updateLife(event.life, event.maxLife)
                 }
             }
-            is GameEvent.PlayerBlock -> {
+            is GameEvent.PlayerBlock -> { // TODO add block sound
                 ui.updateShield(event.shield, event.maxShield)
             }
 
