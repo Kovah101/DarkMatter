@@ -13,8 +13,6 @@ import ktx.ashley.with
 import ktx.assets.async.AssetStorage
 
 
-
-
 fun Engine.createPlayer (
     assets: AssetStorage,
     spawnX: Float = V_WIDTH * 0.5f,
