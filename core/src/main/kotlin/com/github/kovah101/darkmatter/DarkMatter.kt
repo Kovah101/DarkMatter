@@ -61,7 +61,7 @@ class DarkMatter : KtxGame<DarkMatterScreen>() {
             addSystem(PowerUpSystem(gameEventManager, audioService).apply {
                 setProcessing(false)
             })
-            addSystem(DamageSystem(gameEventManager).apply {
+            addSystem(DamageSystem(gameEventManager, audioService).apply {
                 setProcessing(false)
             })
             addSystem(EnemySystem(gameEventManager, audioService).apply {

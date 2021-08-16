@@ -3,6 +3,7 @@ package com.github.kovah101.darkmatter.ecs.system
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.math.Rectangle
+import com.github.kovah101.darkmatter.audio.AudioService
 import com.github.kovah101.darkmatter.ecs.components.*
 import com.github.kovah101.darkmatter.event.GameEventManager
 import com.github.kovah101.darkmatter.event.GameEvent
@@ -12,6 +13,7 @@ import ktx.ashley.exclude
 import ktx.ashley.get
 import ktx.log.debug
 import ktx.log.logger
+import javax.sound.sampled.AudioSystem
 import kotlin.math.max
 
 
@@ -20,10 +22,11 @@ const val DAMAGE_AREA_HEIGHT = 2f
 private const val DAMAGE_PER_SECOND = 25f
 private const val DEATH_EXPLOSION_DELAY = 0.9f // delay till death
 
-// TODO adjust damage per second to make game smoother, add asteroid explosion sound on collision
+// TODO adjust damage per second to make game smoother
 
 class DamageSystem (
-    private val gameEventManager: GameEventManager
+    private val gameEventManager: GameEventManager,
+    private val audioService: AudioService
         ) :
     IteratingSystem(allOf(PlayerComponent::class, TransformComponent::class).exclude(RemoveComponent::class).get()) {
     private val playerBoundRect = Rectangle()
@@ -118,7 +121,6 @@ class DamageSystem (
         })
     }
 
-    // TODO needs to make noise
     private fun destroyEnemy(enemy: Entity) {
         // destroy enemy
         val enemyTrans = enemy[TransformComponent.mapper]
@@ -130,5 +132,7 @@ class DamageSystem (
         }
         enemy[GraphicComponent.mapper]?.sprite?.setAlpha(0f)
         engine.addExplosion(enemyTrans)
+        //play enemy death noise ? Or just player damage / shield?
+        audioService.play(enemy.getComponent(EnemyComponent::class.java).type.soundAsset)
     }
 }

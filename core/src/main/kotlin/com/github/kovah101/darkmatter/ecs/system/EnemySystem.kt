@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.scenes.scene2d.Event
 import com.github.kovah101.darkmatter.V_WIDTH
 import com.github.kovah101.darkmatter.assets.GlobalDifficulty
+import com.github.kovah101.darkmatter.assets.SoundAsset
 import com.github.kovah101.darkmatter.audio.AudioService
 import com.github.kovah101.darkmatter.ecs.components.*
 import com.github.kovah101.darkmatter.event.GameEvent
@@ -171,6 +172,7 @@ class EnemySystem(
         require(damage != null) { "Projectile |projectile| must have a ProjectileComponent. projectile=$projectile" }
         //LOG.debug { "enemy health =${enemy.type.health}" }
         enemy.type.health -= damage
+        audioService.play(SoundAsset.ASTEROID_HIT)
         //LOG.debug { "enemy health =${enemy.type.health}" }
         if (enemy.type.health <= 0) {
             destroyEnemy(entity, transform)

@@ -35,6 +35,7 @@ enum class SoundAsset(
     directory: String = "sound",
     val descriptor: AssetDescriptor<Sound> = AssetDescriptor("$directory/$fileName", Sound::class.java)
 ) {
+    AMMO("ammo.wav"),
     BOOST_1("boost1.wav"),
     BOOST_2("boost2.wav"),
     LIFE("life.wav"),
@@ -42,7 +43,11 @@ enum class SoundAsset(
     DAMAGE("damage.wav"),
     BLOCK("block.wav"),
     SPAWN("spawn.wav"),
-    EXPLOSION("explosion.wav")
+    EXPLOSION("explosion.wav"),
+    EXPLOSION_2("explosion2.wav"),
+    LASER_1("laser2Loud.wav"),
+    LASER_2("laser2.wav"),
+    ASTEROID_HIT("asteroidHit.wav")
 }
 
 enum class MusicAsset(

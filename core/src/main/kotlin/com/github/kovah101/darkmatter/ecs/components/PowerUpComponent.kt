@@ -18,7 +18,7 @@ enum class PowerUpType(
     SPEED_2(AnimationType.SPEED_2, speedGain = 3.75f, soundAsset = SoundAsset.BOOST_2),
     LIFE(AnimationType.LIFE, lifeGain = 25f, soundAsset = SoundAsset.LIFE),
     SHIELD(AnimationType.SHIELD, shieldGain = 50f, soundAsset = SoundAsset.SHIELD),
-    AMMO(AnimationType.AMMO, ammoGain = 7, soundAsset = SoundAsset.SHIELD)
+    AMMO(AnimationType.AMMO, ammoGain = 7, soundAsset = SoundAsset.AMMO)
 }
 
 class PowerUpComponent : Component, Pool.Poolable {

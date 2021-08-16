@@ -12,7 +12,7 @@ enum class EnemyType(
     val maxHealth : Float,
     val speed : Float,
     val animationType: AnimationType,
-    val soundAsset: SoundAsset = SoundAsset.EXPLOSION
+    val soundAsset: SoundAsset = SoundAsset.EXPLOSION_2
 
 ){
     NONE(0f,0f,0f, 0f, AnimationType.NONE),

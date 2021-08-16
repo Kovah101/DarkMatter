@@ -117,12 +117,14 @@ class GameScreen(
                 onCollectPowerUp(event)
             }
 
-            is GameEvent.PlayerHit -> { // TODO add damage sound
+            is GameEvent.PlayerHit -> {
+                audioService.play(SoundAsset.DAMAGE)
                 ui.run {
                     updateLife(event.life, event.maxLife)
                 }
             }
-            is GameEvent.PlayerBlock -> { // TODO add block sound
+            is GameEvent.PlayerBlock -> {
+                audioService.play(SoundAsset.BLOCK)
                 ui.updateShield(event.shield, event.maxShield)
             }
 
@@ -130,8 +132,8 @@ class GameScreen(
                 ui.updateScore(event.distance, bonusScore)
             }
             is GameEvent.PlayerShoot -> {
-                // play laser sound TODO need new sound for laser
-                audioService.play(SoundAsset.SPAWN)
+                // play laser sound TODO test sounds
+                audioService.play(SoundAsset.LASER_1)
                 ui.updateAmmo(event.ammo.toFloat(), event.maxAmmo.toFloat())
             }
             is GameEvent.EnemyDestroyed -> {
