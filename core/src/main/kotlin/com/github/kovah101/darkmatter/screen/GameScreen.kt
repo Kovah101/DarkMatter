@@ -132,7 +132,7 @@ class GameScreen(
                 ui.updateScore(event.distance, bonusScore)
             }
             is GameEvent.PlayerShoot -> {
-                // play laser sound TODO test sounds
+                // play laser sound
                 audioService.play(SoundAsset.LASER_1)
                 ui.updateAmmo(event.ammo.toFloat(), event.maxAmmo.toFloat())
             }

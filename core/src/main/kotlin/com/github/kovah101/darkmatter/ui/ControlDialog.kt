@@ -23,7 +23,7 @@ import ktx.scene2d.*
 private const val PADDING = 7f
 private const val DIALOG_WIDTH_SCALE = 0.95f
 private const val DIALOG_HEIGHT_SCALE = 0.95f
-private const val IMAGE_WIDTH = 20f
+private const val IMAGE_WIDTH = 18f
 private const val IMAGE_BOTTOM_PADDING = 8f
 private const val IMAGE_SCALE = 0.9f
 
@@ -31,13 +31,6 @@ class ControlDialog(
     bundle: I18NBundle,
 ) : Dialog("", Scene2DSkin.defaultSkin, WindowStyles.DEFAULT.name) {
 
-    private lateinit var lifePowerUp: Image
-
-    // val powerUpTable : Table
-    //val table: KTableWidget
-    //val backButton: Button
-
-    // TODO rearrange power ups to be vertical and adjust text to match
 
     init {
         contentTable.defaults().expand().fillY()
@@ -47,12 +40,23 @@ class ControlDialog(
         }).colspan(5).width(115f).center().padTop(0f)
         contentTable.row()
 
-        contentTable.add(scene2d.image("life_0")).width(IMAGE_WIDTH * IMAGE_SCALE).height(IMAGE_WIDTH * IMAGE_SCALE).padLeft(0f).padBottom(IMAGE_BOTTOM_PADDING)
-        contentTable.add(scene2d.image("shield_0")).width(IMAGE_WIDTH * IMAGE_SCALE).height(IMAGE_WIDTH * IMAGE_SCALE).padBottom(IMAGE_BOTTOM_PADDING)
-        contentTable.add(scene2d.image("laser_ammo_1")).width(IMAGE_WIDTH * IMAGE_SCALE).height(IMAGE_WIDTH * IMAGE_SCALE).padBottom(IMAGE_BOTTOM_PADDING)
-        contentTable.add(scene2d.image("orb_blue_1")).width(IMAGE_WIDTH * IMAGE_SCALE).height(IMAGE_WIDTH * IMAGE_SCALE).padBottom(IMAGE_BOTTOM_PADDING)
-        contentTable.add(scene2d.image("orb_yellow_1")).width(IMAGE_WIDTH * IMAGE_SCALE).height(IMAGE_WIDTH * IMAGE_SCALE).padRight(0f).padBottom(IMAGE_BOTTOM_PADDING)
+        contentTable.add(scene2d.image("life_0")).width(IMAGE_WIDTH * IMAGE_SCALE).height(IMAGE_WIDTH * IMAGE_SCALE).padLeft(160f).center()
+        contentTable.add(scene2d.label(bundle["life"], LabelStyles.DEFAULT.name)).center()
         contentTable.row()
+
+        contentTable.add(scene2d.image("shield_0")).width(IMAGE_WIDTH * IMAGE_SCALE).height(IMAGE_WIDTH * IMAGE_SCALE).padLeft(160f)
+        contentTable.add(scene2d.label(bundle["shield"], LabelStyles.DEFAULT.name)).colspan(1)
+        contentTable.row()
+
+        contentTable.add(scene2d.image("laser_ammo_1")).width(IMAGE_WIDTH * IMAGE_SCALE).height(IMAGE_WIDTH * IMAGE_SCALE).padLeft(160f)
+        contentTable.add(scene2d.label(bundle["ammo"], LabelStyles.DEFAULT.name)).colspan(1)
+        contentTable.row()
+
+        contentTable.add(scene2d.image("orb_blue_1")).width(IMAGE_WIDTH * IMAGE_SCALE).height(IMAGE_WIDTH * IMAGE_SCALE).padLeft(135f)
+        contentTable.add(scene2d.image("orb_yellow_1")).width(IMAGE_WIDTH * IMAGE_SCALE).height(IMAGE_WIDTH * IMAGE_SCALE).padLeft(-50f)
+        contentTable.add(scene2d.label(bundle["speed"], LabelStyles.DEFAULT.name)).spaceRight(150f).padLeft(-40f)
+        contentTable.row()
+
 
         contentTable.add(scene2d.label(bundle["escape"], LabelStyles.DEFAULT.name) {
             wrap = true
