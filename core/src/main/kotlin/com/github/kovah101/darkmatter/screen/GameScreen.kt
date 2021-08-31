@@ -27,7 +27,7 @@ private val LOG = logger<GameScreen>()
 private const val MAX_DELTA_TIME = 1 / 20f //used to stop spiral of death
 private var playerAlive : Boolean = false
 private var bonusScore = 0f
-var currentDifficulty : GlobalDifficulty = GlobalDifficulty.EASY
+var currentDifficulty : GlobalDifficulty = GlobalDifficulty.EXTRA_EASY
 
 class GameScreen(
     game: DarkMatter,

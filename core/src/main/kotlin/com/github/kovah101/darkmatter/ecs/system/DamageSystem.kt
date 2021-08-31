@@ -22,7 +22,7 @@ const val DAMAGE_AREA_HEIGHT = 2f
 private const val DAMAGE_PER_SECOND = 25f
 private const val DEATH_EXPLOSION_DELAY = 0.9f // delay till death
 
-// TODO adjust damage per second to make game smoother
+
 
 class DamageSystem (
     private val gameEventManager: GameEventManager,

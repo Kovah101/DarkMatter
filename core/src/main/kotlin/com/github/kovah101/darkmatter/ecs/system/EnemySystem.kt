@@ -75,6 +75,12 @@ class EnemySystem(
             type1 = EnemyType.ASTEROID_EGG,
             type3 = EnemyType.ASTEROID_CHIP,
             type5 = EnemyType.ASTEROID_LONG
+        ),
+        EnemySpawnPattern(
+            type1 = EnemyType.ASTEROID_SMALL,
+            type2 = EnemyType.ASTEROID_EGG,
+            type4 = EnemyType.ASTEROID_CHIP,
+            type5 = EnemyType.ASTEROID_LONG
         )
     )
 
@@ -85,7 +91,7 @@ class EnemySystem(
         gameEventManager.addListener(GameEvent.PlayerMove::class, this)
     }
 
-    // TODO Add removedFromEngine like Render System, adjust spawn patterns for more variety and re-look at Asteroid stats
+    // TODO Add removedFromEngine like Render System + prepare for Play Store
 
     override fun update(deltaTime: Float) {
         super.update(deltaTime)
@@ -210,35 +216,45 @@ class EnemySystem(
         audioService.play(entity.getComponent(EnemyComponent::class.java).type.soundAsset)
     }
 
-    // TODO Adjust difficulty to make easier at the start and more granular
     // log changes to make sure its working
     override fun onEvent(event: GameEvent) {
         if (event is GameEvent.PlayerMove) {
             when {
                 event.distance.toInt() == 15 -> {
+                    // enter easy difficulty
+                    currentDifficulty = GlobalDifficulty.EASY
+                    setDifficulty(currentDifficulty)
+                }
+                event.distance.toInt() == 30 -> {
                     // enter medium difficulty
                     currentDifficulty = GlobalDifficulty.MEDIUM
-                    setDifficulty()
+                    setDifficulty(currentDifficulty)
                 }
-                event.distance.toInt() == 28 -> {
+                event.distance.toInt() == 45 -> {
+                    // enter extra medium difficulty
+                    currentDifficulty = GlobalDifficulty.EXTRA_MEDIUM
+                    setDifficulty(currentDifficulty)
+                }
+                event.distance.toInt() == 60 -> {
                     // enter hard difficulty
                     currentDifficulty = GlobalDifficulty.HARD
-                    setDifficulty()
+                    setDifficulty(currentDifficulty)
                 }
-                event.distance.toInt() == 36 -> {
-                    // enter hard difficulty
+                event.distance.toInt() == 75 -> {
+                    // enter extra hard difficulty
                     currentDifficulty = GlobalDifficulty.EXTRA_HARD
-                    setDifficulty()
+                    setDifficulty(currentDifficulty)
                 }
             }
         }
 
     }
 
-    private fun setDifficulty() {
-        minSpawnTimer = currentDifficulty.minEnemySpawnTimer
-        maxSpawnTimer = currentDifficulty.maxEnemySpawnTimer
-        speedMultiplier = currentDifficulty.pullSpeedMultiplier
-        //LOG.debug { "DIFFICULTY=$currentDifficulty, minSpawnTimer=$minSpawnTimer, maxSpawnTimer=$maxSpawnTimer" }
+    private fun setDifficulty(difficulty: GlobalDifficulty) {
+        minSpawnTimer = difficulty.minEnemySpawnTimer
+        maxSpawnTimer = difficulty.maxEnemySpawnTimer
+        speedMultiplier = difficulty.pullSpeedMultiplier
+        debug("Difficulty") { "DIFFICULTY=$currentDifficulty, minSpawnTimer=$minSpawnTimer, maxSpawnTimer=$maxSpawnTimer" }
+
     }
 }

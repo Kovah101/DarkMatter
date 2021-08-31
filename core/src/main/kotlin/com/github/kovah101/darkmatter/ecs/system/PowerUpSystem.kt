@@ -23,7 +23,6 @@ private const val MAX_SPAWN_INTERVAL = 1.4f
 private const val MIN_SPAWN_INTERVAL = 0.8f
 private const val POWER_UP_SPEED = -8.75f //fall speed
 
-// TODO adjust power up fall speed for more fluid gameplay
 
 private class SpawnPattern(
     type1: PowerUpType = PowerUpType.NONE,
@@ -55,7 +54,7 @@ class PowerUpSystem(
             type1 = PowerUpType.SPEED_1,
             type2 = PowerUpType.LIFE,
             type4 = PowerUpType.AMMO,
-            type6 = PowerUpType.SPEED_2
+            type5 = PowerUpType.SPEED_2
         ),
         SpawnPattern(
             type2 = PowerUpType.LIFE,
@@ -66,8 +65,14 @@ class PowerUpSystem(
         SpawnPattern(
             type1 = PowerUpType.SPEED_1,
             type3 = PowerUpType.LIFE,
+            type4 = PowerUpType.AMMO,
             type5 = PowerUpType.SHIELD,
-            type6 = PowerUpType.SPEED_1
+        ),
+        SpawnPattern(
+            type2 = PowerUpType.SPEED_2,
+            type3 = PowerUpType.AMMO,
+            type5 = PowerUpType.SPEED_1,
+            type6 = PowerUpType.SHIELD
         )
     )
     private val currentSpawnPattern = GdxArray<PowerUpType>()

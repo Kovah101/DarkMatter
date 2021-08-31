@@ -18,10 +18,9 @@ import ktx.log.logger
 
 private val LOG = logger<PlayerInputSystem>()
 private const val TOUCH_TOLERANCE_DISTANCE = 0.2f
-private const val TILT_TOLERANCE = 0.2f
+private const val TILT_TOLERANCE = 0.3f
 private const val LASER_FIRE_SPEED = 3.5f
 
-// TODO adjust tilt tolerance and fire speed to make controlling feel natural, re-look at laser stats, find new laser sound and move sound generation to player input system
 
 class PlayerInputSystem(
     private val gameEventManager: GameEventManager,

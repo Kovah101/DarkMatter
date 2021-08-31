@@ -22,14 +22,13 @@ private const val UPDATE_RATE = 1 / 25f
 private val LOG = logger<MoveSystem>()
 // supersedes deltaTime in case of lag
 // gives constant movement
-private const val HOR_ACC = 27.5f
+private const val HOR_ACC = 32.5f
 private const val VER_ACC = 2.25f // event horizon pull strength
 private const val MAX_VER_NEG_PLAYER_SPEED = 0.75f
 private const val MAX_VER_POS_PLAYER_SPEED = 5f
-private const val MAX_HOR_SPEED = 6.0f
+private const val MAX_HOR_SPEED = 8.0f
 private var speedMultiplier = currentDifficulty.pullSpeedMultiplier
 
-// TODO adjust horizontal acceleration and max horizontal speed to make movement more fluid
 
 class MoveSystem(
     private val gameEventManager: GameEventManager
