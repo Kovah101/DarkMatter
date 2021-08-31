@@ -31,16 +31,16 @@ class GameOverUI (private val bundle: I18NBundle){
             }
             row()
 
-            lastScoreButton = textButton(bundle["score", 0], TextButtonStyles.LABEL.name)
+            lastScoreButton = textButton(bundle["score", 0], TextButtonStyles.LABEL_TRANSPARENT.name)
             row()
 
-            highScoreButton = textButton(bundle["highscore", 0], TextButtonStyles.LABEL.name)
+            highScoreButton = textButton(bundle["highscore", 0], TextButtonStyles.LABEL_TRANSPARENT.name)
             row()
 
-            restartButton = textButton(bundle["restart"], TextButtonStyles.LABEL.name)
+            restartButton = textButton(bundle["restart"], TextButtonStyles.LABEL_TRANSPARENT.name)
             row()
 
-            backButton = textButton(bundle["backToMenu"], LabelStyles.DEFAULT.name)
+            backButton = textButton(bundle["backToMenu"], TextButtonStyles.TRANSPARENT.name)
             row()
 
             setFillParent(true)

@@ -35,15 +35,15 @@ class MenuUI(private val bundle : I18NBundle) {
             }
             row()
 
-            startGameButton = textButton(bundle["startGame"], TextButtonStyles.DEFAULT.name)
+            startGameButton = textButton(bundle["startGame"], TextButtonStyles.TRANSPARENT.name)
             row()
 
             soundButton = imageButton(ImageButtonStyles.SOUND_ON_OFF.name).cell(colspan = 1, expandX = false)
             // TODO change buttons to all be transparent
-            controlButton = textButton(bundle["control"], TextButtonStyles.DEFAULT.name).cell(colspan = 1)
+            controlButton = textButton(bundle["control"], TextButtonStyles.TRANSPARENT.name).cell(colspan = 1)
             row()
 
-            highScoreButton = textButton(bundle["highscore", 0], TextButtonStyles.LABEL.name)
+            highScoreButton = textButton(bundle["highscore", 0], TextButtonStyles.LABEL_TRANSPARENT.name)
             row()
 
             creditsButton = textButton(bundle["credit"], TextButtonStyles.LABEL_TRANSPARENT.name)
