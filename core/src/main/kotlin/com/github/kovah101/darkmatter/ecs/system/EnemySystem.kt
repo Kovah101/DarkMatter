@@ -91,7 +91,11 @@ class EnemySystem(
         gameEventManager.addListener(GameEvent.PlayerMove::class, this)
     }
 
-    // TODO Add removedFromEngine like Render System + prepare for Play Store
+    override fun removedFromEngine(engine: Engine?) {
+        super.removedFromEngine(engine)
+        gameEventManager.removeListener(GameEvent.PlayerMove::class, this)
+    }
+    //TODO prepare for Play Store
 
     override fun update(deltaTime: Float) {
         super.update(deltaTime)
@@ -101,7 +105,7 @@ class EnemySystem(
 
             if (currentSpawnPattern.isEmpty) {
                 currentSpawnPattern.addAll(spawnPatterns[MathUtils.random(0, spawnPatterns.size - 1)].types)
-                LOG.debug { "Next pattern: $currentSpawnPattern" }
+                //LOG.debug { "Next pattern: $currentSpawnPattern" }
             }
             // select enemy type + remove from pattern
             val enemyType = currentSpawnPattern.removeIndex(0)
@@ -186,7 +190,7 @@ class EnemySystem(
             gameEventManager.dispatchEvent(
                 GameEvent.EnemyDestroyed.apply {
                     bonusPoints = enemy.type.damage
-                    LOG.debug { "enemy destroyed event sent!" }
+                    //LOG.debug { "enemy destroyed event sent!" }
                 }
             )
             // spawn power up on destroying enemy
@@ -254,7 +258,7 @@ class EnemySystem(
         minSpawnTimer = difficulty.minEnemySpawnTimer
         maxSpawnTimer = difficulty.maxEnemySpawnTimer
         speedMultiplier = difficulty.pullSpeedMultiplier
-        debug("Difficulty") { "DIFFICULTY=$currentDifficulty, minSpawnTimer=$minSpawnTimer, maxSpawnTimer=$maxSpawnTimer" }
+        //debug("Difficulty") { "DIFFICULTY=$currentDifficulty, minSpawnTimer=$minSpawnTimer, maxSpawnTimer=$maxSpawnTimer" }
 
     }
 }

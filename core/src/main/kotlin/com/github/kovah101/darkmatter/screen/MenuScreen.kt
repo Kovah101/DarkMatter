@@ -31,7 +31,7 @@ class MenuScreen(
             preferences.flush {
                 this["musicEnabledKey"] = audioService.enabled
             }
-            LOG.debug { "audio mode = ${audioService.enabled}" }
+            //LOG.debug { "audio mode = ${audioService.enabled}" }
             if(audioService.enabled) { audioService.play(MusicAsset.MENU) }
 
         }
@@ -56,7 +56,7 @@ class MenuScreen(
             getSystem<PowerUpSystem>().setProcessing(true)
         }
         audioService.enabled = preferences["musicEnabledKey", true]
-        LOG.debug { "audio mode starts = ${audioService.enabled}" }
+        //LOG.debug { "audio mode starts = ${audioService.enabled}" }
         audioService.play(MusicAsset.MENU)
         setupUI()
     }

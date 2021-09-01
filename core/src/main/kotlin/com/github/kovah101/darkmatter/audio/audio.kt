@@ -68,12 +68,12 @@ class DefaultAudioService(private val assets: AssetStorage) : AudioService {
                 }
             }
             soundRequests.size >= MAX_SOUND_INSTANCES -> {
-                LOG.debug { "Maximum sound request reached" }
+                //LOG.debug { "Maximum sound request reached" }
                 return
             }
             else -> {
                 if (soundAsset.descriptor !in assets) {
-                    LOG.error { "Trying to play a sound that hasnt been loaded: $soundAsset" }
+                    //LOG.error { "Trying to play a sound that hasnt been loaded: $soundAsset" }
                     return
                 } else if (soundAsset !in soundCache) {
                     soundCache[soundAsset] = assets[soundAsset.descriptor]

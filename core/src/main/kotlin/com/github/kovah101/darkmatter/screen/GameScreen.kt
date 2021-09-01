@@ -39,8 +39,8 @@ class GameScreen(
 
     override fun show() {
         super.show()
-        LOG.debug { "Game screen shown" }
-        LOG.debug { "High Score: ${preferences["highscore", 0]}" }
+        //LOG.debug { "Game screen shown" }
+        //LOG.debug { "High Score: ${preferences["highscore", 0]}" }
         gameEventManager.run {
             addListener(GameEvent.PlayerDeath::class, this@GameScreen)
             addListener(GameEvent.PlayerHit::class, this@GameScreen)
@@ -54,7 +54,7 @@ class GameScreen(
 
         engine.run {
             // attempt to stop constant player respawning & music restarting
-            LOG.debug { "player alive = $playerAlive" }
+            //LOG.debug { "player alive = $playerAlive" }
             if (!playerAlive) {
                 audioService.play(MusicAsset.GAME)
                 createPlayer(assets)
@@ -62,7 +62,7 @@ class GameScreen(
                 playerAlive = true
                 bonusScore = 0f
                 currentDifficulty = GlobalDifficulty.EASY
-                LOG.debug { "current difficulty=$currentDifficulty" }
+                //LOG.debug { "current difficulty=$currentDifficulty" }
                 getSystem<PowerUpSystem>().setProcessing(true)
                 getSystem<DamageSystem>().setProcessing(true)
                 getSystem<EnemySystem>().setProcessing(true)
@@ -146,7 +146,7 @@ class GameScreen(
 
     private fun onPlayerDeath(event: GameEvent.PlayerDeath) {
         val totalScore = ((event.distance * 10) + bonusScore).roundToInt()
-        LOG.debug { "Player died with a distance of $totalScore " }
+        //LOG.debug { "Player died with a distance of $totalScore " }
         // store high score
         if (totalScore > preferences["highscore", 0]) {
             preferences.flush {

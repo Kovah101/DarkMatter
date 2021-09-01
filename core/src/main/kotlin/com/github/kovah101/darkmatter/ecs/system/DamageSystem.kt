@@ -126,7 +126,7 @@ class DamageSystem (
         val enemyTrans = enemy[TransformComponent.mapper]
         require(enemyTrans != null) { "Enemy |enemy| must have a TransformComponent. enemy=$enemy" }
 
-        LOG.debug { "We have collision! Enemy destroyed" }
+        //LOG.debug { "We have collision! Enemy destroyed" }
         enemy.addComponent<RemoveComponent>(engine) {
             delay = DEATH_EXPLOSION_DELAY
         }

@@ -38,7 +38,7 @@ class GameOverScreen(
     var highScore = 0
 
     override fun show() {
-        LOG.debug { "Game Over screen shown" }
+        //LOG.debug { "Game Over screen shown" }
         super.show()
 
         //start game over music

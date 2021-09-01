@@ -30,7 +30,7 @@ class LoadingScreen(game: DarkMatter) : DarkMatterScreen(game) {
     private lateinit var touchToBeginLabel: Label
 
     override fun show() {
-        LOG.debug { "Loading screen shown" }
+        //LOG.debug { "Loading screen shown" }
         val old = System.currentTimeMillis()
         // queue asset loading
         val assetRefs = gdxArrayOf(
@@ -44,7 +44,7 @@ class LoadingScreen(game: DarkMatter) : DarkMatterScreen(game) {
         // async so non blocking main thread
         KtxAsync.launch {
             assetRefs.joinAll()
-            LOG.debug { "Time to load assets: ${System.currentTimeMillis() - old}ms" }
+            //LOG.debug { "Time to load assets: ${System.currentTimeMillis() - old}ms" }
             assetsLoaded()
         }
 

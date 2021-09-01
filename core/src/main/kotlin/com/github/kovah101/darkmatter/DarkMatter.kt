@@ -95,7 +95,7 @@ class DarkMatter : KtxGame<DarkMatterScreen>() {
 
     override fun create() {
         Gdx.app.logLevel = LOG_DEBUG
-        LOG.debug { "Create game instance" }
+        //LOG.debug { "Create game instance" }
         val assetRefs = gdxArrayOf(
             TextureAtlasAsset.values().filter { it.isSkinAtlas }.map { assets.loadAsync(it.descriptor) },
             BitmapFontAsset.values().map {assets.loadAsync(it.descriptor)},
@@ -112,9 +112,9 @@ class DarkMatter : KtxGame<DarkMatterScreen>() {
 
     override fun dispose() {
         super.dispose()
-        LOG.debug { "Sprites in batch: ${(batch as SpriteBatch).maxSpritesInBatch}" }
+        //LOG.debug { "Sprites in batch: ${(batch as SpriteBatch).maxSpritesInBatch}" }
         MusicAsset.values().forEach {
-            LOG.debug { "Refcount $it: ${assets.getReferenceCount(it.descriptor)}" }
+            //LOG.debug { "Refcount $it: ${assets.getReferenceCount(it.descriptor)}" }
         }
         batch.dispose()
         assets.dispose()

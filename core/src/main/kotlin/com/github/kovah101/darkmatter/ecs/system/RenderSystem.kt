@@ -166,7 +166,7 @@ class RenderSystem(
 
         if (graphic.sprite.texture == null) {
             // if texture is null, log the error and skip
-            LOG.error { "Entity has no texture for rendering. entity=$entity" }
+            //LOG.error { "Entity has no texture for rendering. entity=$entity" }
             return
         }
 

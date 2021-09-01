@@ -44,7 +44,7 @@ class AnimationSystem(
         require(graphic != null) {"Entity |entity| must have an GraphicsComponent. entity=$entity"}
 
         if(aniCmp.type == AnimationType.NONE){
-            LOG.error { "No type specified for animation component $aniCmp for |entity| $entity" }
+            //LOG.error { "No type specified for animation component $aniCmp for |entity| $entity" }
             return
         }
 
@@ -79,11 +79,11 @@ class AnimationSystem(
             var regions = atlas.findRegions(type.atlasKey)
             if (regions.isEmpty) {
                 // no regions so replace with error
-                LOG.error { "No regions found for ${type.atlasKey}" }
+                //LOG.error { "No regions found for ${type.atlasKey}" }
                 regions = atlas.findRegions("error")
                 if (regions.isEmpty) throw GdxRuntimeException("There is no error region in atlas")
             } else {
-                LOG.debug { "Adding animation of type $type with ${regions.size} regions" }
+                //LOG.debug { "Adding animation of type $type with ${regions.size} regions" }
             }
             // generate animation & add to cache
             animation = Animation2D(type, regions, type.playMode, type.speedRate)

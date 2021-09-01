@@ -85,8 +85,8 @@ class PowerUpSystem(
 
             if (currentSpawnPattern.isEmpty) {
                 currentSpawnPattern.addAll(spawnPatterns[MathUtils.random(0, spawnPatterns.size - 1)].types)
-                LOG.debug { "Difficulty=$currentDifficulty" }
-                LOG.debug { "Next pattern: $currentSpawnPattern" }
+                //LOG.debug { "Difficulty=$currentDifficulty" }
+                //LOG.debug { "Next pattern: $currentSpawnPattern" }
             }
 
             // select power up + remove it from pattern
@@ -150,7 +150,7 @@ class PowerUpSystem(
         require(powerUpCmp != null) { "Entity |entiy| must have a PowerUpComponent. entity=$powerUp" }
 
         powerUpCmp.type.also { powerUpType ->
-            LOG.debug { "Picking up power up of type:${powerUpCmp.type}" }
+            //LOG.debug { "Picking up power up of type:${powerUpCmp.type}" }
 
             player[MoveComponent.mapper]?.let { it.speed.y += powerUpType.speedGain }
             player[PlayerComponent.mapper]?.let {
@@ -164,7 +164,7 @@ class PowerUpSystem(
                 GameEvent.CollectPowerUp.apply {
                     this.player = player
                     type = powerUpType
-                    LOG.debug { "Power Up event sent!" }
+                   // LOG.debug { "Power Up event sent!" }
                 })
         }
         powerUp.addComponent<RemoveComponent>(engine)
