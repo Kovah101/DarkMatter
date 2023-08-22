@@ -20,7 +20,6 @@ import ktx.collections.GdxArray
 import ktx.collections.gdxArrayOf
 import ktx.log.debug
 import ktx.log.logger
-import java.rmi.activation.ActivationGroup.getSystem
 
 private val LOG = logger<EnemySystem>()
 private const val DEATH_EXPLOSION_DELAY = 0.9f // delay till death
