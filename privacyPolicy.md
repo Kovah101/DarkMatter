@@ -16,7 +16,7 @@ Event Horizon is appropriate for players of all ages, including children. We do 
 
 ## 4. Contact Us
 
-If you have any questions or concerns about this Privacy Policy or the privacy practices of Event Horizon, please contact us at [Your Contact Information].
+If you have any questions or concerns about this Privacy Policy or the privacy practices of Event Horizon, please contact us at et_boy101@hotmail.com.
 
 Thank you for choosing to play Event Horizon. We hope you enjoy the game!
 
